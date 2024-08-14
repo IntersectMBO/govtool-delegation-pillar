@@ -43,8 +43,6 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     restart: unless-stopped
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:1337 # Environment variable for the API URL
     ports:
       - "3000:3000" # Expose port 3000 to the host
     networks:

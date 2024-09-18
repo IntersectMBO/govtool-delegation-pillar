@@ -1,11 +1,4 @@
-# xxxx Project Codeowners
+# GovTool Voting Pillar Project Codeowners
 
 # These owners will be the default owners for everything in the repository.
-
-# Frontend assets templates
-
-# Backend
-
-# DevOps
-
-# Testing
+* @MSzalowski @jdyczka

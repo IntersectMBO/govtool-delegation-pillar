@@ -1,15 +1,20 @@
-# 🚀 GovTool Delegation Pillar 🚀
+# GovTool Delegation Pillar
 
-Welcome to the official repository for the GovTool Delegation Pillar.
+This is the repository which holds GovTool's Delegation Pillar packages.
+
+For further information and documentation see [GovTool](https://github.com/IntersectMBO/govtool).
 
 ## Table of content:
 
-- [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
-- [Tech stack](#tech-stack)
-- [Getting started](#getting-started)
-- [Running locally](#running-locally)
-- [Running using docker compose](#running-using-docker-compose)
+- [GovTool Delegation Pillar](#govtool-delegation-pillar)
+  - [Table of content:](#table-of-content)
+  - [Introduction](#introduction)
+  - [Prerequisites](#prerequisites)
+  - [Tech stack:](#tech-stack)
+- [Frontend](#frontend)
+  - [Getting started](#getting-started)
+  - [Running locally](#running-locally)
+  - [Running using docker compose](#running-using-docker-compose)
 
 ## Introduction
 

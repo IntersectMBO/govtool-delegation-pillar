@@ -1,0 +1,36 @@
+export type TransactionTypeWithoutResource =
+  | 'registerAsDrep'
+  | 'registerAsDirectVoter'
+  | 'retireAsDrep'
+  | 'retireAsDirectVoter'
+  | 'updateMetaData';
+
+export type TransactionTypeWithResource = 'delegate';
+
+export type TransactionType =
+  | TransactionTypeWithoutResource
+  | TransactionTypeWithResource;
+
+export type TransactionStateWithoutResource = {
+  type: TransactionTypeWithoutResource;
+  transactionHash: string;
+  time: string;
+  resourceId?: never;
+};
+
+export type TransactionStateWithResource = {
+  type: TransactionTypeWithResource;
+  transactionHash: string;
+  time: string;
+  resourceId: string;
+};
+
+export type TransactionState =
+  | TransactionStateWithResource
+  | TransactionStateWithoutResource;
+
+export type PendingTransaction = Record<
+  TransactionTypeWithoutResource,
+  TransactionStateWithoutResource | null
+> &
+  Record<TransactionTypeWithResource, TransactionStateWithResource | null>;

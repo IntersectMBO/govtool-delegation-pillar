@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { defaultRegisterAsDRepValues, useGetVoterInfo } from 'hooks';
+import { defaultDRepDataFormValues, useGetVoterInfo } from 'hooks';
 import { RolesAndResponsibilities } from './registerDRep/RolesAndResponsibilities';
 import { RegisterAsDRepForm } from './registerDRep/RegisterAsDRepForm';
 import { DRepStoreDataInfo } from './registerDRep/DRepStoreDataInfo';
@@ -17,7 +17,7 @@ export const RegisterAsdRep = ({ onCancel }: Props) => {
 
   const methods = useForm({
     mode: 'onChange',
-    defaultValues: defaultRegisterAsDRepValues,
+    defaultValues: defaultDRepDataFormValues,
   });
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box, Link } from '@mui/material';
 
-import { useScreenDimension, useTranslation, useEditDRepInfoForm } from 'hooks';
+import { useScreenDimension, useTranslation, useDRepDataForm } from 'hooks';
 import { ControlledField, Spacer, Typography } from 'components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 
@@ -12,7 +12,7 @@ export const EditDRepStoreDataInfo = ({
 }) => {
   const { t } = useTranslation();
   const { isMobile } = useScreenDimension();
-  const { control, errors, watch } = useEditDRepInfoForm();
+  const { control, errors, watch } = useDRepDataForm({ type: 'edit' });
 
   const onClickBackButton = () => setStep(1);
 

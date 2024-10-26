@@ -1,9 +1,8 @@
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from 'react-hook-form';
 import { blake2bHex } from 'blakejs';
-import * as Sentry from '@sentry/react';
 import { NodeObject } from 'jsonld';
 
 import {
@@ -12,13 +11,19 @@ import {
   PATHS,
   storageInformationErrorModals,
 } from 'consts';
-import { usePillarContext, useModal } from 'context';
-import { downloadJson, generateJsonld, generateMetadataBody } from 'utils';
+import { useModal } from 'context';
+import {
+  downloadJson,
+  ellipsizeText,
+  generateJsonld,
+  generateMetadataBody,
+} from 'utils';
 import { DRepDataFormValues, MetadataValidationStatus } from 'types';
 import { useValidateMutation } from '../mutations/metadataValidation';
-import { useWalletErrorModal } from '../useWalletErrorModal';
+import { useRegisterVoter } from '../actions/useRegisterVoter';
+import { useUpdateVoter } from '../actions/useUpdateVoter';
 
-export const defaultEditDRepInfoValues: DRepDataFormValues = {
+export const defaultDRepDataFormValues: DRepDataFormValues = {
   doNotList: false,
   givenName: '',
   objectives: '',
@@ -31,24 +36,24 @@ export const defaultEditDRepInfoValues: DRepDataFormValues = {
   storingURL: '',
 };
 
-export const useEditDRepInfoForm = (
-  setStep?: Dispatch<SetStateAction<number>>
-) => {
+export const useDRepDataForm = ({
+  type,
+  onCancel,
+}: {
+  type: 'register' | 'edit';
+  onCancel?: () => void;
+}) => {
   // Local state
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hash, setHash] = useState<string | null>(null);
   const [json, setJson] = useState<NodeObject | null>(null);
 
-  // DApp Connector
-  const { buildDRepUpdateCert, buildSignSubmitConwayCertTx } =
-    usePillarContext();
-
   // App Management
-  const { closeModal, openModal } = useModal();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const openWalletErrorModal = useWalletErrorModal();
-  const { cExplorerBaseUrl } = usePillarContext();
+  const { closeModal, openModal } = useModal();
+  const { registerVoter } = useRegisterVoter();
+  const { updateVoter } = useUpdateVoter();
 
   // Queries
   const { validateMetadata } = useValidateMutation();
@@ -69,9 +74,9 @@ export const useEditDRepInfoForm = (
   // Navigation
   const backToForm = useCallback(() => {
     window.scrollTo(0, 0);
-    setStep?.(1);
+    if (onCancel) onCancel();
     closeModal();
-  }, [setStep]);
+  }, [onCancel]);
 
   const backToDashboard = useCallback(() => {
     navigate(PATHS.dashboard);
@@ -110,7 +115,7 @@ export const useEditDRepInfoForm = (
 
   const onClickDownloadJson = async () => {
     if (!json) return;
-    downloadJson(json, givenName);
+    downloadJson(json, ellipsizeText(givenName, 16, ''));
   };
 
   const showLoadingModal = useCallback(() => {
@@ -120,21 +125,6 @@ export const useEditDRepInfoForm = (
         title: t('modals.pendingValidation.title'),
         message: t('modals.pendingValidation.message'),
         dataTestId: 'storing-information-loading',
-      },
-    });
-  }, []);
-
-  const showSuccessModal = useCallback((link: string) => {
-    openModal({
-      type: 'statusModal',
-      state: {
-        link: `${cExplorerBaseUrl}/tx/${link}`,
-        status: 'success',
-        title: t('modals.registration.title'),
-        message: t('modals.registration.message'),
-        buttonText: t('modals.common.goToDashboard'),
-        dataTestId: 'governance-action-submitted-modal',
-        onSubmit: backToDashboard,
       },
     });
   }, []);
@@ -158,41 +148,22 @@ export const useEditDRepInfoForm = (
           throw status;
         }
 
-        const updateDRepMetadataCert = await buildDRepUpdateCert(url, hash);
-        const result = await buildSignSubmitConwayCertTx({
-          certBuilder: updateDRepMetadataCert,
-          type: 'updateMetaData',
-        });
-
-        if (result) showSuccessModal(result);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if (type === 'register') await registerVoter({ hash, uri: url });
+        else await updateVoter({ hash, uri: url });
       } catch (error: any) {
-        if (Object.values(MetadataValidationStatus).includes(error)) {
-          openModal({
-            type: 'statusModal',
-            state: {
-              ...storageInformationErrorModals[
-                error as MetadataValidationStatus
-              ],
-              onSubmit: backToForm,
-              onCancel: backToDashboard,
-            },
-          });
-        } else {
-          Sentry.setTag('hook', 'useEditDRepInfoForm');
-          Sentry.captureException(error);
-
-          openWalletErrorModal({
-            error,
-            onSumbit: () => backToDashboard(),
-            dataTestId: 'edit-drep-transaction-error-modal',
-          });
-        }
+        openModal({
+          type: 'statusModal',
+          state: {
+            ...storageInformationErrorModals[error as MetadataValidationStatus],
+            onSubmit: backToForm,
+            onCancel: backToDashboard,
+          },
+        });
       } finally {
         setIsLoading(false);
       }
     },
-    [buildDRepUpdateCert, buildSignSubmitConwayCertTx, hash]
+    [registerVoter, updateVoter, hash]
   );
 
   return {
@@ -201,11 +172,11 @@ export const useEditDRepInfoForm = (
     generateMetadata,
     getValues,
     isError,
-    isEditDRepMetadataLoading: isLoading,
+    isSubmitting: isLoading,
     isValid,
     onClickDownloadJson,
     register,
-    editDRepInfo: handleSubmit(onSubmit),
+    onSubmit: handleSubmit(onSubmit),
     watch,
     reset,
   };

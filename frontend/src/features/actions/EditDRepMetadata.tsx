@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { defaultEditDRepInfoValues } from 'hooks';
+import { defaultDRepDataFormValues } from 'hooks';
 import { EditDRepForm } from './editMetadata/EditDRepForm';
 import { EditDRepStoreDataInfo } from './editMetadata/EditDRepStoreDataInfo';
 import { EditDRepStorageInformation } from './editMetadata/EditDRepStorageInformation';
@@ -16,7 +16,7 @@ export const EditDRepMetadata = ({ onCancel }: Props) => {
 
   const methods = useForm({
     mode: 'onChange',
-    defaultValues: defaultEditDRepInfoValues,
+    defaultValues: defaultDRepDataFormValues,
   });
 
   return (

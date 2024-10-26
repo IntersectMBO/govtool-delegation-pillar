@@ -3,11 +3,7 @@ import { Box } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import { ICONS, Rules } from 'consts';
-import {
-  useRegisterAsdRepForm,
-  useTranslation,
-  useScreenDimension,
-} from 'hooks';
+import { useTranslation, useScreenDimension, useDRepDataForm } from 'hooks';
 import { openInNewTab, ellipsizeText } from 'utils';
 import { Button, ControlledField, Spacer, Typography } from 'components';
 import { Step } from '../common/Step';
@@ -26,11 +22,11 @@ export const DRepStorageInformation = ({
     errors,
     generateMetadata,
     getValues,
-    isRegistrationAsDRepLoading,
+    isSubmitting,
     onClickDownloadJson,
-    registerAsDrep,
+    onSubmit,
     watch,
-  } = useRegisterAsdRepForm(setStep);
+  } = useDRepDataForm({ type: 'register', onCancel: () => setStep(2) });
   const { screenWidth } = useScreenDimension();
 
   const fileName = getValues('givenName').replace(/\s/g, '');
@@ -122,11 +118,11 @@ export const DRepStorageInformation = ({
         />
       </Box>
       <TransactionStepButtons
-        onActionButton={registerAsDrep}
+        onActionButton={onSubmit}
         actionButtonText={t('submit')}
         actionButtonDataTestId="submit-button"
         disableActionButton={isActionButtonDisabled}
-        isLoadingActionButton={isRegistrationAsDRepLoading}
+        isLoadingActionButton={isSubmitting}
         onBackButton={onClickBack}
       />
     </>

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box } from '@mui/material';
 
-import { useRegisterAsdRepForm, useTranslation } from 'hooks';
+import { useDRepDataForm, useTranslation } from 'hooks';
 import { VoterInfo } from 'types';
 import { DRepDataForm } from '../common/DRepDataForm';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -16,7 +16,9 @@ export const RegisterAsDRepForm = ({
   voter?: VoterInfo;
 }) => {
   const { t } = useTranslation();
-  const { control, errors, isError, register, watch } = useRegisterAsdRepForm();
+  const { control, errors, isError, register, watch } = useDRepDataForm({
+    type: 'register',
+  });
 
   const onClickContinue = () => setStep(3);
 

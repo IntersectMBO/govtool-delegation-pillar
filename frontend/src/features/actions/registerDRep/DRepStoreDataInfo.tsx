@@ -1,11 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box, Link } from '@mui/material';
 
-import {
-  useScreenDimension,
-  useTranslation,
-  useRegisterAsdRepForm,
-} from 'hooks';
+import { useDRepDataForm, useScreenDimension, useTranslation } from 'hooks';
 import { openInNewTab } from 'utils';
 import { ControlledField, Spacer, Typography } from 'components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -17,7 +13,7 @@ export const DRepStoreDataInfo = ({
 }) => {
   const { t } = useTranslation();
   const { isMobile } = useScreenDimension();
-  const { control, errors, watch } = useRegisterAsdRepForm();
+  const { control, errors, watch } = useDRepDataForm({ type: 'register' });
 
   const onClickBackButton = () => setStep(2);
 

@@ -3,11 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 
 import { usePillarContext } from 'context';
-import {
-  useEditDRepInfoForm,
-  useGetDRepDetailsQuery,
-  useTranslation,
-} from 'hooks';
+import { useDRepDataForm, useGetDRepDetailsQuery, useTranslation } from 'hooks';
 import { DRepData, Reference } from 'types';
 import { DRepDataForm } from '../common/DRepDataForm';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -26,8 +22,9 @@ export const EditDRepForm = ({
   const { state } = useLocation();
   const { t } = useTranslation();
   const { dRepID } = usePillarContext();
-  const { control, errors, isError, register, watch, reset } =
-    useEditDRepInfoForm();
+  const { control, errors, isError, register, watch, reset } = useDRepDataForm({
+    type: 'edit',
+  });
   const { dRep: yourselfDRep } = useGetDRepDetailsQuery(dRepID, {
     enabled: !state,
   });

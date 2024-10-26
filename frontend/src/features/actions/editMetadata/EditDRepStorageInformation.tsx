@@ -4,7 +4,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import { Button, ControlledField, Spacer, Typography } from 'components';
 import { ICONS, Rules } from 'consts';
-import { useEditDRepInfoForm, useTranslation, useScreenDimension } from 'hooks';
+import { useTranslation, useScreenDimension, useDRepDataForm } from 'hooks';
 import { ellipsizeText, openInNewTab } from 'utils';
 import { Step } from '../common/Step';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -22,11 +22,11 @@ export const EditDRepStorageInformation = ({
     errors,
     generateMetadata,
     getValues,
-    isEditDRepMetadataLoading,
+    isSubmitting,
     onClickDownloadJson,
-    editDRepInfo,
+    onSubmit,
     watch,
-  } = useEditDRepInfoForm(setStep);
+  } = useDRepDataForm({ type: 'edit', onCancel: () => setStep(1) });
   const { screenWidth } = useScreenDimension();
 
   const fileName = getValues('givenName').replace(/\s/g, '');
@@ -116,11 +116,11 @@ export const EditDRepStorageInformation = ({
         />
       </Box>
       <TransactionStepButtons
-        onActionButton={editDRepInfo}
+        onActionButton={onSubmit}
         actionButtonText={t('submit')}
         actionButtonDataTestId="submit-button"
         disableActionButton={isActionButtonDisabled}
-        isLoadingActionButton={isEditDRepMetadataLoading}
+        isLoadingActionButton={isSubmitting}
         onBackButton={onClickBack}
       />
     </>

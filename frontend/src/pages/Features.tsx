@@ -92,6 +92,7 @@ export const Features = () => {
         sx={{
           p: 6,
           pt: 12,
+          width: '100%',
           maxWidth: '100%',
           display: 'flex',
           flexDirection: 'column',

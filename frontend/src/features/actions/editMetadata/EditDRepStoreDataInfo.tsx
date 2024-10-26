@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box, Link } from '@mui/material';
 
+import { DOCS } from 'consts';
 import { useScreenDimension, useTranslation, useDRepDataForm } from 'hooks';
 import { ControlledField, Spacer, Typography } from 'components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -26,7 +27,7 @@ export const EditDRepStoreDataInfo = ({
         {t('editMetadata.storeDataTitle')}
       </Typography>
       <Link
-        href="https://docs.gov.tools/using-govtool/govtool-functions/storing-information-offline"
+        href={DOCS.storingMetadata}
         target="_blank"
         sx={{
           cursor: 'pointer',

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ModalState, useModal } from 'context';
 import { MetadataValidationStatus } from 'types';
-import { PATHS } from 'consts';
+import { DOCS, PATHS } from 'consts';
 
 type Props = {
   error: MetadataValidationStatus;
@@ -62,7 +62,7 @@ const externalDataDoesntMatchModal = (
 const urlCannotBeFound = (t: ReturnType<typeof useTranslation>['t']) => ({
   title: t('modals.urlCannotBeFound.title'),
   message: t('modals.urlCannotBeFound.message'),
-  link: 'https://docs.gov.tools',
+  link: DOCS.dRepErrors,
   linkText: t('modals.urlCannotBeFound.linkText'),
   buttonText: t('modals.urlCannotBeFound.buttonText'),
   cancelText: t('modals.urlCannotBeFound.cancelRegistrationText'),

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Box, ButtonBase, Divider } from '@mui/material';
 
 import { Button, Card, Typography } from 'components';
@@ -32,7 +32,6 @@ export const DRepCard = ({
   isMyDrep,
   onDelegate,
 }: DRepCardProps) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { addSuccessAlert, connectWallet } = usePillarContext();
 
@@ -181,17 +180,17 @@ export const DRepCard = ({
           }}
         >
           {type === 'DRep' && (
-            <Button
-              data-testid={`${view}-view-details-button`}
-              variant="outlined"
-              onClick={() =>
-                navigate(PATHS.dRepDetails.replace(':dRepId', view), {
-                  state: { enteredFromWithinApp: true },
-                })
-              }
+            <Link
+              to={PATHS.dRepDetails.replace(':dRepId', view)}
+              state={{ enteredFromWithinApp: true }}
             >
-              {t('viewDetails')}
-            </Button>
+              <Button
+                data-testid={`${view}-view-details-button`}
+                variant="outlined"
+              >
+                {t('viewDetails')}
+              </Button>
+            </Link>
           )}
           {status === 'Active' &&
             isConnected &&

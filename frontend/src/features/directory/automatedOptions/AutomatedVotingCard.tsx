@@ -2,7 +2,7 @@ import { Box, Divider } from '@mui/material';
 
 import { usePillarContext } from 'context';
 import { useScreenDimension, useTranslation } from 'hooks';
-import { openInNewTab, testIdFromLabel } from 'utils';
+import { testIdFromLabel } from 'utils';
 
 import { Button, Card, Typography } from 'components';
 
@@ -39,11 +39,6 @@ export const AutomatedVotingCard = ({
   const { isMobile, screenWidth } = useScreenDimension();
   const { t } = useTranslation();
   const testIdLabel = testIdFromLabel(title);
-
-  const onClickShowTransaction = () =>
-    openInNewTab(`${cExplorerBaseUrl}/tx/${transactionId}`);
-
-  const onClickInfo = () => openInNewTab(infoUrl);
 
   return (
     <Card
@@ -88,9 +83,10 @@ export const AutomatedVotingCard = ({
         </Typography>
         {transactionId && (
           <Button
-            onClick={onClickShowTransaction}
-            sx={{ width: 'fit-content', p: 0 }}
+            href={`${cExplorerBaseUrl}/tx/${transactionId}`}
+            target="_blank"
             variant="text"
+            sx={{ width: 'fit-content', p: 0 }}
           >
             {t('seeTransaction')}
           </Button>
@@ -139,10 +135,11 @@ export const AutomatedVotingCard = ({
           >
             <Button
               data-testid={`${testIdLabel}-info-button`}
-              onClick={onClickInfo}
+              href={infoUrl}
+              target="_blank"
               size={isMobile ? 'medium' : 'large'}
-              sx={{ flex: screenWidth < 768 ? 1 : undefined }}
               variant="outlined"
+              sx={{ flex: screenWidth < 768 ? 1 : undefined }}
             >
               {t('info')}
             </Button>

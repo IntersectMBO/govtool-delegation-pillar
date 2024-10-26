@@ -1,8 +1,9 @@
 import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
+import { DOCS } from 'consts';
 import { useRegisterVoter, useScreenDimension, useTranslation } from 'hooks';
-import { correctAdaFormat, openInNewTab } from 'utils';
+import { correctAdaFormat } from 'utils';
 import { Typography } from 'components';
 import { usePillarContext } from 'context';
 import { TransactionStepButtons } from './common/TransactionStepButtons';
@@ -33,11 +34,7 @@ export const RegisterAsDirectVoter = () => {
           i18nKey="directVoter.registerDescription"
           values={{ deposit: correctAdaFormat(epochParams?.drep_deposit) }}
           components={[
-            <Link
-              onClick={() => openInNewTab('https://sancho.network/')}
-              sx={{ cursor: 'pointer' }}
-              key="0"
-            />,
+            <Link href={DOCS.directVoting} target="_blank" key="0" />,
           ]}
         />
       </Typography>

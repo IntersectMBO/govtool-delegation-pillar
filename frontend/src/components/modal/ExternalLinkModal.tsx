@@ -4,7 +4,6 @@ import { Box, Button, Typography } from '@mui/material';
 import { IMAGES } from 'consts';
 import { useModal } from 'context';
 import { useScreenDimension, useTranslation } from 'hooks';
-import { openInNewTab } from 'utils';
 import { voltaireTheme as theme } from 'theme';
 
 import { ModalWrapper } from './ModalWrapper';
@@ -72,10 +71,9 @@ export const ExternalLinkModal = forwardRef<HTMLDivElement>((_, ref) => {
       >
         <Button
           data-testid="continue-modal-button"
-          onClick={() => {
-            openInNewTab(state?.externalLink || '#');
-            closeModal();
-          }}
+          href={state?.externalLink ?? ''}
+          target="_blank"
+          onClick={closeModal}
           sx={{
             borderRadius: 50,
             textTransform: 'none',

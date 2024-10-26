@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box, Link } from '@mui/material';
 
+import { DOCS } from 'consts';
 import { useDRepDataForm, useScreenDimension, useTranslation } from 'hooks';
-import { openInNewTab } from 'utils';
 import { ControlledField, Spacer, Typography } from 'components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 
@@ -21,20 +21,15 @@ export const DRepStoreDataInfo = ({
 
   const onClickContinue = () => setStep(4);
 
-  const openLink = () =>
-    openInNewTab(
-      'https://docs.gov.tools/using-govtool/govtool-functions/storing-information-offline'
-    );
-
   return (
     <>
       <Typography sx={{ textAlign: 'center' }} variant="headline4">
         {t('registration.storeDataTitle')}
       </Typography>
       <Link
-        onClick={openLink}
+        href={DOCS.storingMetadata}
+        target="_blank"
         sx={{
-          cursor: 'pointer',
           fontSize: 16,
           fontWeight: 500,
           fontFamily: 'Poppins',

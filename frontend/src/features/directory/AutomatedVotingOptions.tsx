@@ -6,7 +6,7 @@ import {
   Box,
 } from '@mui/material';
 
-import { ICONS } from 'consts';
+import { DOCS, ICONS } from 'consts';
 import { WalletApi } from 'context';
 import { useGetNetworkMetrics, useTranslation } from 'hooks';
 import { correctAdaFormat } from 'utils';
@@ -120,7 +120,7 @@ export const AutomatedVotingOptions = ({
               onClickDelegate={() =>
                 delegate(AutomatedVotingOptionDelegationId.abstain)
               }
-              infoUrl="https://docs.gov.tools/using-govtool/govtool-functions/delegating/abstain-from-every-vote"
+              infoUrl={DOCS.voteAbstain}
               title={
                 isDelegatedToAbstain
                   ? t('dRepDirectory.delegatedToAbstainTitle', {
@@ -158,7 +158,7 @@ export const AutomatedVotingOptions = ({
               onClickDelegate={() =>
                 delegate(AutomatedVotingOptionDelegationId.no_confidence)
               }
-              infoUrl="https://docs.gov.tools/using-govtool/govtool-functions/delegating/signal-no-confidence-on-every-vote"
+              infoUrl={DOCS.voteNoConfidence}
               title={
                 isDelegatedToNoConfidence
                   ? t('dRepDirectory.delegatedToNoConfidenceTitle', {

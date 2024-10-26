@@ -3,7 +3,6 @@ import { Button, Link, Typography } from '@mui/material';
 
 import { ICONS, IMAGES } from 'consts';
 import { useModal, usePillarContext } from 'context';
-import { openInNewTab } from 'utils';
 import { useScreenDimension, useTranslation } from 'hooks';
 
 import { ModalWrapper } from './ModalWrapper';
@@ -72,12 +71,8 @@ export const StatusModal = forwardRef<HTMLDivElement>((_, ref) => {
         >
           {state?.message}{' '}
           {state?.link && (
-            <Link
-              onClick={() => openInNewTab(state?.link || '')}
-              target="_blank"
-              sx={[{ '&:hover': { cursor: 'pointer' } }]}
-            >
-              {state?.linkText || t('thisLink')}
+            <Link href={state.link} target="_blank">
+              {state.linkText || t('thisLink')}
             </Link>
           )}
         </Typography>

@@ -2,8 +2,9 @@ import { Dispatch, SetStateAction } from 'react';
 import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
+import { DOCS } from 'consts';
 import { useScreenDimension, useTranslation } from 'hooks';
-import { correctAdaFormat, openInNewTab } from 'utils';
+import { correctAdaFormat } from 'utils';
 import { usePillarContext } from 'context';
 import { Typography } from 'components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -18,11 +19,6 @@ export const RolesAndResponsibilities = ({
   const { isMobile } = useScreenDimension();
 
   const onClickContinue = () => setStep(2);
-
-  const openLearnMoreAboutDrep = () =>
-    openInNewTab(
-      'https://docs.gov.tools/using-govtool/govtool-functions/dreps'
-    );
 
   return (
     <>
@@ -40,13 +36,7 @@ export const RolesAndResponsibilities = ({
         variant="body1"
       >
         <Trans
-          components={[
-            <Link
-              key="1"
-              onClick={openLearnMoreAboutDrep}
-              sx={{ cursor: 'pointer' }}
-            />,
-          ]}
+          components={[<Link key="1" href={DOCS.dReps} target="_blank" />]}
           i18nKey="registration.rolesAndResponsibilitiesDescription"
           values={{ deposit: correctAdaFormat(epochParams?.drep_deposit) }}
         />

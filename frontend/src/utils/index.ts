@@ -7,5 +7,4 @@ export * from './getMetadataDataMissingStatusTranslation';
 export * from './isValidFormat';
 export * from './jsonUtils';
 export * from './mapDtoToDrep';
-export * from './openInNewTab';
 export * from './testIdFromLabel';

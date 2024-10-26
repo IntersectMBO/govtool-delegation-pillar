@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Box } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-import { ICONS, Rules } from 'consts';
+import { DOCS, ICONS, Rules } from 'consts';
 import { useTranslation, useScreenDimension, useDRepDataForm } from 'hooks';
-import { openInNewTab, ellipsizeText } from 'utils';
+import { ellipsizeText } from 'utils';
 import { Button, ControlledField, Spacer, Typography } from 'components';
 import { Step } from '../common/Step';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
@@ -31,11 +31,6 @@ export const DRepStorageInformation = ({
 
   const fileName = getValues('givenName').replace(/\s/g, '');
 
-  const openGuideAboutStoringInformation = () =>
-    openInNewTab(
-      'https://docs.gov.tools/using-govtool/govtool-functions/storing-information-offline'
-    );
-
   const isActionButtonDisabled = !watch('storingURL') || !!errors.storingURL;
 
   const onClickBack = () => setStep(3);
@@ -60,7 +55,8 @@ export const DRepStorageInformation = ({
             }}
           />
         }
-        onClick={openGuideAboutStoringInformation}
+        href={DOCS.storingMetadata}
+        target="_blank"
         size="extraLarge"
         sx={{ alignSelf: 'center', width: 'fit-content' }}
         variant="text"

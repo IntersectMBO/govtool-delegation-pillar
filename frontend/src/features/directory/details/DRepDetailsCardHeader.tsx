@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { Box, Chip } from '@mui/material';
 
@@ -27,18 +27,11 @@ export const DRepDetailsCardHeader = ({
 }: DRepDetailsProps) => {
   const { stakeKey } = usePillarContext();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { screenWidth } = useScreenDimension();
   const { votingPower: myVotingPower } =
     useGetAdaHolderVotingPowerQuery(stakeKey);
 
   const { givenName, metadataStatus } = dRepData;
-
-  const navigateToEditDRep = () => {
-    navigate(PATHS.editDRepMetadata, {
-      state: dRepData,
-    });
-  };
 
   return (
     <div>
@@ -98,23 +91,24 @@ export const DRepDetailsCardHeader = ({
                 }),
               }}
             >
-              <Button
-                data-testid="edit-drep-data-button"
-                onClick={navigateToEditDRep}
-                variant="outlined"
-                sx={{
-                  ...(screenWidth < 1020 && {
-                    width: '100%',
-                  }),
-                }}
-              >
-                {t('dRepDirectory.editBtn')}
-                <img
-                  alt="sorting active"
-                  src={ICONS.editIcon}
-                  style={{ marginLeft: '4px' }}
-                />
-              </Button>
+              <Link to={PATHS.editDRepMetadata} state={dRepData}>
+                <Button
+                  data-testid="edit-drep-data-button"
+                  variant="outlined"
+                  sx={{
+                    ...(screenWidth < 1020 && {
+                      width: '100%',
+                    }),
+                  }}
+                >
+                  {t('dRepDirectory.editBtn')}
+                  <img
+                    alt="sorting active"
+                    src={ICONS.editIcon}
+                    style={{ marginLeft: '4px' }}
+                  />
+                </Button>
+              </Link>
               {screenWidth >= 1020 && <Share link={window.location.href} />}
             </Box>
           )}

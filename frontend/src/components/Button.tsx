@@ -5,6 +5,7 @@ export type ButtonProps = Omit<MUIButtonProps, 'size'> & {
   isLoading?: boolean;
   size?: 'small' | 'medium' | 'large' | 'extraLarge';
   dataTestId?: string;
+  target?: string;
 };
 
 export const Button = ({

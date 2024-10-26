@@ -133,6 +133,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          cursor: 'pointer',
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {

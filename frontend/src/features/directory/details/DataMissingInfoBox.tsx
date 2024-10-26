@@ -1,5 +1,6 @@
 import { Box, Link, SxProps } from '@mui/material';
 
+import { DOCS } from 'consts';
 import { useTranslation } from 'hooks';
 import { MetadataValidationStatus } from 'types';
 import { Typography } from 'components';
@@ -77,7 +78,7 @@ export const DataMissingInfoBox = ({
         {gaMetadataErrorDescription}
       </Typography>
       <Link
-        href="https://docs.gov.tools/using-govtool/govtool-functions/dreps/drep-error-conditions"
+        href={DOCS.dRepErrors}
         target="_blank"
         sx={{
           fontFamily: 'Poppins',

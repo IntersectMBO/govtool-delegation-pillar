@@ -2,12 +2,12 @@ import { MouseEvent, useState } from 'react';
 import { Box, ButtonBase, Popover } from '@mui/material';
 
 import { ICONS } from 'consts';
-import { useSnackbar } from 'context';
 import { useTranslation } from 'hooks';
+import { usePillarContext } from 'context';
 import { Typography } from './Typography';
 
 export const Share = ({ link }: { link: string }) => {
-  const { addSuccessAlert } = useSnackbar();
+  const { addSuccessAlert } = usePillarContext();
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isActive, setIsActive] = useState<boolean>(true);

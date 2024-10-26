@@ -1,44 +1,25 @@
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { PATHS } from 'consts';
-import { usePillarContext, useModal } from 'context';
-import { useGetVoterInfo, useTranslation, useWalletErrorModal } from 'hooks';
+import { usePillarContext } from 'context';
+import {
+  useActionSuccessModal,
+  useGetVoterInfo,
+  useTranslation,
+  useWalletErrorModal,
+} from 'hooks';
 
 export const useRetireVoter = () => {
   const {
-    cExplorerBaseUrl,
     isPendingTransaction,
     buildSignSubmitConwayCertTx,
     buildDRepRetirementCert,
   } = usePillarContext();
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const openActionSuccessModal = useActionSuccessModal();
   const openWalletErrorModal = useWalletErrorModal();
-  const { openModal, closeModal } = useModal();
   const { voter } = useGetVoterInfo();
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const backToDashboard = useCallback(() => {
-    navigate(PATHS.dashboard);
-    closeModal();
-  }, []);
-
-  const showSuccessModal = useCallback((link: string) => {
-    openModal({
-      type: 'statusModal',
-      state: {
-        status: 'success',
-        title: t('modals.retirement.title'),
-        message: t('modals.retirement.message'),
-        link: `${cExplorerBaseUrl}/tx/${link}`,
-        buttonText: t('modals.common.goToDashboard'),
-        dataTestId: 'retirement-transaction-submitted-modal',
-        onSubmit: backToDashboard,
-      },
-    });
-  }, []);
 
   const retireVoter = useCallback(
     async (type: 'Drep' | 'DirectVoter') => {
@@ -56,24 +37,18 @@ export const useRetireVoter = () => {
           type: `retireAs${type}`,
           voter,
         });
-        if (result) showSuccessModal(result);
+        if (result)
+          openActionSuccessModal({ action: 'retirement', link: result });
       } catch (error: any) {
         openWalletErrorModal({
           error,
-          buttonText: t('modals.common.goToDashboard'),
-          onSumbit: backToDashboard,
           dataTestId: 'retirement-transaction-error-modal',
         });
       } finally {
         setIsLoading(false);
       }
     },
-    [
-      buildDRepRetirementCert,
-      buildSignSubmitConwayCertTx,
-      openModal,
-      voter?.deposit,
-    ]
+    [buildDRepRetirementCert, buildSignSubmitConwayCertTx, voter?.deposit]
   );
 
   return {

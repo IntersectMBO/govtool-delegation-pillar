@@ -2,17 +2,13 @@ import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
 import { useRegisterVoter, useScreenDimension, useTranslation } from 'hooks';
-import {
-  PROTOCOL_PARAMS_KEY,
-  correctAdaFormat,
-  getItemFromLocalStorage,
-  openInNewTab,
-} from 'utils';
+import { correctAdaFormat, openInNewTab } from 'utils';
 import { Typography } from 'components';
+import { usePillarContext } from 'context';
 import { TransactionStepButtons } from './common/TransactionStepButtons';
 
 export const RegisterAsDirectVoter = () => {
-  const epochParams = getItemFromLocalStorage(PROTOCOL_PARAMS_KEY);
+  const { epochParams } = usePillarContext();
   const { t } = useTranslation();
   const { isMobile } = useScreenDimension();
 

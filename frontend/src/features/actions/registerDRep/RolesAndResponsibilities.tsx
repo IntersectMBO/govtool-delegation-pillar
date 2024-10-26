@@ -3,12 +3,8 @@ import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
 import { useScreenDimension, useTranslation } from 'hooks';
-import {
-  correctAdaFormat,
-  getItemFromLocalStorage,
-  openInNewTab,
-  PROTOCOL_PARAMS_KEY,
-} from 'utils';
+import { correctAdaFormat, openInNewTab } from 'utils';
+import { usePillarContext } from 'context';
 import { Typography } from 'components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 
@@ -17,10 +13,9 @@ export const RolesAndResponsibilities = ({
 }: {
   setStep: Dispatch<SetStateAction<number>>;
 }) => {
+  const { epochParams } = usePillarContext();
   const { t } = useTranslation();
   const { isMobile } = useScreenDimension();
-
-  const epochParams = getItemFromLocalStorage(PROTOCOL_PARAMS_KEY);
 
   const onClickContinue = () => setStep(2);
 

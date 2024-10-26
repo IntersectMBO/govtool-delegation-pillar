@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
-import { PATHS } from 'consts';
-import { usePillarContext } from 'context';
 import { useGetVoterInfo, useTranslation } from 'hooks';
 import {
   RegisterAsDirectVoter,

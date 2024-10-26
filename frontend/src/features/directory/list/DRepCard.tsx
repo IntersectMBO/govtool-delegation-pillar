@@ -3,7 +3,7 @@ import { Box, ButtonBase, Divider } from '@mui/material';
 
 import { Button, Card, Typography } from 'components';
 import { ICONS, PATHS } from 'consts';
-import { useModal, useSnackbar } from 'context';
+import { usePillarContext } from 'context';
 import { useTranslation } from 'hooks';
 import { DRepData, DRepStatus } from 'types';
 import {
@@ -34,16 +34,7 @@ export const DRepCard = ({
 }: DRepCardProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { addSuccessAlert } = useSnackbar();
-  const { openModal } = useModal();
-
-  const openChooseWalletModal = () =>
-    openModal({
-      type: 'chooseWallet',
-      state: {
-        pathToNavigate: PATHS.dRepDetails.replace(':dRepId', view),
-      },
-    });
+  const { addSuccessAlert, connectWallet } = usePillarContext();
 
   return (
     <Card
@@ -218,7 +209,7 @@ export const DRepCard = ({
           {status === 'Active' && !isConnected && (
             <Button
               data-testid={`${view}-connect-to-delegate-button`}
-              onClick={openChooseWalletModal}
+              onClick={connectWallet}
             >
               {t('connectToDelegate')}
             </Button>

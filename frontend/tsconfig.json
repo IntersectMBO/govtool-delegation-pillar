@@ -17,20 +17,9 @@
     "jsx": "react-jsx",
     "outDir": "./dist",
     "noImplicitAny": true,
-    // "noUnusedParameters": true,
-    // "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "baseUrl": "src",
-    "paths": {
-      "components/*": ["src/features/*"],
-      "consts/*": ["./src/consts/*"],
-      "context/*": ["./src/context/*"],
-      "hooks/*": ["./src/hooks/*"],
-      "i18n/*": ["./src/i18n/*"],
-      "services/*": ["./src/services/*"],
-      "types/*": ["./src/types/*"],
-      "utils/*": ["./src/utils/*"],
-
-    }
   },
   "include": ["src", "setupTests.ts"]
 }

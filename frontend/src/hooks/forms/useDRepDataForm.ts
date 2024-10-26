@@ -1,27 +1,13 @@
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from 'react-hook-form';
-import { blake2bHex } from 'blakejs';
-import { NodeObject } from 'jsonld';
 
-import {
-  CIP_119,
-  DREP_CONTEXT,
-  PATHS,
-  storageInformationErrorModals,
-} from 'consts';
-import { useModal } from 'context';
-import {
-  downloadJson,
-  ellipsizeText,
-  generateJsonld,
-  generateMetadataBody,
-} from 'utils';
+import { useModal, usePillarContext } from 'context';
+import { downloadJson, ellipsizeText } from 'utils';
 import { DRepDataFormValues, MetadataValidationStatus } from 'types';
-import { useValidateMutation } from '../mutations/metadataValidation';
 import { useRegisterVoter } from '../actions/useRegisterVoter';
 import { useUpdateVoter } from '../actions/useUpdateVoter';
+import { useMetadataStorageErrorModal } from '../modal/useMetadataStorageErrorModal';
 
 export const defaultDRepDataFormValues: DRepDataFormValues = {
   doNotList: false,
@@ -46,17 +32,15 @@ export const useDRepDataForm = ({
   // Local state
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hash, setHash] = useState<string | null>(null);
-  const [json, setJson] = useState<NodeObject | null>(null);
 
   // App Management
+  const { validateMetadata, generateMetadata, createJsonLD, createHash } =
+    usePillarContext();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { closeModal, openModal } = useModal();
   const { registerVoter } = useRegisterVoter();
   const { updateVoter } = useUpdateVoter();
-
-  // Queries
-  const { validateMetadata } = useValidateMutation();
+  const openMetadataStorageErrorModal = useMetadataStorageErrorModal();
 
   // Form
   const {
@@ -78,43 +62,13 @@ export const useDRepDataForm = ({
     closeModal();
   }, [onCancel]);
 
-  const backToDashboard = useCallback(() => {
-    navigate(PATHS.dashboard);
-    closeModal();
-  }, []);
-
-  // Business Logic
-  const generateMetadata = useCallback(async () => {
-    const { linkReferences, identityReferences, ...rest } = getValues();
-    const body = generateMetadataBody({
-      data: {
-        ...rest,
-        references: [...(linkReferences ?? []), ...(identityReferences ?? [])],
-      },
-      acceptedKeys: [
-        'givenName',
-        'objectives',
-        'motivations',
-        'qualifications',
-        'paymentAddress',
-        'references',
-        'doNotList',
-      ],
-      standardReference: CIP_119,
-    });
-
-    const jsonld = await generateJsonld(body, DREP_CONTEXT, CIP_119);
-
-    const jsonHash = blake2bHex(JSON.stringify(jsonld, null, 2), undefined, 32);
-
-    setHash(jsonHash);
-    setJson(jsonld);
-
-    return jsonld;
-  }, []);
-
   const onClickDownloadJson = async () => {
-    if (!json) return;
+    const { linkReferences, identityReferences, ...rest } = getValues();
+    const json = createJsonLD({
+      ...rest,
+      references: [...(linkReferences ?? []), ...(identityReferences ?? [])],
+    });
+    setHash(createHash(json));
     downloadJson(json, ellipsizeText(givenName, 16, ''));
   };
 
@@ -131,7 +85,7 @@ export const useDRepDataForm = ({
 
   const onSubmit = useCallback(
     async (data: DRepDataFormValues) => {
-      const url = data.storingURL;
+      const uri = data.storingURL;
 
       try {
         if (!hash) throw MetadataValidationStatus.INVALID_HASH;
@@ -139,25 +93,14 @@ export const useDRepDataForm = ({
         setIsLoading(true);
         showLoadingModal();
 
-        const { status } = await validateMetadata({
-          url,
-          hash,
-        });
+        await validateMetadata(uri, hash);
 
-        if (status) {
-          throw status;
-        }
-
-        if (type === 'register') await registerVoter({ hash, uri: url });
-        else await updateVoter({ hash, uri: url });
+        if (type === 'register') await registerVoter({ hash, uri });
+        else await updateVoter({ hash, uri });
       } catch (error: any) {
-        openModal({
-          type: 'statusModal',
-          state: {
-            ...storageInformationErrorModals[error as MetadataValidationStatus],
-            onSubmit: backToForm,
-            onCancel: backToDashboard,
-          },
+        openMetadataStorageErrorModal({
+          error,
+          onContinueAction: backToForm,
         });
       } finally {
         setIsLoading(false);

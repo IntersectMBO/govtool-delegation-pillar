@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { Button, Link, Typography } from '@mui/material';
 
 import { ICONS, IMAGES } from 'consts';
-import { useModal } from 'context';
+import { useModal, usePillarContext } from 'context';
 import { openInNewTab } from 'utils';
 import { useScreenDimension, useTranslation } from 'hooks';
 
@@ -30,12 +30,12 @@ export const StatusModal = forwardRef<HTMLDivElement>((_, ref) => {
   const { state, closeModal } = useModal<StatusModalState>();
   const { isMobile } = useScreenDimension();
   const { t } = useTranslation();
-  // const { openFeedbackWindow } = useUsersnapApi();
+  const { openFeedbackWindow } = usePillarContext();
 
-  // const onClickFeedback = () => {
-  //   openFeedbackWindow();
-  //   closeModal();
-  // };
+  const onClickFeedback = () => {
+    openFeedbackWindow();
+    closeModal();
+  };
 
   return (
     <ModalWrapper
@@ -114,7 +114,7 @@ export const StatusModal = forwardRef<HTMLDivElement>((_, ref) => {
           {state?.cancelText}
         </Button>
       )}
-      {/* {state?.feedbackText && (
+      {state?.feedbackText && (
         <Button
           data-testid="feedback-button"
           onClick={state?.onFeedback ? state?.onFeedback : onClickFeedback}
@@ -130,7 +130,7 @@ export const StatusModal = forwardRef<HTMLDivElement>((_, ref) => {
         >
           {state?.feedbackText}
         </Button>
-      )} */}
+      )}
     </ModalWrapper>
   );
 });

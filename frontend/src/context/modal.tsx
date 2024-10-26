@@ -2,7 +2,6 @@ import { createContext, useContext, useMemo, useReducer } from 'react';
 
 import {
   MuiModalChildren,
-  ChooseWalletModal,
   ExternalLinkModal,
   StatusModal,
   LoadingModal,
@@ -23,7 +22,6 @@ interface ContextModal {
 export type ModalType =
   | 'none'
   | 'loadingModal'
-  | 'chooseWallet'
   | 'statusModal'
   | 'externalLink';
 
@@ -33,9 +31,6 @@ const modals: Record<ModalType, ContextModal> = {
   },
   loadingModal: {
     component: <LoadingModal />,
-  },
-  chooseWallet: {
-    component: <ChooseWalletModal />,
   },
   statusModal: {
     component: <StatusModal />,

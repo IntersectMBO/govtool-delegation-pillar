@@ -43,19 +43,12 @@ export type WalletApi = {
   isPendingTransaction: () => boolean;
 };
 
-type PillarContextType = {
-  apiUrl: string;
-  validationApiUrl: string;
-  cExplorerBaseUrl: string;
-  openFeedbackWindow: () => void;
-  epochParams: unknown;
-  addSuccessAlert: (message: string) => void;
-  validateMetadata: (url: string, hash: string) => void;
-  generateMetadata: () => void;
-  createJsonLD: (data: unknown) => void;
-  createHash: (json: unknown) => string;
-  dashboardPath: string | null;
-} & WalletApi;
+type EpochParams = {
+  drep_deposit: number;
+};
+
+type PillarContextType = Required<Omit<PillarProviderProps, 'walletApi'>> &
+  WalletApi;
 
 const PillarContext = createContext<PillarContextType | undefined>(undefined);
 
@@ -64,14 +57,16 @@ export type PillarProviderProps = {
   apiUrl?: string;
   validationApiUrl?: string;
   cExplorerBaseUrl?: string;
+  epochParams: EpochParams;
+  dashboardPath?: string;
+  connectWallet: () => void;
   openFeedbackWindow: () => void;
-  epochParams: unknown;
   addSuccessAlert: (message: string) => void;
+  addErrorAlert: (message: string) => void;
   validateMetadata: (url: string, hash: string) => void;
   generateMetadata: () => void;
-  createJsonLD: (data: unknown) => void;
+  createJsonLD: (data: unknown) => string;
   createHash: (json: unknown) => string;
-  dashboardPath?: string;
 };
 
 export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
@@ -80,9 +75,11 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
   walletApi,
   validationApiUrl,
   cExplorerBaseUrl,
-  openFeedbackWindow,
   epochParams,
+  connectWallet,
+  openFeedbackWindow,
   addSuccessAlert,
+  addErrorAlert,
   validateMetadata,
   generateMetadata,
   createJsonLD,
@@ -93,9 +90,11 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       apiUrl: apiUrl ?? process.env.API_URL ?? '',
       validationApiUrl:
         validationApiUrl ?? process.env.VALIDATION_API_URL ?? '',
-      openFeedbackWindow,
       epochParams,
+      connectWallet,
+      openFeedbackWindow,
       addSuccessAlert,
+      addErrorAlert,
       validateMetadata,
       generateMetadata,
       createJsonLD,
@@ -121,20 +120,22 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       }),
       cExplorerBaseUrl:
         cExplorerBaseUrl ?? process.env.C_EXPLORER_BASE_URL ?? '',
-      dashboardPath: null,
+      dashboardPath: '',
     }),
     [
       apiUrl,
       validationApiUrl,
-      openFeedbackWindow,
+      walletApi,
+      cExplorerBaseUrl,
       epochParams,
+      connectWallet,
+      openFeedbackWindow,
       addSuccessAlert,
+      addErrorAlert,
       validateMetadata,
       generateMetadata,
       createJsonLD,
       createHash,
-      walletApi,
-      cExplorerBaseUrl,
     ]
   );
 

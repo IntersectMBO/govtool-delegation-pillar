@@ -1,6 +1,6 @@
 import { Box, Divider } from '@mui/material';
 
-import { usePillarContext, useModal } from 'context';
+import { usePillarContext } from 'context';
 import { useScreenDimension, useTranslation } from 'hooks';
 import { openInNewTab, testIdFromLabel } from 'utils';
 
@@ -31,9 +31,12 @@ export const AutomatedVotingCard = ({
   transactionId,
   votingPower,
 }: AutomatedVotingCardProps) => {
-  const { cExplorerBaseUrl, isEnabled: isConnected } = usePillarContext();
+  const {
+    cExplorerBaseUrl,
+    isEnabled: isConnected,
+    connectWallet,
+  } = usePillarContext();
   const { isMobile, screenWidth } = useScreenDimension();
-  const { openModal } = useModal();
   const { t } = useTranslation();
   const testIdLabel = testIdFromLabel(title);
 
@@ -146,7 +149,7 @@ export const AutomatedVotingCard = ({
             {!isConnected ? (
               <Button
                 data-testid={`${testIdLabel}-connect-to-delegate-button`}
-                onClick={() => openModal({ type: 'chooseWallet' })}
+                onClick={connectWallet}
                 size={isMobile ? 'medium' : 'large'}
                 sx={{ flex: screenWidth < 768 ? 1 : undefined }}
               >

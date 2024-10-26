@@ -1,5 +1,7 @@
+import { PATHS } from 'consts';
 import { useModal } from 'context';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 type WalletErrorModalProps = {
   error: unknown;
@@ -10,8 +12,9 @@ type WalletErrorModalProps = {
 };
 
 export const useWalletErrorModal = () => {
-  const { openModal, closeModal } = useModal();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { openModal, closeModal } = useModal();
 
   const openWalletErrorModal = ({
     error,
@@ -31,9 +34,10 @@ export const useWalletErrorModal = () => {
         status: 'warning',
         title: title ?? t('modals.common.oops'),
         message: errorMessage,
-        buttonText: buttonText ?? t('cancel'),
+        buttonText: buttonText ?? t('modals.common.goToDashboard'),
         onSubmit: () => {
           if (onSumbit) onSumbit();
+          else navigate(PATHS.dashboard);
           closeModal();
         },
         dataTestId: dataTestId ?? 'wallet-error-modal',

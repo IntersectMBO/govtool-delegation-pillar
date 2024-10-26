@@ -2,18 +2,19 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Sentry from '@sentry/react';
 
-import { usePillarContext, useSnackbar } from 'context';
+import { usePillarContext } from 'context';
 import { useGetVoterInfo } from '../queries/useGetVoterInfoQuery';
-import { useWalletErrorModal } from '../useWalletErrorModal';
+import { useWalletErrorModal } from '../modal/useWalletErrorModal';
 
 export const useDelegateTodRep = () => {
   const {
     buildSignSubmitConwayCertTx,
     buildVoteDelegationCert,
     buildDRepRetirementCert,
+    addSuccessAlert,
+    addErrorAlert,
   } = usePillarContext();
   const { t } = useTranslation();
-  const { addSuccessAlert, addErrorAlert } = useSnackbar();
   const openWalletErrorModal = useWalletErrorModal();
   const { voter } = useGetVoterInfo();
 
@@ -44,6 +45,8 @@ export const useDelegateTodRep = () => {
       } catch (error) {
         openWalletErrorModal({
           error,
+          buttonText: t('cancel'),
+          onSumbit: () => {},
           dataTestId: 'delegate-transaction-error-modal',
         });
         Sentry.setTag('hook', 'useDelegateTodRep');

@@ -9,5 +9,4 @@ export const PATHS = {
 
   // tmp
   dashboard: '/home',
-  home: '/home',
 };

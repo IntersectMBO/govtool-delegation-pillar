@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 
-import { PATHS } from 'consts';
-import { useModal, usePillarContext } from 'context';
+import { usePillarContext } from 'context';
 import { useDelegateTodRep, useScreenDimension, useTranslation } from 'hooks';
 import { correctAdaFormat } from 'utils';
 import { DRepData, Reference } from 'types';
@@ -27,9 +26,12 @@ export const DRepDetailsCard = ({
   isMyDrep,
   isMyDrepInProgress,
 }: DRepDetailsProps) => {
-  const { pendingTransaction, isEnabled: isConnected } = usePillarContext();
+  const {
+    pendingTransaction,
+    isEnabled: isConnected,
+    connectWallet,
+  } = usePillarContext();
   const { t } = useTranslation();
-  const { openModal } = useModal();
   const { screenWidth } = useScreenDimension();
   const { delegate, isDelegating } = useDelegateTodRep();
 
@@ -148,14 +150,7 @@ export const DRepDetailsCard = ({
       {!isConnected && status === 'Active' && (
         <Button
           data-testid="connect-to-delegate-button"
-          onClick={() =>
-            openModal({
-              type: 'chooseWallet',
-              state: {
-                pathToNavigate: PATHS.dRepDetails.replace(':dRepId', view),
-              },
-            })
-          }
+          onClick={connectWallet}
           size="extraLarge"
           sx={{ width: '100%', maxWidth: screenWidth < 1024 ? '100%' : 286 }}
           variant="outlined"

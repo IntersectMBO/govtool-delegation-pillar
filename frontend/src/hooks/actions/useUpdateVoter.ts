@@ -1,11 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import * as Sentry from '@sentry/react';
 
-import { PATHS } from 'consts';
-import { usePillarContext, useModal } from 'context';
-import { useWalletErrorModal } from '../useWalletErrorModal';
+import { usePillarContext } from 'context';
+import { useActionSuccessModal } from 'hooks';
+import { useWalletErrorModal } from '../modal/useWalletErrorModal';
 
 type MetadataInfo = {
   hash: string;
@@ -13,34 +11,12 @@ type MetadataInfo = {
 };
 
 export const useUpdateVoter = () => {
-  const { cExplorerBaseUrl, buildDRepUpdateCert, buildSignSubmitConwayCertTx } =
+  const { buildDRepUpdateCert, buildSignSubmitConwayCertTx } =
     usePillarContext();
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+  const openActionSuccessModal = useActionSuccessModal();
   const openWalletErrorModal = useWalletErrorModal();
-  const { openModal, closeModal } = useModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const backToDashboard = useCallback(() => {
-    navigate(PATHS.dashboard);
-    closeModal();
-  }, []);
-
-  const showSuccessModal = useCallback((link: string) => {
-    openModal({
-      type: 'statusModal',
-      state: {
-        status: 'success',
-        title: t('modals.registration.title'),
-        message: t('modals.registration.message'),
-        link: `${cExplorerBaseUrl}/tx/${link}`,
-        buttonText: t('modals.common.goToDashboard'),
-        onSubmit: backToDashboard,
-        dataTestId: 'registration-transaction-submitted-modal',
-      },
-    });
-  }, []);
 
   const updateVoter = useCallback(
     async (metadata: MetadataInfo) => {
@@ -57,14 +33,14 @@ export const useUpdateVoter = () => {
           type: 'updateMetaData',
         });
 
-        if (result) showSuccessModal(result);
+        if (result)
+          openActionSuccessModal({ action: 'registration', link: result });
       } catch (error: any) {
         Sentry.setTag('hook', 'useUpdateVoter');
         Sentry.captureException(error);
 
         openWalletErrorModal({
           error,
-          onSumbit: backToDashboard,
           dataTestId: 'edit-drep-transaction-error-modal',
         });
       } finally {

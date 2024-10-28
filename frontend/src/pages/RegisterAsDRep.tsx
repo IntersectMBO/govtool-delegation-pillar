@@ -35,9 +35,7 @@ export const RegisterAsdRepPage = () => {
           primaryButtonText={t('registration.alreadyRegistered.viewDetails')}
           onPrimaryButton={() =>
             dRep &&
-            navigate(PATHS.dRepDetails.replace(':dRepId', dRep.view), {
-              state: { enteredFromWithinApp: true },
-            })
+            navigate(`../${PATHS.dRepDetails}`.replace(':dRepId', dRep.view))
           }
         />
       </TransactionBox>

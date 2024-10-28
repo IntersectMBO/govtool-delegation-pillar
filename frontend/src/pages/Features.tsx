@@ -28,7 +28,7 @@ export const Features = () => {
   const { pathname } = useLocation();
 
   const pathKey = Object.entries(PATHS).find(([, pattern]) =>
-    matchPath(pattern, pathname)
+    matchPath(`demo/${pattern}`, pathname)
   )?.[0];
 
   return (

@@ -34,7 +34,7 @@ export const IntroPage = () => {
               <MenuItem
                 key={key}
                 component={Link}
-                to={path}
+                to={`/demo/${path}`}
                 sx={{ px: 6, py: 1.5 }}
               >
                 {key}

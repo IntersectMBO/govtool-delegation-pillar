@@ -91,7 +91,7 @@ export const DRepDetailsCardHeader = ({
                 }),
               }}
             >
-              <Link to={PATHS.editDRepMetadata} state={dRepData}>
+              <Link to={`../../${PATHS.editDRepMetadata}`} state={dRepData}>
                 <Button
                   data-testid="edit-drep-data-button"
                   variant="outlined"

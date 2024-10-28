@@ -11,16 +11,18 @@ import {
   RegisterAsDirectVoterPage,
   RetireAsDirectVoterPage,
 } from 'pages';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 export const DelegationPillarRoutes = () => {
   const { isEnabled } = usePillarContext();
   return (
     <Routes>
       <Route path="/home" element={<IntroPage />} />
-      <Route path="/" element={<Features />}>
-        <Route path={PATHS.dRepDirectory} element={<DRepDirectoryPage />} />
-        <Route path={PATHS.dRepDetails} element={<DRepDetailsPage />} />
+      <Route path="/demo" element={<Features />}>
+        <Route path={PATHS.dRepDirectory} element={<Outlet />}>
+          <Route path="" element={<DRepDirectoryPage />} />
+          <Route path=":dRepId" element={<DRepDetailsPage />} />
+        </Route>
         {isEnabled && (
           <>
             <Route
@@ -42,8 +44,9 @@ export const DelegationPillarRoutes = () => {
             />
           </>
         )}
-        <Route path="/*" element={<Navigate to="/home" />} />
+        <Route path="*" element={<Navigate to="/home" />} />
       </Route>
+      <Route path="*" element={<Navigate to="/home" />} />
     </Routes>
   );
 };

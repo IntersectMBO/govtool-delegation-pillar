@@ -58,7 +58,6 @@ export type PillarProviderProps = {
   validationApiUrl?: string;
   cExplorerBaseUrl?: string;
   epochParams: EpochParams;
-  dashboardPath?: string;
   connectWallet: () => void;
   openFeedbackWindow: () => void;
   addSuccessAlert: (message: string) => void;
@@ -120,7 +119,6 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       }),
       cExplorerBaseUrl:
         cExplorerBaseUrl ?? process.env.C_EXPLORER_BASE_URL ?? '',
-      dashboardPath: '',
     }),
     [
       apiUrl,

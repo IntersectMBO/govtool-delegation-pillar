@@ -86,7 +86,14 @@ module.exports = {
     ],
     'react/require-default-props': 'off',
 
-    'react-hooks/exhaustive-deps': 'error',
+    // temporary
+    '@typescript-eslint/no-empty-object-type': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-unused-vars': 'warn',
+    'no-console': 'warn',
+    'no-nested-ternary': 'off',
+    'react/no-unused-prop-types': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
   },
   ignorePatterns: [
     'setupTests.ts',

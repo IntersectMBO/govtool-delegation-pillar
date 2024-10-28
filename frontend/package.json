@@ -20,9 +20,19 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@emurgo/cardano-serialization-lib-asmjs": "^13.1.0",
+    "@mui/icons-material": "^6.1.5",
     "@mui/material": "^6.1.5",
+    "@sentry/react": "^8.35.0",
+    "axios": "^1.7.7",
+    "bech32": "^2.0.0",
+    "i18next": "^23.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.1",
+    "react-i18next": "^15.1.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
@@ -30,6 +40,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@babel/plugin-syntax-flow": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.9",
+    "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",

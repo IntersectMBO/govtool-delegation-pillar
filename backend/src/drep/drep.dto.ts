@@ -45,8 +45,7 @@ export class DRepListParamsDto {
   @IsString()
   @ApiPropertyOptional({
     type: String,
-    description:
-      'Search by DRep view or raw id',
+    description: 'Search by DRep view or raw id',
   })
   search?: string;
 }

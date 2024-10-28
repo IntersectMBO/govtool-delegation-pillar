@@ -39,7 +39,6 @@ export class AdaHolderService {
   }
 
   async getVotingPower(stakeKey: string) {
-    console.log('stakeKey', stakeKey);
     try {
       const sqlFilePath = path.join(
         __dirname,

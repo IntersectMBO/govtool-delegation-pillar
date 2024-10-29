@@ -77,6 +77,69 @@ export class DrepService {
     };
   }
 
+  async getDRepInfo(drepId: string) {
+    const sqlFilePath = path.join(__dirname, '../sql', 'get-drep-info.sql');
+    const sql = fs.readFileSync(sqlFilePath, 'utf8');
+    try {
+      const result = await this.dataSource.query(sql, [drepId]);
+
+      if (result.length === 0) {
+        return null;
+      }
+
+      const [
+        {
+          has_script: isScriptBased,
+          is_registed_as_drep: isRegisteredAsDRep,
+          was_registered_as_drep: wasRegisteredAsDRep,
+          is_registered_as_sole_voter: isRegisteredAsSoleVoter,
+          was_registered_as_sole_voter: wasRegisteredAsSoleVoter,
+          deposit,
+          url,
+          data_hash: dataHash,
+          voting_power: votingPower,
+          drep_register_tx: dRepRegisterTx,
+          drep_retire_tx: dRepRetireTx,
+          sole_voter_register_tx: soleVoterRegisterTx,
+          sole_voter_retire_tx: soleVoterRetireTx,
+          payment_address: paymentAddress,
+          given_name: givenName,
+          objectives,
+          motivations,
+          qualifications,
+          image_url: imageUrl,
+          image_hash: imageHash,
+        },
+      ] = result;
+
+      return {
+        isScriptBased,
+        isRegisteredAsDRep: Boolean(isRegisteredAsDRep),
+        wasRegisteredAsDRep: Boolean(wasRegisteredAsDRep),
+        isRegisteredAsSoleVoter: Boolean(isRegisteredAsSoleVoter),
+        wasRegisteredAsSoleVoter: Boolean(wasRegisteredAsSoleVoter),
+        deposit,
+        url,
+        dataHash,
+        votingPower,
+        dRepRegisterTx,
+        dRepRetireTx,
+        soleVoterRegisterTx,
+        soleVoterRetireTx,
+        paymentAddress,
+        givenName,
+        objectives,
+        motivations,
+        qualifications,
+        imageUrl,
+        imageHash,
+      };
+    } catch (error) {
+      console.error('Error executing getDRepInfo query:', error);
+      return null;
+    }
+  }
+
   private mapDRepListItem(dRep: RawQueryDRepListItemType): DRepListItemType {
     return {
       dRepHash: dRep.drep_id,

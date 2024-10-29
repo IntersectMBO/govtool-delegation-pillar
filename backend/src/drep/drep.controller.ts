@@ -1,5 +1,11 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { DrepService } from './drep.service';
 import { DRepListParamsDto } from './drep.dto';
 
@@ -10,8 +16,8 @@ export class DrepController {
 
   @Get('get-voting-power/:drepId')
   @ApiOperation({ summary: 'Get voting power of a drep id' })
-  @ApiQuery({ name: 'drepId', type: 'string', required: true })
-  async getVotingPower(@Query('drepId') drepId: string) {
+  @ApiParam({ name: 'drepId', type: 'string', required: true })
+  async getVotingPower(@Param('drepId') drepId: string) {
     return this.drepService.getVotingPower(drepId);
   }
 
@@ -59,5 +65,12 @@ export class DrepController {
   })
   async getDRepList(@Query() query: DRepListParamsDto) {
     return this.drepService.listDReps(query);
+  }
+
+  @Get('info/:drepId')
+  @ApiOperation({ summary: 'Get information of a DRep' })
+  @ApiParam({ name: 'drepId', type: 'string', required: true })
+  async getDRepInfo(@Param('drepId') drepId: string) {
+    return this.drepService.getDRepInfo(drepId);
   }
 }

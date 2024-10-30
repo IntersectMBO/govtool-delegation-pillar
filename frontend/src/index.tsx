@@ -13,7 +13,6 @@ root.render(
       walletApi={null}
       apiUrl={process.env.API_URL || ''}
       validationApiUrl={process.env.VALIDATION_API_URL || ''}
-      dashboardPath="/"
       epochParams={{
         drep_deposit: 1000000,
       }}

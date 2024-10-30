@@ -26,7 +26,7 @@ export async function isReceivingAddress(address?: string) {
     return receivingAddress
       ? true
       : i18n.t('forms.errors.mustBeReceivingAddress');
-  } catch (e) {
+  } catch {
     return i18n.t('forms.errors.mustBeReceivingAddress');
   }
 }

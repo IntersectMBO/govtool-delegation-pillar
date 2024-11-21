@@ -1,7 +1,7 @@
 {
   "name": "@intersect.mbo/govtool-delegation-pillar",
   "description": "Delegation Pillar of the GovTool project",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/DelegationPillar.d.ts",

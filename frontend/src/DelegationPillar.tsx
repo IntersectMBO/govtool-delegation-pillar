@@ -38,5 +38,4 @@ const DelegationPillar = ({
   );
 };
 
-// That exports pages of the VotingPillar component
 export default DelegationPillar;

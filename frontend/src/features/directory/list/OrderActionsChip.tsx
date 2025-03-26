@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box } from '@mui/material';
 
-import { useScreenDimension, useTranslation } from 'hooks';
-import { Typography } from 'components';
-import { ICONS } from 'consts';
+import { useScreenDimension, useTranslation } from '@/hooks';
+import { Typography } from '@/components';
+import { ICONS } from '@/consts';
 import { voltaireTheme as theme } from '../../../theme';
 
 type Props = {

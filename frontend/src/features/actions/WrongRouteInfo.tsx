@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 
-import { Button, Typography } from 'components';
-import { useScreenDimension, useTranslation } from 'hooks';
-import { PATHS } from 'consts';
+import { Button, Typography } from '@/components';
+import { useScreenDimension, useTranslation } from '@/hooks';
+import { PATHS } from '@/consts';
 
 type Props = {
   title?: string;

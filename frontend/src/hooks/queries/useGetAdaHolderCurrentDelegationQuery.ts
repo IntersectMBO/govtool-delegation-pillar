@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 
-import { getAdaHolderCurrentDelegation } from 'services';
-import { QUERY_KEYS } from 'consts';
-import { usePillarContext } from 'context';
+import { getAdaHolderCurrentDelegation } from '@/services';
+import { QUERY_KEYS } from '@/consts';
+import { usePillarContext } from '@/context';
 
 export const useGetAdaHolderCurrentDelegationQuery = (
   stakeKey: string | undefined

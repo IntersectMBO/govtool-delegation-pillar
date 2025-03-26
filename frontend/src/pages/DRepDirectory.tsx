@@ -1,16 +1,16 @@
 import { FC } from 'react';
 import { Box } from '@mui/material';
 
-import { AutomatedVotingOptions, MyDelegation, DRepList } from 'features';
-import { usePillarContext } from 'context';
+import { AutomatedVotingOptions, MyDelegation, DRepList } from '@/features';
+import { usePillarContext } from '@/context';
 import {
   useDelegateTodRep,
   useGetAdaHolderCurrentDelegationQuery,
   useGetAdaHolderVotingPowerQuery,
   useGetDRepDetailsQuery,
-} from 'hooks';
-import { correctAdaFormat } from 'utils';
-import { CircularLoader } from 'components';
+} from '@/hooks';
+import { correctAdaFormat } from '@/utils';
+import { CircularLoader } from '@/components';
 
 export const DRepDirectoryPage: FC = () => {
   const {

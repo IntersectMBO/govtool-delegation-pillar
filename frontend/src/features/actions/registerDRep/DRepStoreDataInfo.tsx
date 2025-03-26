@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box, Link } from '@mui/material';
 
-import { DOCS } from 'consts';
-import { useDRepDataForm, useScreenDimension, useTranslation } from 'hooks';
-import { ControlledField, Spacer, Typography } from 'components';
+import { DOCS } from '@/consts';
+import { useDRepDataForm, useScreenDimension, useTranslation } from '@/hooks';
+import { ControlledField, Spacer, Typography } from '@/components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 
 export const DRepStoreDataInfo = ({

@@ -1,9 +1,9 @@
 import { MouseEvent, useState } from 'react';
 import { Box, ButtonBase, Popover } from '@mui/material';
 
-import { ICONS } from 'consts';
-import { useTranslation } from 'hooks';
-import { usePillarContext } from 'context';
+import { ICONS } from '@/consts';
+import { useTranslation } from '@/hooks';
+import { usePillarContext } from '@/context';
 import { Typography } from './Typography';
 
 export const Share = ({ link }: { link: string }) => {

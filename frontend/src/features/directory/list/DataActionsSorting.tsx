@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useTranslation, useOnClickOutside } from 'hooks';
+import { useTranslation, useOnClickOutside } from '@/hooks';
 
 interface Props {
   chosenSorting: string;

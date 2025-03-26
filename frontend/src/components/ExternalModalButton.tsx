@@ -1,7 +1,7 @@
 import { SxProps, Typography } from '@mui/material';
 
-import { ICONS } from 'consts';
-import { useModal } from 'context';
+import { ICONS } from '@/consts';
+import { useModal } from '@/context';
 import { Button } from './Button';
 
 export const ExternalModalButton = ({

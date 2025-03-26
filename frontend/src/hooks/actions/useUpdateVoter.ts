@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import * as Sentry from '@sentry/react';
 
-import { usePillarContext } from 'context';
-import { useActionSuccessModal } from 'hooks';
+import { usePillarContext } from '@/context';
+import { useActionSuccessModal } from '@/hooks';
 import { useWalletErrorModal } from '../modal/useWalletErrorModal';
 
 type MetadataInfo = {

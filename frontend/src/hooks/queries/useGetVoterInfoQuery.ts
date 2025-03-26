@@ -1,8 +1,8 @@
 import { UseQueryOptions, useQuery } from 'react-query';
 
-import { QUERY_KEYS } from 'consts';
-import { usePillarContext } from 'context';
-import { getVoterInfo } from 'services';
+import { QUERY_KEYS } from '@/consts';
+import { usePillarContext } from '@/context';
+import { getVoterInfo } from '@/services';
 
 export const useGetVoterInfo = (options?: UseQueryOptions) => {
   const { apiUrl, dRepID, pendingTransaction } = usePillarContext();

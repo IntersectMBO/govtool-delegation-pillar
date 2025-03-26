@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 
-import { usePillarContext } from 'context';
-import { useDelegateTodRep, useScreenDimension, useTranslation } from 'hooks';
-import { correctAdaFormat } from 'utils';
-import { DRepData, Reference } from 'types';
-import { Button, Card, ExternalModalButton, Typography } from 'components';
+import { usePillarContext } from '@/context';
+import { useDelegateTodRep, useScreenDimension, useTranslation } from '@/hooks';
+import { correctAdaFormat } from '@/utils';
+import { DRepData, Reference } from '@/types';
+import { Button, Card, ExternalModalButton, Typography } from '@/components';
 
 import { DRepDetailsCardHeader } from './details/DRepDetailsCardHeader';
 import { DRepDetailsInfoItem } from './details/DRepDetailsInfoItem';

@@ -1,9 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
-import { PATHS } from 'consts';
-import { useGetVoterInfo, useAbandonWarningModal } from 'hooks';
-import { TransactionBox, EditDRepMetadata } from 'features';
+import { PATHS } from '@/consts';
+import { useGetVoterInfo, useAbandonWarningModal } from '@/hooks';
+import { TransactionBox, EditDRepMetadata } from '@/features';
 
 export const EditDRepMetadataPage = () => {
   const { state } = useLocation();
@@ -15,7 +15,7 @@ export const EditDRepMetadataPage = () => {
 
   return (
     <TransactionBox>
-      {!voter || !voter.isRegisteredAsDRep ? (
+      {!voter?.isRegisteredAsDRep ? (
         <CircularProgress />
       ) : (
         <EditDRepMetadata onCancel={openAbandonWarningModal} />

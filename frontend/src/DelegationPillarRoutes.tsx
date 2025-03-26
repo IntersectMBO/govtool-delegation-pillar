@@ -1,5 +1,5 @@
-import { PATHS } from 'consts';
-import { usePillarContext } from 'context';
+import { PATHS } from '@/consts';
+import { usePillarContext } from '@/context';
 import {
   IntroPage,
   Features,
@@ -10,7 +10,7 @@ import {
   RetireAsDRepPage,
   RegisterAsDirectVoterPage,
   RetireAsDirectVoterPage,
-} from 'pages';
+} from '@/pages';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 
 export const DelegationPillarRoutes = () => {

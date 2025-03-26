@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { defaultDRepDataFormValues, useGetVoterInfo } from 'hooks';
+import { defaultDRepDataFormValues, useGetVoterInfo } from '@/hooks';
 import { RolesAndResponsibilities } from './registerDRep/RolesAndResponsibilities';
 import { RegisterAsDRepForm } from './registerDRep/RegisterAsDRepForm';
 import { DRepStoreDataInfo } from './registerDRep/DRepStoreDataInfo';

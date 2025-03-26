@@ -8,9 +8,9 @@ import {
 import { Box } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import { Rules } from 'consts';
-import { useTranslation } from 'hooks';
-import { DRepDataFormValues } from 'types';
+import { Rules } from '@/consts';
+import { useTranslation } from '@/hooks';
+import { DRepDataFormValues } from '@/types';
 import { FieldDescription } from './FieldDescription';
 import { Button, ControlledField } from '../../../../components';
 

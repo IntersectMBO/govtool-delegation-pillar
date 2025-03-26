@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import type { BoxProps } from '@mui/material';
 import { Box } from '@mui/material';
 
-import { testIdFromLabel } from 'utils';
+import { testIdFromLabel } from '@/utils';
 import { Input as InputBase, InputProps } from '../input';
 import { Typography, TypographyProps } from '../Typography';
 import { FormHelpfulText } from './FormHelpfulText';

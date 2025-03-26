@@ -5,8 +5,8 @@ import {
   ExternalLinkModal,
   StatusModal,
   LoadingModal,
-} from 'components';
-import { basicReducer, callAll, BasicReducer } from 'utils';
+} from '@/components';
+import { basicReducer, callAll, BasicReducer } from '@/utils';
 
 interface ProviderProps {
   children: React.ReactNode;

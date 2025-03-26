@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Sentry from '@sentry/react';
 
-import { usePillarContext } from 'context';
+import { usePillarContext } from '@/context';
 import { useGetVoterInfo } from '../queries/useGetVoterInfoQuery';
 import { useWalletErrorModal } from '../modal/useWalletErrorModal';
 

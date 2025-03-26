@@ -1,9 +1,9 @@
 import { forwardRef } from 'react';
 import { Typography } from '@mui/material';
 
-import { useModal } from 'context';
-import { useScreenDimension } from 'hooks';
-import { ICONS } from 'consts';
+import { useModal } from '@/context';
+import { useScreenDimension } from '@/hooks';
+import { ICONS } from '@/consts';
 
 import { ModalWrapper } from './ModalWrapper';
 import { ModalHeader } from './ModalHeader';

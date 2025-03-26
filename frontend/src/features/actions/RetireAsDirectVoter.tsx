@@ -1,15 +1,15 @@
 import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
-import { DOCS } from 'consts';
+import { DOCS } from '@/consts';
 import {
   useGetVoterInfo,
   useRetireVoter,
   useScreenDimension,
   useTranslation,
-} from 'hooks';
-import { correctAdaFormat } from 'utils';
-import { Typography } from 'components';
+} from '@/hooks';
+import { correctAdaFormat } from '@/utils';
+import { Typography } from '@/components';
 import { TransactionStepButtons } from './common/TransactionStepButtons';
 
 export const RetireAsDirectVoter = () => {

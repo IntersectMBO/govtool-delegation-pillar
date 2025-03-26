@@ -1,10 +1,10 @@
 import { Box, Divider } from '@mui/material';
 
-import { usePillarContext } from 'context';
-import { useScreenDimension, useTranslation } from 'hooks';
-import { testIdFromLabel } from 'utils';
+import { usePillarContext } from '@/context';
+import { useScreenDimension, useTranslation } from '@/hooks';
+import { testIdFromLabel } from '@/utils';
 
-import { Button, Card, Typography } from 'components';
+import { Button, Card, Typography } from '@/components';
 
 export type AutomatedVotingCardProps = {
   description: string;

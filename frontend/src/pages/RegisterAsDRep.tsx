@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
-import { PATHS } from 'consts';
-import { usePillarContext } from 'context';
+import { PATHS } from '@/consts';
+import { usePillarContext } from '@/context';
 import {
   useTranslation,
   useGetVoterInfo,
   useGetDRepDetailsQuery,
   useAbandonWarningModal,
-} from 'hooks';
-import { TransactionBox, WrongRouteInfo, RegisterAsdRep } from 'features';
+} from '@/hooks';
+import { TransactionBox, WrongRouteInfo, RegisterAsdRep } from '@/features';
 
 export const RegisterAsdRepPage = () => {
   const { dRepID } = usePillarContext();

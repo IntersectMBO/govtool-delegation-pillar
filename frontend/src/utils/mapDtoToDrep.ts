@@ -1,5 +1,5 @@
-import { DRepData, DRepMetadata, DrepDataDTO } from 'types';
-import { postValidate } from 'services';
+import { DRepData, DRepMetadata, DrepDataDTO } from '@/types';
+import { postValidate } from '@/services';
 import { fixViewForScriptBasedDRep } from './dRep';
 
 export const mapDtoToDrep = async (

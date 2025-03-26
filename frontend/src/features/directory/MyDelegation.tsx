@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { Trans } from 'react-i18next';
 
-import { usePillarContext } from 'context';
-import { useGetAdaHolderVotingPowerQuery } from 'hooks';
-import { correctAdaFormat, isSameDRep } from 'utils';
-import { DRepData } from 'types';
-import { Typography } from 'components';
+import { usePillarContext } from '@/context';
+import { useGetAdaHolderVotingPowerQuery } from '@/hooks';
+import { correctAdaFormat, isSameDRep } from '@/utils';
+import { DRepData } from '@/types';
+import { Typography } from '@/components';
 import { DRepCard } from './list/DRepCard';
 
 interface Props {

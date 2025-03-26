@@ -1,8 +1,8 @@
 import { Box, Link } from '@mui/material';
 
-import { Typography } from 'components';
-import { ICONS } from 'consts';
-import { testIdFromLabel } from 'utils';
+import { Typography } from '@/components';
+import { ICONS } from '@/consts';
+import { testIdFromLabel } from '@/utils';
 
 type ReferenceItem = {
   label: string;

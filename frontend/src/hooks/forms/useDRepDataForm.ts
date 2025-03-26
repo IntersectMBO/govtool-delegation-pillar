@@ -2,9 +2,9 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormContext } from 'react-hook-form';
 
-import { useModal, usePillarContext } from 'context';
-import { downloadJson, ellipsizeText } from 'utils';
-import { DRepDataFormValues, MetadataValidationStatus } from 'types';
+import { useModal, usePillarContext } from '@/context';
+import { downloadJson, ellipsizeText } from '@/utils';
+import { DRepDataFormValues, MetadataValidationStatus } from '@/types';
 import { useRegisterVoter } from '../actions/useRegisterVoter';
 import { useUpdateVoter } from '../actions/useUpdateVoter';
 import { useMetadataStorageErrorModal } from '../modal/useMetadataStorageErrorModal';

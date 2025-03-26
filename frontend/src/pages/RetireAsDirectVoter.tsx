@@ -1,7 +1,11 @@
 import { CircularProgress } from '@mui/material';
 
-import { useGetVoterInfo, useTranslation } from 'hooks';
-import { TransactionBox, WrongRouteInfo, RetireAsDirectVoter } from 'features';
+import { useGetVoterInfo, useTranslation } from '@/hooks';
+import {
+  TransactionBox,
+  WrongRouteInfo,
+  RetireAsDirectVoter,
+} from '@/features';
 
 export const RetireAsDirectVoterPage = () => {
   const { t } = useTranslation();

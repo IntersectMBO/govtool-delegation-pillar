@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useOnClickOutside, useScreenDimension } from 'hooks';
+import { useOnClickOutside, useScreenDimension } from '@/hooks';
 
 interface Props {
   chosenFilters: string[];

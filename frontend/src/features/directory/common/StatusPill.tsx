@@ -1,7 +1,7 @@
 import { Chip, ChipProps, styled } from '@mui/material';
 
-import { cyan, errorRed, successGreen, voltaireTheme } from 'theme';
-import { DRepStatus } from 'types';
+import { cyan, errorRed, successGreen, voltaireTheme } from '@/theme';
+import { DRepStatus } from '@/types';
 
 interface StatusPillProps {
   status: DRepStatus;

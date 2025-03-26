@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 
-import { getNetworkMetrics } from 'services';
-import { QUERY_KEYS } from 'consts';
-import { usePillarContext } from 'context';
+import { getNetworkMetrics } from '@/services';
+import { QUERY_KEYS } from '@/consts';
+import { usePillarContext } from '@/context';
 
 export const useGetNetworkMetrics = () => {
   const { apiUrl } = usePillarContext();

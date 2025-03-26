@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 
-import { PATHS } from 'consts';
-import { useScreenDimension, useTranslation } from 'hooks';
-import { Button } from 'components';
+import { PATHS } from '@/consts';
+import { useScreenDimension, useTranslation } from '@/hooks';
+import { Button } from '@/components';
 
 interface Props {
   actionButtonText?: string;

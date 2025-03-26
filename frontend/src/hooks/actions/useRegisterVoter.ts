@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 import * as Sentry from '@sentry/react';
 
-import { usePillarContext } from 'context';
+import { usePillarContext } from '@/context';
 import {
   useActionSuccessModal,
   useGetVoterInfo,
   useWalletErrorModal,
-} from 'hooks';
+} from '@/hooks';
 
 type MetadataInfo = {
   hash: string;

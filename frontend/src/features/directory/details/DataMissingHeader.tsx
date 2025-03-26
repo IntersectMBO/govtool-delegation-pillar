@@ -1,8 +1,8 @@
 import { Box, SxProps } from '@mui/material';
 
-import { MetadataValidationStatus } from 'types';
-import { getMetadataDataMissingStatusTranslation } from 'utils';
-import { Typography, Share } from 'components';
+import { MetadataValidationStatus } from '@/types';
+import { getMetadataDataMissingStatusTranslation } from '@/utils';
+import { Typography, Share } from '@/components';
 
 type DataMissingHeaderProps = {
   isDataMissing: MetadataValidationStatus | null;

@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 import type { TextareaAutosizeProps } from '@mui/material';
 import { TextareaAutosize, styled } from '@mui/material';
 
-import { useScreenDimension } from 'hooks';
+import { useScreenDimension } from '@/hooks';
 
 export type TextAreaProps = TextareaAutosizeProps & {
   errorMessage?: string;

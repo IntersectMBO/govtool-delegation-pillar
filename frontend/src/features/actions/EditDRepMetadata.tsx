@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { defaultDRepDataFormValues } from 'hooks';
+import { defaultDRepDataFormValues } from '@/hooks';
 import { EditDRepForm } from './editMetadata/EditDRepForm';
 import { EditDRepStoreDataInfo } from './editMetadata/EditDRepStoreDataInfo';
 import { EditDRepStorageInformation } from './editMetadata/EditDRepStorageInformation';

@@ -1,7 +1,8 @@
-import { PATHS } from 'consts';
-import { useModal, usePillarContext } from 'context';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+
+import { PATHS } from '@/consts';
+import { useModal, usePillarContext } from '@/context';
 
 type Props = {
   action: 'registration' | 'retirement';

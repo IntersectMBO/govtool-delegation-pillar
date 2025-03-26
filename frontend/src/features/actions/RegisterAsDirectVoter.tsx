@@ -1,11 +1,11 @@
 import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
-import { DOCS } from 'consts';
-import { useRegisterVoter, useScreenDimension, useTranslation } from 'hooks';
-import { correctAdaFormat } from 'utils';
-import { Typography } from 'components';
-import { usePillarContext } from 'context';
+import { DOCS } from '@/consts';
+import { useRegisterVoter, useScreenDimension, useTranslation } from '@/hooks';
+import { correctAdaFormat } from '@/utils';
+import { Typography } from '@/components';
+import { usePillarContext } from '@/context';
 import { TransactionStepButtons } from './common/TransactionStepButtons';
 
 export const RegisterAsDirectVoter = () => {

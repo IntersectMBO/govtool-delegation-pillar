@@ -6,15 +6,15 @@ import {
   Box,
 } from '@mui/material';
 
-import { DOCS, ICONS } from 'consts';
-import { WalletApi } from 'context';
-import { useGetNetworkMetrics, useTranslation } from 'hooks';
-import { correctAdaFormat } from 'utils';
+import { DOCS, ICONS } from '@/consts';
+import { WalletApi } from '@/context';
+import { useGetNetworkMetrics, useTranslation } from '@/hooks';
+import { correctAdaFormat } from '@/utils';
 import {
   AutomatedVotingOptionCurrentDelegation,
   AutomatedVotingOptionDelegationId,
-} from 'types';
-import { Typography } from 'components';
+} from '@/types';
+import { Typography } from '@/components';
 import { AutomatedVotingCard } from './automatedOptions/AutomatedVotingCard';
 
 type AutomatedVotingOptionsProps = {

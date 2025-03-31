@@ -86,11 +86,8 @@ module.exports = {
     ],
     'react/require-default-props': 'off',
 
-    // temporary
     '@typescript-eslint/no-empty-object-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': 'warn',
-    'no-console': 'warn',
     'no-nested-ternary': 'off',
     'react/no-unused-prop-types': 'warn',
     'react-hooks/exhaustive-deps': 'off',
@@ -102,6 +99,6 @@ module.exports = {
     '.storybook/',
     'dist/',
     'node_modules/',
-    'rollup.config.mjs',
+    'vite.config.ts',
   ],
 };

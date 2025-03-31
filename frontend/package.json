@@ -2,10 +2,31 @@
   "name": "@intersect.mbo/govtool-delegation-pillar",
   "description": "Delegation Pillar of the GovTool project",
   "version": "0.0.2",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/src/DelegationPillar.d.ts",
   "license": "MIT",
+  "type": "module",
+  "main": "./dist/govtool-delegation-pillar.umd.js",
+  "module": "./dist/govtool-delegation-pillar.es.js",
+  "types": "./dist/types/export.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/export.d.ts",
+        "default": "./dist/govtool-delegation-pillar.es.js"
+      },
+      "require": {
+        "types": "./dist/types/export.d.ts",
+        "default": "./dist/govtool-delegation-pillar.umd.js"
+      }
+    },
+    "./package.json": "./package.json",
+    "./dist/*": "./dist/*",
+    "./styles": "./dist/export.css"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/IntersectMBO/govtool-delegation-pillar.git"
@@ -21,16 +42,19 @@
   },
   "homepage": "https://github.com/IntersectMBO/govtool-delegation-pillar#readme",
   "scripts": {
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
     "format": "prettier --write src/**/*.ts src/**/*.tsx",
     "lint": "eslint src/**/*.ts src/**/*.tsx --report-unused-disable-directives --max-warnings 0",
     "prepare": "husky",
-    "prepublish": "rollup -c --bundleConfigAsCjs",
-    "start": "react-scripts start",
     "test": "jest",
     "test:watch": "jest --watch",
-    "tsc": "npx tsc --noEmit --skipLibCheck"
+    "tsc": "npx tsc --noEmit --skipLibCheck",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:watch": "vite build --watch",
+    "clean": "rimraf dist",
+    "prebuild": "yarn clean",
+    "prepublishOnly": "yarn build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -47,7 +71,8 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vite-plugin-dts": "^4.5.3"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -73,6 +98,7 @@
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^8.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
@@ -95,7 +121,10 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "ts-jest": "^29.2.4",
-    "typescript": "^4.4.2"
+    "tslib": "^2.8.1",
+    "typescript": "^4.4.2",
+    "vite": "^6.2.0",
+    "webpack": "^5.93.0"
   },
   "peerDependencies": {
     "@fontsource/roboto": "^5.0.14",
@@ -127,5 +156,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "packageManager": "yarn@4.7.0"
 }

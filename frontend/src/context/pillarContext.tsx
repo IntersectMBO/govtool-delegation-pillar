@@ -15,7 +15,7 @@ import {
   TransactionStateWithResource,
   TransactionStateWithoutResource,
   VoterInfo,
-} from 'types';
+} from '@/types';
 
 type BuildSignSubmitConwayCertTxArgs = {
   certBuilder?: unknown;

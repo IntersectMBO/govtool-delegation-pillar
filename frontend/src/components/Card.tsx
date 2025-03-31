@@ -2,7 +2,7 @@ import { Chip, Paper, SxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { PropsWithChildren } from 'react';
 
-import { errorRed, orange, primaryBlue, successGreen } from 'theme';
+import { errorRed, orange, primaryBlue, successGreen } from '@/theme';
 
 type CardProps = PropsWithChildren & {
   border?: boolean;

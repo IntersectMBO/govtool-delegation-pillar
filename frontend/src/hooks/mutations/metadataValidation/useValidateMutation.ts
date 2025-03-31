@@ -1,9 +1,9 @@
 import { useMutation } from 'react-query';
 
-import { postValidate } from 'services';
-import { MUTATION_KEYS } from 'consts';
-import { MetadataValidationDTO } from 'types';
-import { usePillarContext } from 'context';
+import { postValidate } from '@/services';
+import { MUTATION_KEYS } from '@/consts';
+import { MetadataValidationDTO } from '@/types';
+import { usePillarContext } from '@/context';
 
 export const useValidateMutation = <MetadataType>() => {
   const { validationApiUrl } = usePillarContext();

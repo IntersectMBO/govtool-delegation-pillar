@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
-import { PATHS } from 'consts';
-import { useGetVoterInfo, useTranslation } from 'hooks';
-import { WrongRouteInfo, TransactionBox, RetireAsDRep } from 'features';
+import { PATHS } from '@/consts';
+import { useGetVoterInfo, useTranslation } from '@/hooks';
+import { WrongRouteInfo, TransactionBox, RetireAsDRep } from '@/features';
 
 export const RetireAsDRepPage = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { CurrentDelegation } from 'types';
-import { fixViewForScriptBasedDRep } from 'utils';
+import { CurrentDelegation } from '@/types';
+import { fixViewForScriptBasedDRep } from '@/utils';
 
 export const getAdaHolderCurrentDelegation = async ({
   apiUrl,

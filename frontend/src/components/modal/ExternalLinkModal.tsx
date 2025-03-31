@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
-import { IMAGES } from 'consts';
-import { useModal } from 'context';
-import { useScreenDimension, useTranslation } from 'hooks';
-import { voltaireTheme as theme } from 'theme';
+import { IMAGES } from '@/consts';
+import { useModal } from '@/context';
+import { useScreenDimension, useTranslation } from '@/hooks';
+import { voltaireTheme as theme } from '@/theme';
 
 import { ModalWrapper } from './ModalWrapper';
 import { ModalHeader } from './ModalHeader';

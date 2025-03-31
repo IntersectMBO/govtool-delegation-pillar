@@ -7,9 +7,9 @@ import {
   type DRepListSort,
   DRepData,
   DrepDataDTO,
-} from 'types';
+} from '@/types';
 
-import { mapDtoToDrep } from 'utils';
+import { mapDtoToDrep } from '@/utils';
 
 export type GetDRepListArguments = {
   filters?: string[];

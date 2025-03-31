@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react';
 
-import { usePillarContext } from 'context';
+import { usePillarContext } from '@/context';
 import {
   useActionSuccessModal,
   useGetVoterInfo,
   useTranslation,
   useWalletErrorModal,
-} from 'hooks';
+} from '@/hooks';
 
 export const useRetireVoter = () => {
   const {

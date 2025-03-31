@@ -1,5 +1,5 @@
-import i18n from 'i18n';
-import { URL_REGEX, isReceivingAddress, isValidURLLength } from 'utils';
+import i18n from '@/i18n';
+import { URL_REGEX, isReceivingAddress, isValidURLLength } from '@/utils';
 
 export const Rules = {
   GIVEN_NAME: {

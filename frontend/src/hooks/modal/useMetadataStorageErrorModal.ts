@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { ModalState, useModal } from 'context';
-import { MetadataValidationStatus } from 'types';
-import { DOCS, PATHS } from 'consts';
+import { ModalState, useModal } from '@/context';
+import { MetadataValidationStatus } from '@/types';
+import { DOCS, PATHS } from '@/consts';
 
 type Props = {
   error: MetadataValidationStatus;

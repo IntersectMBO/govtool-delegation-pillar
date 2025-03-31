@@ -1,7 +1,7 @@
 import { Box, SxProps } from '@mui/material';
 
-import { Typography } from 'components';
-import { voltaireTheme as theme } from 'theme';
+import { Typography } from '@/components';
+import { voltaireTheme as theme } from '@/theme';
 
 export type StepProps = {
   label: string;

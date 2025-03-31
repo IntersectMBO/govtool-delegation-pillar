@@ -1,9 +1,9 @@
 import { UseInfiniteQueryOptions, useInfiniteQuery } from 'react-query';
 
-import { QUERY_KEYS } from 'consts';
-import { usePillarContext } from 'context';
-import { GetDRepListArguments, getDRepList } from 'services';
-import { DRepData, Infinite } from 'types';
+import { QUERY_KEYS } from '@/consts';
+import { usePillarContext } from '@/context';
+import { GetDRepListArguments, getDRepList } from '@/services';
+import { DRepData, Infinite } from '@/types';
 
 export const useGetDRepListInfiniteQuery = (
   {

@@ -2,17 +2,17 @@ import { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box } from '@mui/material';
 
-import { Button, CircularLoader, Typography } from 'components';
-import { DREP_DIRECTORY_FILTERS, DREP_DIRECTORY_SORTING } from 'consts';
-import { usePillarContext, useDataActionsBar } from 'context';
+import { Button, CircularLoader, Typography } from '@/components';
+import { DREP_DIRECTORY_FILTERS, DREP_DIRECTORY_SORTING } from '@/consts';
+import { usePillarContext, useDataActionsBar } from '@/context';
 import {
   useDelegateTodRep,
   useGetAdaHolderCurrentDelegationQuery,
   useGetDRepDetailsQuery,
   useGetDRepListInfiniteQuery,
-} from 'hooks';
-import { isSameDRep } from 'utils';
-import { DRepListSort, DRepStatus } from 'types';
+} from '@/hooks';
+import { isSameDRep } from '@/utils';
+import { DRepListSort, DRepStatus } from '@/types';
 import { DataActionsBar } from './list/DataActionsBar';
 import { DRepCard } from './list/DRepCard';
 import { EmptyStateDrepDirectory } from './EmptyStateDrepDirectory';

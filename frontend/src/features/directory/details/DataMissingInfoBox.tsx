@@ -1,9 +1,9 @@
 import { Box, Link, SxProps } from '@mui/material';
 
-import { DOCS } from 'consts';
-import { useTranslation } from 'hooks';
-import { MetadataValidationStatus } from 'types';
-import { Typography } from 'components';
+import { DOCS } from '@/consts';
+import { useTranslation } from '@/hooks';
+import { MetadataValidationStatus } from '@/types';
+import { Typography } from '@/components';
 
 export const DataMissingInfoBox = ({
   isDataMissing,

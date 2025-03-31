@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { VoterInfo } from 'types';
+import type { VoterInfo } from '@/types';
 
 export const getVoterInfo = async ({
   apiUrl,

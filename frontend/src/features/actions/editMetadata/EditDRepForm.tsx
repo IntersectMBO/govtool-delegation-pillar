@@ -2,9 +2,13 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 
-import { usePillarContext } from 'context';
-import { useDRepDataForm, useGetDRepDetailsQuery, useTranslation } from 'hooks';
-import { DRepData, Reference } from 'types';
+import { usePillarContext } from '@/context';
+import {
+  useDRepDataForm,
+  useGetDRepDetailsQuery,
+  useTranslation,
+} from '@/hooks';
+import { DRepData, Reference } from '@/types';
 import { DRepDataForm } from '../common/DRepDataForm';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 

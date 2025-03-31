@@ -1,8 +1,8 @@
 import { Box, MenuItem, MenuList } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import { Card, Typography } from 'components';
-import { PATHS } from 'consts';
+import { Card, Typography } from '@/components';
+import { PATHS } from '@/consts';
 
 const EXCLUDED_PATHS = ['home', 'dashboard', 'dRepDetails', 'editDRepMetadata'];
 

@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Box, ButtonBase, Divider } from '@mui/material';
 
-import { Button, Card, Typography } from 'components';
-import { ICONS } from 'consts';
-import { usePillarContext } from 'context';
-import { useTranslation } from 'hooks';
-import { DRepData, DRepStatus } from 'types';
+import { Button, Card, Typography } from '@/components';
+import { ICONS } from '@/consts';
+import { usePillarContext } from '@/context';
+import { useTranslation } from '@/hooks';
+import { DRepData, DRepStatus } from '@/types';
 import {
   correctDRepDirectoryFormat,
   ellipsizeText,
   getMetadataDataMissingStatusTranslation,
-} from 'utils';
+} from '@/utils';
 import { StatusPill } from '../common/StatusPill';
 
 type DRepCardProps = {

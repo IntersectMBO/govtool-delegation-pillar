@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 
-import { getAdaHolderVotingPower } from 'services';
-import { QUERY_KEYS } from 'consts';
-import { usePillarContext } from 'context';
+import { getAdaHolderVotingPower } from '@/services';
+import { QUERY_KEYS } from '@/consts';
+import { usePillarContext } from '@/context';
 
 const REFRESH_TIME = 20 * 1000;
 

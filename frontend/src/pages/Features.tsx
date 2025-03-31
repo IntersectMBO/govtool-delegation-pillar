@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { Typography } from 'components';
-import { PATHS } from 'consts';
+import { Typography } from '@/components';
+import { PATHS } from '@/consts';
 
 const EXCLUDED_PATHS = ['home', 'dashboard', 'dRepDetails', 'editDRepMetadata'];
 

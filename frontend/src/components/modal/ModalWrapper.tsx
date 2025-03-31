@@ -1,9 +1,9 @@
+import { forwardRef } from 'react';
 import { SxProps, styled } from '@mui/material/styles';
 
-import { ICONS } from 'consts';
-import { useModal } from 'context';
-import { callAll } from 'utils';
-import { forwardRef } from 'react';
+import { ICONS } from '@/consts';
+import { useModal } from '@/context';
+import { callAll } from '@/utils';
 
 interface Props {
   variant?: 'modal' | 'popup';

@@ -1,7 +1,7 @@
 import { ButtonBase } from '@mui/material';
 
-import { Typography } from 'components';
-import { ICONS } from 'consts';
+import { Typography } from '@/components';
+import { ICONS } from '@/consts';
 
 const ellipsisStyles = {
   overflow: 'hidden',

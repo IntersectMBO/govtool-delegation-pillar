@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction } from 'react';
 import { Trans } from 'react-i18next';
 import { Link } from '@mui/material';
 
-import { DOCS } from 'consts';
-import { useScreenDimension, useTranslation } from 'hooks';
-import { correctAdaFormat } from 'utils';
-import { usePillarContext } from 'context';
-import { Typography } from 'components';
+import { DOCS } from '@/consts';
+import { useScreenDimension, useTranslation } from '@/hooks';
+import { correctAdaFormat } from '@/utils';
+import { usePillarContext } from '@/context';
+import { Typography } from '@/components';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 
 export const RolesAndResponsibilities = ({

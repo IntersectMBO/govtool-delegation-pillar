@@ -2,14 +2,14 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { voltaireTheme } from 'theme';
+import { voltaireTheme } from '@/theme';
 import {
   DataActionsBarProvider,
   PillarProvider,
   PillarProviderProps,
-} from 'context';
+} from '@/context';
 import { CssBaseline } from '@mui/material';
-import { DelegationPillarRoutes } from 'DelegationPillarRoutes';
+import { DelegationPillarRoutes } from './DelegationPillarRoutes';
 
 const DelegationPillar = ({
   walletApi,

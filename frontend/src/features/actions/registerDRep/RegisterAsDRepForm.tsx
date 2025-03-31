@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Box } from '@mui/material';
 
-import { useDRepDataForm, useTranslation } from 'hooks';
-import { VoterInfo } from 'types';
+import { useDRepDataForm, useTranslation } from '@/hooks';
+import { VoterInfo } from '@/types';
 import { DRepDataForm } from '../common/DRepDataForm';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 

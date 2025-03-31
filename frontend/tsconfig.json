@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "es2020",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,16 +13,25 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
+
+    /* Output configuration for the library */
     "declaration": true,
     "declarationDir": "./dist",
+    "emitDeclarationOnly": true /* Let Vite handle JS output */,
     "outDir": "./dist",
+
+    /* Code quality */
     "noImplicitAny": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "baseUrl": "src"
+
+    /* Path aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "setupTests.ts"],
-  "exclude": ["node_modules", "dist", "rollup.config.mjs"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
 }

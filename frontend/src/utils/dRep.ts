@@ -1,5 +1,5 @@
 import { bech32 } from 'bech32';
-import { DRepData } from 'types';
+import { DRepData } from '@/types';
 
 export const isSameDRep = (
   { drepId, view }: DRepData,

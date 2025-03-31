@@ -1,8 +1,8 @@
 import { FC, PropsWithChildren } from 'react';
 import { Box } from '@mui/material';
 
-import { useScreenDimension } from 'hooks';
-import { voltaireTheme as theme } from 'theme';
+import { useScreenDimension } from '@/hooks';
+import { voltaireTheme as theme } from '@/theme';
 
 interface Props {
   hideBox?: boolean;

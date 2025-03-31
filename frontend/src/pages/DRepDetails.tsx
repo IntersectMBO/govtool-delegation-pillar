@@ -1,14 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 
-import { usePillarContext } from 'context';
+import { usePillarContext } from '@/context';
 import {
   useGetAdaHolderCurrentDelegationQuery,
   useGetDRepDetailsQuery,
-} from 'hooks';
-import { isSameDRep } from 'utils';
-import { CircularLoader } from 'components';
-import { EmptyStateDrepDirectory, DRepDetailsCard } from 'features';
+} from '@/hooks';
+import { isSameDRep } from '@/utils';
+import { CircularLoader } from '@/components';
+import { EmptyStateDrepDirectory, DRepDetailsCard } from '@/features';
 
 export const DRepDetailsPage = () => {
   const { dRepID: myDRepId, pendingTransaction, stakeKey } = usePillarContext();

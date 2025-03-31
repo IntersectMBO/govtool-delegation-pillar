@@ -2,16 +2,16 @@ import { Link } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { Box, Chip } from '@mui/material';
 
-import { Button, Share } from 'components';
-import { ICONS, PATHS } from 'consts';
-import { usePillarContext } from 'context';
+import { Button, Share } from '@/components';
+import { ICONS, PATHS } from '@/consts';
+import { usePillarContext } from '@/context';
 import {
   useGetAdaHolderVotingPowerQuery,
   useScreenDimension,
   useTranslation,
-} from 'hooks';
-import { correctDRepDirectoryFormat } from 'utils';
-import { DRepData } from 'types';
+} from '@/hooks';
+import { correctDRepDirectoryFormat } from '@/utils';
+import { DRepData } from '@/types';
 import { DataMissingHeader } from './DataMissingHeader';
 
 type DRepDetailsProps = {

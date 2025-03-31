@@ -1,6 +1,6 @@
-import { useTranslation } from 'hooks';
+import { useTranslation } from '@/hooks';
 
-import { Card, Typography } from 'components';
+import { Card, Typography } from '@/components';
 
 export const EmptyStateDrepDirectory = () => {
   const { t } = useTranslation();

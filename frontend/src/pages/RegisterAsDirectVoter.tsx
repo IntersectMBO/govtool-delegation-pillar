@@ -1,11 +1,11 @@
 import { CircularProgress } from '@mui/material';
 
-import { useGetVoterInfo, useTranslation } from 'hooks';
+import { useGetVoterInfo, useTranslation } from '@/hooks';
 import {
   RegisterAsDirectVoter,
   TransactionBox,
   WrongRouteInfo,
-} from 'features';
+} from '@/features';
 
 export const RegisterAsDirectVoterPage = () => {
   const { t } = useTranslation();

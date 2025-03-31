@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { Box } from '@mui/material';
 
-import { Typography } from 'components';
+import { Typography } from '@/components';
 
 type DrepDetailsInfoItemProps = PropsWithChildren & {
   label: string;

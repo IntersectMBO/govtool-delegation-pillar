@@ -2,7 +2,7 @@
 import { Box } from '@mui/material';
 
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { voltaireTheme as theme } from 'theme';
+import { voltaireTheme as theme } from '@/theme';
 import { Typography } from '../Typography';
 
 type RadioProps = {

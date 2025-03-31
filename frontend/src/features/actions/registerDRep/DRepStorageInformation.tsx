@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Box } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-import { DOCS, ICONS, Rules } from 'consts';
-import { useTranslation, useScreenDimension, useDRepDataForm } from 'hooks';
-import { ellipsizeText } from 'utils';
-import { Button, ControlledField, Spacer, Typography } from 'components';
+import { DOCS, ICONS, Rules } from '@/consts';
+import { useTranslation, useScreenDimension, useDRepDataForm } from '@/hooks';
+import { ellipsizeText } from '@/utils';
+import { Button, ControlledField, Spacer, Typography } from '@/components';
 import { Step } from '../common/Step';
 import { TransactionStepButtons } from '../common/TransactionStepButtons';
 

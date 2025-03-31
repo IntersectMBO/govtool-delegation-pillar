@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import * as Sentry from '@sentry/react';
 
-import { useRetireVoter, useScreenDimension, useTranslation } from 'hooks';
-import { Typography } from 'components';
+import { useRetireVoter, useScreenDimension, useTranslation } from '@/hooks';
+import { Typography } from '@/components';
 import { TransactionStepButtons } from './common/TransactionStepButtons';
 
 export const RetireAsDRep = ({

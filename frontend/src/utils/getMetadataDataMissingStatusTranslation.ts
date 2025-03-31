@@ -1,4 +1,4 @@
-import { MetadataValidationStatus } from 'types';
+import { MetadataValidationStatus } from '@/types';
 
 /**
  * Retrieves the label for the given metadata validation status.

@@ -1978,10 +1978,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emurgo/cardano-serialization-lib-asmjs@npm:^13.1.0":
-  version: 13.2.1
-  resolution: "@emurgo/cardano-serialization-lib-asmjs@npm:13.2.1"
-  checksum: 10c0/115d8f3d6933ea9e35dfc643929065fb8efb8579839f3323a5fe3b35efff429b41c478d9b002318c0c704aa17a3db7773699bd157f92379505c741e0c0b3c937
+"@emurgo/cardano-serialization-lib-asmjs@npm:^14.1.1":
+  version: 14.1.1
+  resolution: "@emurgo/cardano-serialization-lib-asmjs@npm:14.1.1"
+  checksum: 10c0/b3008c074b1f2c1fc6dd5e34bf8d6f8aeae342eefe8c6d94d26cec89fc626f7e5969d426c13bcf296f0857e766b0140b232762a0fa323f80e19cfa5cdba86677
   languageName: node
   linkType: hard
 
@@ -2240,7 +2240,7 @@ __metadata:
     "@babel/runtime-corejs3": "npm:^7.26.0"
     "@emotion/react": "npm:^11.13.3"
     "@emotion/styled": "npm:^11.13.0"
-    "@emurgo/cardano-serialization-lib-asmjs": "npm:^13.1.0"
+    "@emurgo/cardano-serialization-lib-asmjs": "npm:^14.1.1"
     "@mui/icons-material": "npm:^6.1.5"
     "@mui/material": "npm:^6.1.5"
     "@rollup/plugin-alias": "npm:^5.1.1"

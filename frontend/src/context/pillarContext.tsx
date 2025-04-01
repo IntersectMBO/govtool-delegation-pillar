@@ -66,6 +66,7 @@ export type PillarProviderProps = {
   generateMetadata: () => void;
   createJsonLD: (data: unknown) => string;
   createHash: (json: unknown) => string;
+  routePath?: string;
 };
 
 export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
@@ -83,6 +84,7 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
   generateMetadata,
   createJsonLD,
   createHash,
+  routePath,
 }) => {
   const contextValue = useMemo(
     (): PillarContextType => ({
@@ -119,6 +121,7 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       }),
       cExplorerBaseUrl:
         cExplorerBaseUrl ?? process.env.C_EXPLORER_BASE_URL ?? '',
+      routePath: routePath ?? '/',
     }),
     [
       apiUrl,

@@ -35,6 +35,7 @@ export type PillarProviderProps = {
     generateMetadata: () => void;
     createJsonLD: (data: unknown) => string;
     createHash: (json: unknown) => string;
+    routePath?: string;
 };
 export declare const PillarProvider: FC<PillarProviderProps & PropsWithChildren>;
 export declare const usePillarContext: () => PillarContextType;

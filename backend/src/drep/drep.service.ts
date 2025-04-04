@@ -58,13 +58,7 @@ export class DrepService {
 
     const result = await this.dataSource.query<RawQueryDRepListItemType[]>(
       `${sql} LIMIT $5 OFFSET $4`,
-      [
-        search,
-        sort,
-        status.length ? status : null,
-        Number((page - 1) * pageSize),
-        Number(pageSize),
-      ],
+      [search, sort, status.length ? status : null, page * pageSize, pageSize],
     );
 
     const elements = result.map(this.mapDRepListItem);

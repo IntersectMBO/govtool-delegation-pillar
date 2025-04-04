@@ -6,8 +6,8 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DelegationPillar
       walletApi={null}
-      apiUrl={process.env.API_URL || ''}
-      validationApiUrl={process.env.VALIDATION_API_URL || ''}
+      apiUrl={import.meta.env.API_URL as string}
+      validationApiUrl={import.meta.env.VALIDATION_API_URL as string}
       epochParams={{
         drep_deposit: 1000000,
       }}
@@ -36,6 +36,5 @@ createRoot(document.getElementById('root')!).render(
         throw new Error(`Function not implemented. ${json}`);
       }}
     />
-    </StrictMode>
-  );
-  
+  </StrictMode>
+);

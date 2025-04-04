@@ -10,6 +10,7 @@ import {
   RegisterAsDirectVoterPage,
   RetireAsDirectVoterPage,
 } from '@/pages';
+import DelegationPillar from './DelegationPillar';
 
 export {
   PillarProvider,
@@ -23,4 +24,5 @@ export {
   RetireAsDRepPage,
   RegisterAsDirectVoterPage,
   RetireAsDirectVoterPage,
+  DelegationPillar,
 };

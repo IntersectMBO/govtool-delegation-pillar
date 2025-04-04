@@ -43,17 +43,15 @@ export const getDRepList = async ({
     return rawSearchPhrase;
   })();
 
-  const response = await axios.get<Infinite<DrepDataDTO>>(
+  const response = await axios.post<Infinite<DrepDataDTO>>(
     `${apiUrl}/drep/list`,
     {
-      params: {
-        page,
-        pageSize,
-        ...(searchPhrase && { search: searchPhrase }),
-        ...(filters.length && { type: filters }),
-        ...(sorting && { sort: sorting }),
-        ...(status.length && { status }),
-      },
+      page,
+      pageSize,
+      ...(searchPhrase && { search: searchPhrase }),
+      ...(filters.length && { type: filters }),
+      ...(sorting && { sort: sorting }),
+      ...(status.length && { status }),
     }
   );
 

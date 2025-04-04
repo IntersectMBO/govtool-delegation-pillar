@@ -88,9 +88,9 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
 }) => {
   const contextValue = useMemo(
     (): PillarContextType => ({
-      apiUrl: apiUrl ?? process.env.API_URL ?? '',
+      apiUrl: apiUrl ?? import.meta.env.API_URL ?? '',
       validationApiUrl:
-        validationApiUrl ?? process.env.VALIDATION_API_URL ?? '',
+        validationApiUrl ?? import.meta.env.VALIDATION_API_URL ?? '',
       epochParams,
       connectWallet,
       openFeedbackWindow,
@@ -120,8 +120,8 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
         isPendingTransaction: () => false,
       }),
       cExplorerBaseUrl:
-        cExplorerBaseUrl ?? process.env.C_EXPLORER_BASE_URL ?? '',
-      routePath: routePath ?? '/',
+        cExplorerBaseUrl ?? import.meta.env.C_EXPLORER_BASE_URL ?? '',
+      routePath,
     }),
     [
       apiUrl,

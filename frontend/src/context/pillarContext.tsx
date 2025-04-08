@@ -121,7 +121,7 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       }),
       cExplorerBaseUrl:
         cExplorerBaseUrl ?? import.meta.env.C_EXPLORER_BASE_URL ?? '',
-      routePath,
+      routePath: routePath ?? '',
     }),
     [
       apiUrl,

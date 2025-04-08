@@ -6,6 +6,8 @@ export const PATHS = {
   registerAsDirectVoter: '/register_direct_voter',
   retireAsDrep: '/retire_drep',
   retireAsDirectVoter: '/retire_direct_voter',
+  dashboardDRepDirectoryDRep: '/connected/drep_directory/:dRepId',
+  dRepDirectoryDRep: '/drep_directory/:dRepId',
 
   // tmp
   dashboard: '/home',

@@ -39,6 +39,7 @@ export type DRepData = DrepDataDTO & {
   doNotList: boolean;
   metadataStatus: MetadataValidationStatus | null;
   metadataValid: boolean;
+  image: string | null;
 };
 
 export type DRepDataFormValues = {

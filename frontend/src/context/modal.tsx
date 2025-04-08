@@ -23,7 +23,8 @@ export type ModalType =
   | 'none'
   | 'loadingModal'
   | 'statusModal'
-  | 'externalLink';
+  | 'externalLink'
+  | 'chooseWallet';
 
 const modals: Record<ModalType, ContextModal> = {
   none: {
@@ -37,6 +38,10 @@ const modals: Record<ModalType, ContextModal> = {
   },
   externalLink: {
     component: <ExternalLinkModal />,
+  },
+  chooseWallet: {
+    // TODO: add choose wallet modal
+    component: null,
   },
 };
 

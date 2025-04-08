@@ -65,6 +65,7 @@
     "@sentry/react": "^8.35.0",
     "axios": "^1.7.7",
     "bech32": "^2.0.0",
+    "buffer": "^6.0.3",
     "i18next": "^23.16.3",
     "react-hook-form": "^7.53.1",
     "react-i18next": "^15.1.0",

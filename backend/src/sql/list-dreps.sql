@@ -1,10 +1,10 @@
 WITH DRepDistr AS (
-  SELECT
-    *,
-    ROW_NUMBER() OVER (PARTITION BY drep_hash.id ORDER BY drep_distr.epoch_no DESC) AS rn
+  -- Replace ROW_NUMBER with DISTINCT ON
+  SELECT DISTINCT ON (drep_distr.hash_id)
+    drep_distr.*
   FROM
     drep_distr
-    JOIN drep_hash ON drep_hash.id = drep_distr.hash_id
+  ORDER BY drep_distr.hash_id, drep_distr.epoch_no DESC
 ),
 DRepActivity AS (
   SELECT
@@ -29,22 +29,88 @@ DRepStatus AS (
   FROM
     drep_hash dh
     LEFT JOIN (
-      SELECT
+      -- Replace ROW_NUMBER with DISTINCT ON
+      SELECT DISTINCT ON (dr.drep_hash_id)
         dr.id,
         dr.drep_hash_id,
-        dr.deposit,
-        ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn
+        dr.deposit
       FROM
         drep_registration dr
       WHERE
         dr.deposit IS NOT NULL
+      ORDER BY dr.drep_hash_id, dr.tx_id DESC
     ) AS dr_deposit ON dr_deposit.drep_hash_id = dh.id
-    AND dr_deposit.rn = 1
     LEFT JOIN tx ON tx.id = dr_deposit.id
     LEFT JOIN block ON block.id = tx.block_id
     LEFT JOIN block AS block_first_register ON block_first_register.id = tx.block_id
     CROSS JOIN DRepActivity
   GROUP BY dh.id, dr_deposit.deposit, DRepActivity.epoch_no, DRepActivity.drep_activity
+),
+LatestDRepRegistrations AS (
+  SELECT DISTINCT ON (dr.drep_hash_id)
+    dr.id,
+    dr.drep_hash_id,
+    dr.deposit,
+    dr.voting_anchor_id,
+    dr.tx_id,
+    tx.hash AS tx_hash
+  FROM
+    drep_registration dr
+    JOIN tx ON tx.id = dr.tx_id
+  ORDER BY dr.drep_hash_id, dr.tx_id DESC
+),
+NonDeregisterVotingAnchor AS (
+  -- Replace ROW_NUMBER with DISTINCT ON
+  SELECT DISTINCT ON (dr.drep_hash_id)
+    dr.id,
+    dr.drep_hash_id,
+    dr.voting_anchor_id,
+    tx.hash AS tx_hash
+  FROM
+    drep_registration dr
+    JOIN tx ON tx.id = dr.tx_id
+  WHERE 
+    dr.deposit IS NOT NULL
+    AND dr.deposit >= 0
+  ORDER BY dr.drep_hash_id, dr.tx_id DESC
+),
+SecondNewestRegistration AS (
+  -- Replace ROW_NUMBER with a more complex query to get second newest
+  SELECT DISTINCT ON (dr.drep_hash_id)
+    dr.id,
+    dr.drep_hash_id,
+    dr.voting_anchor_id
+  FROM
+    drep_registration dr
+  WHERE
+    dr.tx_id < (
+      SELECT MAX(tx_id) 
+      FROM drep_registration dr2 
+      WHERE dr2.drep_hash_id = dr.drep_hash_id
+    )
+  ORDER BY dr.drep_hash_id, dr.tx_id DESC
+),
+NewestRegister AS (
+  -- Replace ROW_NUMBER with DISTINCT ON
+  SELECT DISTINCT ON (dr.drep_hash_id)
+    block.time,
+    dr.drep_hash_id
+  FROM
+    drep_registration dr
+    JOIN tx ON tx.id = dr.tx_id
+    JOIN block ON block.id = tx.block_id
+  WHERE
+    NOT (dr.deposit < 0)
+  ORDER BY dr.drep_hash_id, dr.tx_id DESC
+),
+FirstRegister AS (
+  -- Replace ROW_NUMBER with DISTINCT ON
+  SELECT DISTINCT ON (dr.drep_hash_id)
+    dr.tx_id,
+    dr.drep_hash_id
+  FROM
+    drep_registration dr
+  ORDER BY dr.drep_hash_id, dr.tx_id ASC
 )
 SELECT
   encode(dh.raw, 'hex') as drep_id,
@@ -83,66 +149,17 @@ SELECT
 FROM
   drep_hash dh
   JOIN DRepStatus ON DRepStatus.drep_hash_id = dh.id
-  JOIN (
-    SELECT
-      dr.id,
-      dr.drep_hash_id,
-      dr.deposit,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn
-    FROM
-      drep_registration dr
-    WHERE
-      dr.deposit IS NOT NULL
-  ) AS dr_deposit ON dr_deposit.drep_hash_id = dh.id
-  AND dr_deposit.rn = 1
-  JOIN (
-    SELECT
-      dr.id,
-      dr.drep_hash_id,
-      dr.deposit,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn
-    FROM
-      drep_registration dr
-  ) AS latestDeposit ON latestDeposit.drep_hash_id = dh.id
-  AND latestDeposit.rn = 1
-  LEFT JOIN (
-    SELECT
-      dr.id,
-      dr.drep_hash_id,
-      dr.voting_anchor_id,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn,
-      tx.hash AS tx_hash
-    FROM
-      drep_registration dr
-      JOIN tx ON tx.id = dr.tx_id
-  ) AS dr_voting_anchor ON dr_voting_anchor.drep_hash_id = dh.id
-  AND dr_voting_anchor.rn = 1
-  LEFT JOIN (
-    SELECT
-      dr.id,
-      dr.drep_hash_id,
-      dr.voting_anchor_id,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn,
-      tx.hash AS tx_hash
-    FROM
-      drep_registration dr
-      JOIN tx ON tx.id = dr.tx_id
-      WHERE dr.deposit IS NOT NULL
-      AND dr.deposit >= 0
-  ) AS dr_non_deregister_voting_anchor ON dr_non_deregister_voting_anchor.drep_hash_id = dh.id
-  AND dr_non_deregister_voting_anchor.rn = 1
-  LEFT JOIN (
-    SELECT
-      dr.id,
-      dr.drep_hash_id,
-      dr.voting_anchor_id,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn
-    FROM
-      drep_registration dr
-  ) AS second_to_newest_drep_registration ON second_to_newest_drep_registration.drep_hash_id = dh.id
-  AND second_to_newest_drep_registration.rn = 2
+  JOIN LatestDRepRegistrations AS dr_deposit 
+    ON dr_deposit.drep_hash_id = dh.id AND dr_deposit.deposit IS NOT NULL
+  JOIN LatestDRepRegistrations AS latestDeposit 
+    ON latestDeposit.drep_hash_id = dh.id
+  LEFT JOIN LatestDRepRegistrations AS dr_voting_anchor 
+    ON dr_voting_anchor.drep_hash_id = dh.id
+  LEFT JOIN NonDeregisterVotingAnchor AS dr_non_deregister_voting_anchor 
+    ON dr_non_deregister_voting_anchor.drep_hash_id = dh.id
+  LEFT JOIN SecondNewestRegistration AS second_to_newest_drep_registration 
+    ON second_to_newest_drep_registration.drep_hash_id = dh.id
   LEFT JOIN DRepDistr ON DRepDistr.hash_id = dh.id
-  AND DRepDistr.rn = 1
   LEFT JOIN voting_anchor va ON va.id = dr_voting_anchor.voting_anchor_id
   LEFT JOIN voting_anchor non_deregister_voting_anchor ON non_deregister_voting_anchor.id = dr_non_deregister_voting_anchor.voting_anchor_id
   LEFT JOIN (
@@ -160,28 +177,10 @@ FROM
   LEFT JOIN voting_procedure AS voting_procedure ON voting_procedure.drep_voter = dh.id
   LEFT JOIN tx AS tx ON tx.id = voting_procedure.tx_id
   LEFT JOIN block AS block ON block.id = tx.block_id
-  LEFT JOIN (
-    SELECT
-      block.time,
-      dr.drep_hash_id,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn
-    FROM
-      drep_registration dr
-      JOIN tx ON tx.id = dr.tx_id
-      JOIN block ON block.id = tx.block_id
-    WHERE
-      NOT (dr.deposit < 0)
-  ) AS newestRegister ON newestRegister.drep_hash_id = dh.id
-  AND newestRegister.rn = 1
-  LEFT JOIN (
-    SELECT
-      dr.tx_id,
-      dr.drep_hash_id,
-      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id ASC) AS rn
-    FROM
-      drep_registration dr
-  ) AS dr_first_register ON dr_first_register.drep_hash_id = dh.id
-  AND dr_first_register.rn = 1
+  LEFT JOIN NewestRegister AS newestRegister 
+    ON newestRegister.drep_hash_id = dh.id
+  LEFT JOIN FirstRegister AS dr_first_register 
+    ON dr_first_register.drep_hash_id = dh.id
   LEFT JOIN tx AS tx_first_register ON tx_first_register.id = dr_first_register.tx_id
   LEFT JOIN block AS block_first_register ON block_first_register.id = tx_first_register.block_id
 WHERE
@@ -205,6 +204,7 @@ WHERE
     )
   )
 GROUP BY
+  dh.id, -- Add this line to include dh.id in the GROUP BY clause
   dh.raw,
   second_to_newest_drep_registration.voting_anchor_id,
   dh.view,
@@ -230,13 +230,13 @@ GROUP BY
   off_chain_vote_drep_data.image_hash
 ORDER BY
   CASE
-    WHEN $2 = 'Random' THEN RANDOM()
-    WHEN $2 = 'VotingPower' THEN DRepDistr.amount
-    WHEN $2 = 'RegistrationDate' THEN EXTRACT(EPOCH FROM newestRegister.time)
+    WHEN $2 = 'VotingPower' THEN DRepDistr.amount::numeric
+    WHEN $2 = 'RegistrationDate' THEN EXTRACT(EPOCH FROM newestRegister.time)::numeric
     WHEN $2 = 'Status' THEN
       CASE
         WHEN DRepStatus.status = 'Retired' THEN 1
         WHEN DRepStatus.status = 'Active' THEN 2
         ELSE 3
-      END
+      END::numeric
+    ELSE dh.id::numeric -- Cast to the same type as other branches
   END

@@ -17,8 +17,6 @@ const DelegationPillar = ({
   routePath,
   ...props
 }: PillarProviderProps) => {
-  console.log({ walletApi, apiUrl, validationApiUrl, routePath, props });
-
   return (
     <PillarProvider
       {...props}

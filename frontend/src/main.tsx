@@ -6,6 +6,10 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DelegationPillar
       walletApi={null}
+      enable={(message: string) => {
+        throw new Error(`Function not implemented. ${message}`);
+      }}
+      isEnableLoading=""
       apiUrl={import.meta.env.API_URL as string}
       validationApiUrl={import.meta.env.VALIDATION_API_URL as string}
       epochParams={{

@@ -8,6 +8,7 @@ export declare const PATHS: {
     retireAsDirectVoter: string;
     dashboardDRepDirectoryDRep: string;
     dRepDirectoryDRep: string;
+    stakeKeys: string;
     dashboard: string;
 };
 export declare const DOCS: {

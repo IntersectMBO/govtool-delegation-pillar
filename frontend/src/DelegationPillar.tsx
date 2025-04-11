@@ -5,6 +5,7 @@ import { CssBaseline } from '@mui/material';
 import { voltaireTheme } from '@/theme';
 import {
   DataActionsBarProvider,
+  ModalProvider,
   PillarProvider,
   PillarProviderProps,
 } from '@/context';
@@ -26,12 +27,14 @@ const DelegationPillar = ({
     >
       <QueryClientProvider client={new QueryClient()}>
         <ThemeProvider theme={voltaireTheme}>
-          <DataActionsBarProvider>
-            <CssBaseline />
-            <BrowserRouter basename={routePath}>
-              <DelegationPillarRoutes />
-            </BrowserRouter>
-          </DataActionsBarProvider>
+          <ModalProvider>
+            <DataActionsBarProvider>
+              <CssBaseline />
+              <BrowserRouter basename={routePath}>
+                <DelegationPillarRoutes />
+              </BrowserRouter>
+            </DataActionsBarProvider>
+          </ModalProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </PillarProvider>

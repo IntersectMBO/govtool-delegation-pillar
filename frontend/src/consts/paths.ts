@@ -9,6 +9,8 @@ export const PATHS = {
   dashboardDRepDirectoryDRep: '/connected/drep_directory/:dRepId',
   dRepDirectoryDRep: '/drep_directory/:dRepId',
 
+  stakeKeys: '/stake_keys',
+
   // tmp
   dashboard: '/home',
 };

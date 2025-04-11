@@ -48,7 +48,10 @@ export const DRepCard = ({
   const { addSuccessAlert } = usePillarContext();
   const { openModal } = useModal();
 
-  const openChooseWalletModal = () =>
+  const openChooseWalletModal = () => {
+    console.log('openChooseWalletModal');
+
+    // TODO: fix routing?
     openModal({
       type: 'chooseWallet',
       state: {
@@ -58,6 +61,7 @@ export const DRepCard = ({
         ),
       },
     });
+  };
 
   const cip129Identifier = encodeCIP129Identifier({
     txID: `${isScriptBased ? '23' : '22'}${drepId}`,

@@ -1,3 +1,4 @@
+import { To } from 'react-router-dom';
 interface Extension {
     cip: number;
 }
@@ -58,6 +59,14 @@ export interface Protocol {
     pvt_hard_fork_initiation: number;
     pvt_motion_no_confidence: number;
     treasury_growth_rate: number;
+}
+export interface WalletOption {
+    icon: string;
+    label: string;
+    name: string;
+    cip95Available: boolean;
+    dataTestId?: string;
+    pathToNavigate?: To;
 }
 export interface CardanoApiWallet {
     experimental: any;

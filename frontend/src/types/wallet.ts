@@ -1,4 +1,7 @@
 // TODO: Replace any with proper types
+
+import { To } from 'react-router-dom';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Extension {
   cip: number;
@@ -62,6 +65,15 @@ export interface Protocol {
   pvt_hard_fork_initiation: number;
   pvt_motion_no_confidence: number;
   treasury_growth_rate: number;
+}
+
+export interface WalletOption {
+  icon: string;
+  label: string;
+  name: string;
+  cip95Available: boolean;
+  dataTestId?: string;
+  pathToNavigate?: To;
 }
 
 export interface CardanoApiWallet {

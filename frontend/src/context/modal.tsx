@@ -7,6 +7,7 @@ import {
   LoadingModal,
 } from '@/components';
 import { basicReducer, callAll, BasicReducer } from '@/utils';
+import { ChooseWalletModal } from '@/components/modal/ChooseWalletModal';
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -40,8 +41,7 @@ const modals: Record<ModalType, ContextModal> = {
     component: <ExternalLinkModal />,
   },
   chooseWallet: {
-    // TODO: add choose wallet modal
-    component: null,
+    component: <ChooseWalletModal />,
   },
 };
 

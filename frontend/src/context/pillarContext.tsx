@@ -54,6 +54,12 @@ const PillarContext = createContext<PillarContextType | undefined>(undefined);
 
 export type PillarProviderProps = {
   walletApi: WalletApi | null;
+  enable: (name: string) => Promise<{
+    status: string;
+    stakeKey?: boolean;
+    error?: string;
+  }>;
+  isEnableLoading: string | null;
   apiUrl?: string;
   validationApiUrl?: string;
   cExplorerBaseUrl?: string;
@@ -85,6 +91,8 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
   createJsonLD,
   createHash,
   routePath,
+  enable,
+  isEnableLoading,
 }) => {
   const contextValue = useMemo(
     (): PillarContextType => ({
@@ -100,6 +108,8 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       generateMetadata,
       createJsonLD,
       createHash,
+      enable,
+      isEnableLoading,
       ...(walletApi || {
         dRepID: '',
         pendingTransaction: {

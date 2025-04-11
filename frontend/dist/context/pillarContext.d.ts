@@ -23,6 +23,12 @@ type EpochParams = {
 type PillarContextType = Required<Omit<PillarProviderProps, 'walletApi'>> & WalletApi;
 export type PillarProviderProps = {
     walletApi: WalletApi | null;
+    enable: (name: string) => Promise<{
+        status: string;
+        stakeKey?: boolean;
+        error?: string;
+    }>;
+    isEnableLoading: string | null;
     apiUrl?: string;
     validationApiUrl?: string;
     cExplorerBaseUrl?: string;

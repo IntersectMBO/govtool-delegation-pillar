@@ -10,12 +10,14 @@ import {
   PropsWithChildren,
 } from 'react';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   PendingTransaction,
   TransactionStateWithResource,
   TransactionStateWithoutResource,
   VoterInfo,
 } from '@/types';
+import { DataActionsBarProvider } from './dataActionsBar';
 
 type BuildSignSubmitConwayCertTxArgs = {
   certBuilder?: unknown;
@@ -73,6 +75,27 @@ export type PillarProviderProps = {
   createJsonLD: (data: unknown) => string;
   createHash: (json: unknown) => string;
   routePath?: string;
+  useLocation: () => {
+    pathname: string;
+    search: string;
+    hash: string;
+    state: any;
+    key: any;
+    readonly href: string;
+  };
+  useParams: (routePattern: any) => any;
+  generatePath: (
+    path: string,
+    params?: Record<string, string | number>
+  ) => string;
+  useRouter: () => {
+    push: (href: any) => void;
+    replace: (href: any) => void;
+    prefetch: (href: any) => void;
+    back: () => void;
+    forward: () => void;
+    refresh: () => void;
+  };
 };
 
 export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
@@ -93,6 +116,10 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
   routePath,
   enable,
   isEnableLoading,
+  useLocation,
+  useParams,
+  generatePath,
+  useRouter,
 }) => {
   const contextValue = useMemo(
     (): PillarContextType => ({
@@ -110,6 +137,10 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       createHash,
       enable,
       isEnableLoading,
+      useLocation,
+      useParams,
+      generatePath,
+      useRouter,
       ...(walletApi || {
         dRepID: '',
         pendingTransaction: {
@@ -147,12 +178,22 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       generateMetadata,
       createJsonLD,
       createHash,
+      enable,
+      isEnableLoading,
+      useLocation,
+      useParams,
+      generatePath,
+      useRouter,
     ]
   );
 
+  console.log({ contextValue });
+
   return (
     <PillarContext.Provider value={contextValue}>
-      {children}
+      <QueryClientProvider client={new QueryClient()}>
+        <DataActionsBarProvider>{children}</DataActionsBarProvider>
+      </QueryClientProvider>
     </PillarContext.Provider>
   );
 };

@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { Box, ButtonBase, Divider, Avatar } from '@mui/material';
 import { StatusPill } from '../common/StatusPill';
 import { Button, Card, Typography } from '@/components';
@@ -43,9 +42,10 @@ export const DRepCard = ({
   isMyDrep,
   onDelegate,
 }: DRepCardProps) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const { addSuccessAlert } = usePillarContext();
+  const { addSuccessAlert, useRouter } = usePillarContext();
+  const router = useRouter();
+
   const { openModal } = useModal();
 
   const openChooseWalletModal = () => {
@@ -302,12 +302,11 @@ export const DRepCard = ({
               data-testid={`${view}-view-details-button`}
               variant="outlined"
               onClick={() =>
-                navigate(
+                router.push(
                   (isConnected
                     ? PATHS.dashboardDRepDirectoryDRep
                     : PATHS.dRepDirectoryDRep
-                  ).replace(':dRepId', view),
-                  { state: { enteredFromWithinApp: true } }
+                  ).replace(':dRepId', view)
                 )
               }
             >

@@ -42,6 +42,24 @@ export type PillarProviderProps = {
     createJsonLD: (data: unknown) => string;
     createHash: (json: unknown) => string;
     routePath?: string;
+    useLocation: () => {
+        pathname: string;
+        search: string;
+        hash: string;
+        state: any;
+        key: any;
+        readonly href: string;
+    };
+    useParams: (routePattern: any) => any;
+    generatePath: (path: string, params?: Record<string, string | number>) => string;
+    useRouter: () => {
+        push: (href: any) => void;
+        replace: (href: any) => void;
+        prefetch: (href: any) => void;
+        back: () => void;
+        forward: () => void;
+        refresh: () => void;
+    };
 };
 export declare const PillarProvider: FC<PillarProviderProps & PropsWithChildren>;
 export declare const usePillarContext: () => PillarContextType;

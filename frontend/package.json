@@ -67,7 +67,7 @@
     "bech32": "^2.0.0",
     "buffer": "^6.0.3",
     "i18next": "^23.16.3",
-    "react-hook-form": "^7.53.1",
+    "react-hook-form": "^7.53.0",
     "react-i18next": "^15.1.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.27.0",

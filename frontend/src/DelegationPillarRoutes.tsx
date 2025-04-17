@@ -13,6 +13,7 @@ import {
 
 export const DelegationPillarRoutes = () => {
   const { isEnabled } = usePillarContext();
+
   return (
     <Routes>
       <Route path={PATHS.dRepDirectory} element={<Outlet />}>

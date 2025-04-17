@@ -39,6 +39,21 @@ createRoot(document.getElementById('root')!).render(
       createHash={(json: unknown) => {
         throw new Error(`Function not implemented. ${json}`);
       }}
+      useLocation={() => {
+        throw new Error('Function not implemented.');
+      }}
+      useParams={() => {
+        throw new Error('Function not implemented.');
+      }}
+      generatePath={() => {
+        throw new Error('Function not implemented.');
+      }}
+      useRouter={() => {
+        throw new Error('Function not implemented.');
+      }}
+      getAddressFromBech32={() => {
+        throw new Error('Function not implemented.');
+      }}
     />
   </StrictMode>
 );

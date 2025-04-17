@@ -1,8 +1,4 @@
 import {
-  Certificate,
-  CertificatesBuilder,
-} from '@emurgo/cardano-serialization-lib-asmjs';
-import {
   createContext,
   FC,
   useMemo,
@@ -38,10 +34,11 @@ export type WalletApi = {
     type,
     voter,
   }: BuildSignSubmitConwayCertTxArgs) => Promise<string>;
-  buildDRepRegCert: (url?: string, hash?: string) => Promise<Certificate>;
-  buildVoteDelegationCert: (vote: string) => Promise<CertificatesBuilder>;
-  buildDRepUpdateCert: (url?: string, hash?: string) => Promise<Certificate>;
-  buildDRepRetirementCert: (voterDeposit: string) => Promise<Certificate>;
+  // TODO: define types from '@emurgo/cardano-serialization-lib-asmjs'
+  buildDRepRegCert: (url?: string, hash?: string) => Promise<any>;
+  buildVoteDelegationCert: (vote: string) => Promise<any>;
+  buildDRepUpdateCert: (url?: string, hash?: string) => Promise<any>;
+  buildDRepRetirementCert: (voterDeposit: string) => Promise<any>;
   isPendingTransaction: () => boolean;
 };
 
@@ -96,6 +93,7 @@ export type PillarProviderProps = {
     forward: () => void;
     refresh: () => void;
   };
+  getAddressFromBech32: (address: string) => any;
 };
 
 export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
@@ -120,6 +118,7 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
   useParams,
   generatePath,
   useRouter,
+  getAddressFromBech32,
 }) => {
   const contextValue = useMemo(
     (): PillarContextType => ({
@@ -154,15 +153,16 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
         isEnabled: false,
         stakeKey: '',
         buildSignSubmitConwayCertTx: async () => '',
-        buildDRepRegCert: async () => ({}) as Certificate,
-        buildVoteDelegationCert: async () => ({}) as CertificatesBuilder,
-        buildDRepUpdateCert: async () => ({}) as Certificate,
-        buildDRepRetirementCert: async () => ({}) as Certificate,
+        buildDRepRegCert: async () => ({}) as any,
+        buildVoteDelegationCert: async () => ({}) as any,
+        buildDRepUpdateCert: async () => ({}) as any,
+        buildDRepRetirementCert: async () => ({}) as any,
         isPendingTransaction: () => false,
       }),
       cExplorerBaseUrl:
         cExplorerBaseUrl ?? import.meta.env.C_EXPLORER_BASE_URL ?? '',
       routePath: routePath ?? '',
+      getAddressFromBech32,
     }),
     [
       apiUrl,
@@ -187,7 +187,7 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
     ]
   );
 
-  console.log({ contextValue });
+  console.log({ getAddressFromBech32 });
 
   return (
     <PillarContext.Provider value={contextValue}>

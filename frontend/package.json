@@ -59,7 +59,6 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@emurgo/cardano-serialization-lib-asmjs": "^14.1.1",
     "@mui/icons-material": "^6.1.5",
     "@mui/material": "^6.1.5",
     "@sentry/react": "^8.35.0",

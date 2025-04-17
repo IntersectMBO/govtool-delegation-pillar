@@ -1,4 +1,3 @@
-import { Certificate, CertificatesBuilder } from '@emurgo/cardano-serialization-lib-asmjs';
 import { FC, PropsWithChildren } from 'react';
 import { PendingTransaction, TransactionStateWithResource, TransactionStateWithoutResource, VoterInfo } from '../types';
 type BuildSignSubmitConwayCertTxArgs = {
@@ -11,10 +10,10 @@ export type WalletApi = {
     isEnabled: boolean;
     stakeKey: string;
     buildSignSubmitConwayCertTx: ({ certBuilder, resourceId, type, voter, }: BuildSignSubmitConwayCertTxArgs) => Promise<string>;
-    buildDRepRegCert: (url?: string, hash?: string) => Promise<Certificate>;
-    buildVoteDelegationCert: (vote: string) => Promise<CertificatesBuilder>;
-    buildDRepUpdateCert: (url?: string, hash?: string) => Promise<Certificate>;
-    buildDRepRetirementCert: (voterDeposit: string) => Promise<Certificate>;
+    buildDRepRegCert: (url?: string, hash?: string) => Promise<any>;
+    buildVoteDelegationCert: (vote: string) => Promise<any>;
+    buildDRepUpdateCert: (url?: string, hash?: string) => Promise<any>;
+    buildDRepRetirementCert: (voterDeposit: string) => Promise<any>;
     isPendingTransaction: () => boolean;
 };
 type EpochParams = {
@@ -60,6 +59,7 @@ export type PillarProviderProps = {
         forward: () => void;
         refresh: () => void;
     };
+    getAddressFromBech32: (address: string) => any;
 };
 export declare const PillarProvider: FC<PillarProviderProps & PropsWithChildren>;
 export declare const usePillarContext: () => PillarContextType;

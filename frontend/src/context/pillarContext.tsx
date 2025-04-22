@@ -187,8 +187,6 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
     ]
   );
 
-  console.log({ getAddressFromBech32 });
-
   return (
     <PillarContext.Provider value={contextValue}>
       <QueryClientProvider client={new QueryClient()}>

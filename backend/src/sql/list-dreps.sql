@@ -1,5 +1,4 @@
 WITH DRepDistr AS (
-  -- Replace ROW_NUMBER with DISTINCT ON
   SELECT DISTINCT ON (drep_distr.hash_id)
     drep_distr.*
   FROM
@@ -29,7 +28,6 @@ DRepStatus AS (
   FROM
     drep_hash dh
     LEFT JOIN (
-      -- Replace ROW_NUMBER with DISTINCT ON
       SELECT DISTINCT ON (dr.drep_hash_id)
         dr.id,
         dr.drep_hash_id,
@@ -60,7 +58,6 @@ LatestDRepRegistrations AS (
   ORDER BY dr.drep_hash_id, dr.tx_id DESC
 ),
 NonDeregisterVotingAnchor AS (
-  -- Replace ROW_NUMBER with DISTINCT ON
   SELECT DISTINCT ON (dr.drep_hash_id)
     dr.id,
     dr.drep_hash_id,
@@ -71,11 +68,10 @@ NonDeregisterVotingAnchor AS (
     JOIN tx ON tx.id = dr.tx_id
   WHERE 
     dr.deposit IS NOT NULL
-    AND dr.deposit >= 0
+    AND COALESCE(dr.deposit, 0) >= 0
   ORDER BY dr.drep_hash_id, dr.tx_id DESC
 ),
 SecondNewestRegistration AS (
-  -- Replace ROW_NUMBER with a more complex query to get second newest
   SELECT DISTINCT ON (dr.drep_hash_id)
     dr.id,
     dr.drep_hash_id,
@@ -90,26 +86,14 @@ SecondNewestRegistration AS (
     )
   ORDER BY dr.drep_hash_id, dr.tx_id DESC
 ),
-NewestRegister AS (
-  -- Replace ROW_NUMBER with DISTINCT ON
-  SELECT DISTINCT ON (dr.drep_hash_id)
-    block.time,
-    dr.drep_hash_id
-  FROM
-    drep_registration dr
-    JOIN tx ON tx.id = dr.tx_id
-    JOIN block ON block.id = tx.block_id
-  WHERE
-    NOT (dr.deposit < 0)
-  ORDER BY dr.drep_hash_id, dr.tx_id DESC
-),
 FirstRegister AS (
-  -- Replace ROW_NUMBER with DISTINCT ON
   SELECT DISTINCT ON (dr.drep_hash_id)
     dr.tx_id,
     dr.drep_hash_id
   FROM
     drep_registration dr
+    JOIN tx ON tx.id = dr.tx_id
+    JOIN block ON block.id = tx.block_id
   ORDER BY dr.drep_hash_id, dr.tx_id ASC
 )
 SELECT
@@ -123,7 +107,7 @@ SELECT
   DRepStatus.status,
   (DRepActivity.epoch_no - MAX(COALESCE(block.epoch_no, block_first_register.epoch_no))) <= DRepActivity.drep_activity AS active,
   encode(dr_voting_anchor.tx_hash, 'hex') AS tx_hash,
-  newestRegister.time AS last_register_time,
+  block_first_register.time AS first_register_time,
   COALESCE(latestDeposit.deposit, 0) as latest_deposit,
   non_deregister_voting_anchor.url IS NOT NULL AS has_non_deregister_voting_anchor,
   fetch_error.message as fetch_error,
@@ -177,8 +161,6 @@ FROM
   LEFT JOIN voting_procedure AS voting_procedure ON voting_procedure.drep_voter = dh.id
   LEFT JOIN tx AS tx ON tx.id = voting_procedure.tx_id
   LEFT JOIN block AS block ON block.id = tx.block_id
-  LEFT JOIN NewestRegister AS newestRegister 
-    ON newestRegister.drep_hash_id = dh.id
   LEFT JOIN FirstRegister AS dr_first_register 
     ON dr_first_register.drep_hash_id = dh.id
   LEFT JOIN tx AS tx_first_register ON tx_first_register.id = dr_first_register.tx_id
@@ -204,7 +186,6 @@ WHERE
     )
   )
 GROUP BY
-  dh.id, -- Add this line to include dh.id in the GROUP BY clause
   dh.raw,
   second_to_newest_drep_registration.voting_anchor_id,
   dh.view,
@@ -217,7 +198,7 @@ GROUP BY
   DRepActivity.epoch_no,
   DRepActivity.drep_activity,
   dr_voting_anchor.tx_hash,
-  newestRegister.time,
+  block_first_register.time,
   latestDeposit.deposit,
   non_deregister_voting_anchor.url,
   fetch_error.message,
@@ -231,12 +212,12 @@ GROUP BY
 ORDER BY
   CASE
     WHEN $2 = 'VotingPower' THEN DRepDistr.amount::numeric
-    WHEN $2 = 'RegistrationDate' THEN EXTRACT(EPOCH FROM newestRegister.time)::numeric
+    WHEN $2 = 'RegistrationDate' THEN EXTRACT(EPOCH FROM block_first_register.time)::numeric
     WHEN $2 = 'Status' THEN
       CASE
         WHEN DRepStatus.status = 'Retired' THEN 1
         WHEN DRepStatus.status = 'Active' THEN 2
         ELSE 3
       END::numeric
-    ELSE dh.id::numeric -- Cast to the same type as other branches
+    ELSE RANDOM()
   END

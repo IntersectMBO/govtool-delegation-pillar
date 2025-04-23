@@ -6,8 +6,12 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DelegationPillar
       walletApi={null}
-      apiUrl={process.env.API_URL || ''}
-      validationApiUrl={process.env.VALIDATION_API_URL || ''}
+      enable={(message: string) => {
+        throw new Error(`Function not implemented. ${message}`);
+      }}
+      isEnableLoading=""
+      apiUrl={import.meta.env.API_URL as string}
+      validationApiUrl={import.meta.env.VALIDATION_API_URL as string}
       epochParams={{
         drep_deposit: 1000000,
       }}
@@ -35,7 +39,21 @@ createRoot(document.getElementById('root')!).render(
       createHash={(json: unknown) => {
         throw new Error(`Function not implemented. ${json}`);
       }}
+      useLocation={() => {
+        throw new Error('Function not implemented.');
+      }}
+      useParams={() => {
+        throw new Error('Function not implemented.');
+      }}
+      generatePath={() => {
+        throw new Error('Function not implemented.');
+      }}
+      useRouter={() => {
+        throw new Error('Function not implemented.');
+      }}
+      getAddressFromBech32={() => {
+        throw new Error('Function not implemented.');
+      }}
     />
-    </StrictMode>
-  );
-  
+  </StrictMode>
+);

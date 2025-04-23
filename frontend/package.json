@@ -4,9 +4,9 @@
   "version": "0.0.2",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/govtool-delegation-pillar.umd.js",
-  "module": "./dist/govtool-delegation-pillar.es.js",
-  "types": "./dist/types/export.d.ts",
+  "main": "./dist/@intersect.mbo/govtool-delegation-pillar.umd.js",
+  "module": "./dist/@intersect.mbo/govtool-delegation-pillar.es.js",
+  "types": "./dist/export.d.ts",
   "files": [
     "dist",
     "README.md",
@@ -15,12 +15,12 @@
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/types/export.d.ts",
-        "default": "./dist/govtool-delegation-pillar.es.js"
+        "types": "./dist/export.d.ts",
+        "default": "./dist/@intersect.mbo/govtool-delegation-pillar.es.js"
       },
       "require": {
-        "types": "./dist/types/export.d.ts",
-        "default": "./dist/govtool-delegation-pillar.umd.js"
+        "types": "./dist/export.d.ts",
+        "default": "./dist/@intersect.mbo/govtool-delegation-pillar.umd.js"
       }
     },
     "./package.json": "./package.json",
@@ -59,14 +59,14 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@emurgo/cardano-serialization-lib-asmjs": "^13.1.0",
     "@mui/icons-material": "^6.1.5",
     "@mui/material": "^6.1.5",
     "@sentry/react": "^8.35.0",
     "axios": "^1.7.7",
     "bech32": "^2.0.0",
+    "buffer": "^6.0.3",
     "i18next": "^23.16.3",
-    "react-hook-form": "^7.53.1",
+    "react-hook-form": "^7.53.0",
     "react-i18next": "^15.1.0",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.27.0",

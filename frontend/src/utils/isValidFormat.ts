@@ -1,4 +1,3 @@
-import { Address } from '@emurgo/cardano-serialization-lib-asmjs';
 import i18n from '@/i18n';
 
 export const URL_REGEX =
@@ -17,16 +16,19 @@ export function isValidURLLength(s: string) {
   return byteLength <= 128 ? true : i18n.t('forms.errors.tooLongUrl');
 }
 
-export async function isReceivingAddress(address?: string) {
-  try {
-    if (!address) {
-      return true;
+export const isReceivingAddress =
+  // TODO: change any to Address type from '@emurgo/cardano-serialization-lib-asmjs'
+  (getAddress: (address: string) => any) => async (address?: string) => {
+    try {
+      if (!address) {
+        return true;
+      }
+      const receivingAddress = getAddress(address);
+
+      return receivingAddress
+        ? true
+        : i18n.t('forms.errors.mustBeReceivingAddress');
+    } catch {
+      return i18n.t('forms.errors.mustBeReceivingAddress');
     }
-    const receivingAddress = Address.from_bech32(address);
-    return receivingAddress
-      ? true
-      : i18n.t('forms.errors.mustBeReceivingAddress');
-  } catch {
-    return i18n.t('forms.errors.mustBeReceivingAddress');
-  }
-}
+  };

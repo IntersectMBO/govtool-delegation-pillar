@@ -2,8 +2,7 @@ import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Box } from '@mui/material';
 
 import { ControlledField, Spacer, Typography } from '@/components';
-import { Rules } from '@/consts';
-import { useScreenDimension, useTranslation } from '@/hooks';
+import { useRules, useScreenDimension, useTranslation } from '@/hooks';
 import { DRepDataFormValues } from '@/types';
 import { InfoText } from './dRepDataForm/InfoText';
 import { FieldDescription } from './dRepDataForm/FieldDescription';
@@ -18,6 +17,7 @@ type Props = {
 export const DRepDataForm = ({ control, errors, register }: Props) => {
   const { t } = useTranslation();
   const { isMobile } = useScreenDimension();
+  const Rules = useRules();
 
   return (
     <div>

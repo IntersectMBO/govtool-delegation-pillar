@@ -2,6 +2,7 @@ export declare const ICONS: {
     arrowDownIcon: string;
     closeIcon: string;
     copyBlueIcon: string;
+    defaultDRepIcon: string;
     download: string;
     editIcon: string;
     externalLinkIcon: string;

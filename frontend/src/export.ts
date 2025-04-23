@@ -10,6 +10,8 @@ import {
   RegisterAsDirectVoterPage,
   RetireAsDirectVoterPage,
 } from '@/pages';
+import DelegationPillar from './DelegationPillar';
+import { ThemeWrapper } from './theme/ThemeWrapper';
 
 export {
   PillarProvider,
@@ -23,4 +25,6 @@ export {
   RetireAsDRepPage,
   RegisterAsDirectVoterPage,
   RetireAsDirectVoterPage,
+  DelegationPillar,
+  ThemeWrapper,
 };

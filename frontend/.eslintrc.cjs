@@ -54,12 +54,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['**/*.stories.{ts,tsx}', '**/*.test.{ts,tsx}'],
-      },
-    ],
+    'import/no-extraneous-dependencies': 'off',
 
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/no-noninteractive-element-interactions': 'off',

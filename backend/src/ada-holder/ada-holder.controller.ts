@@ -5,7 +5,7 @@ import { AdaHolderService } from './ada-holder.service';
 @ApiTags('ada-holder')
 @Controller('ada-holder')
 export class AdaHolderController {
-  constructor(private adaHolderService: AdaHolderService) {}
+  constructor(private readonly adaHolderService: AdaHolderService) {}
 
   @Get('get-current-delegation/:stakeKey')
   @ApiOperation({ summary: 'Get current delegation of a stake key' })

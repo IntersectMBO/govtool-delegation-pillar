@@ -1,8 +1,4 @@
 import {
-  Certificate,
-  CertificatesBuilder,
-} from '@emurgo/cardano-serialization-lib-asmjs';
-import {
   createContext,
   FC,
   useMemo,
@@ -10,12 +6,14 @@ import {
   PropsWithChildren,
 } from 'react';
 
+import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   PendingTransaction,
   TransactionStateWithResource,
   TransactionStateWithoutResource,
   VoterInfo,
 } from '@/types';
+import { DataActionsBarProvider } from './dataActionsBar';
 
 type BuildSignSubmitConwayCertTxArgs = {
   certBuilder?: unknown;
@@ -36,10 +34,11 @@ export type WalletApi = {
     type,
     voter,
   }: BuildSignSubmitConwayCertTxArgs) => Promise<string>;
-  buildDRepRegCert: (url?: string, hash?: string) => Promise<Certificate>;
-  buildVoteDelegationCert: (vote: string) => Promise<CertificatesBuilder>;
-  buildDRepUpdateCert: (url?: string, hash?: string) => Promise<Certificate>;
-  buildDRepRetirementCert: (voterDeposit: string) => Promise<Certificate>;
+  // TODO: define types from '@emurgo/cardano-serialization-lib-asmjs'
+  buildDRepRegCert: (url?: string, hash?: string) => Promise<any>;
+  buildVoteDelegationCert: (vote: string) => Promise<any>;
+  buildDRepUpdateCert: (url?: string, hash?: string) => Promise<any>;
+  buildDRepRetirementCert: (voterDeposit: string) => Promise<any>;
   isPendingTransaction: () => boolean;
 };
 
@@ -54,6 +53,12 @@ const PillarContext = createContext<PillarContextType | undefined>(undefined);
 
 export type PillarProviderProps = {
   walletApi: WalletApi | null;
+  enable: (name: string) => Promise<{
+    status: string;
+    stakeKey?: boolean;
+    error?: string;
+  }>;
+  isEnableLoading: string | null;
   apiUrl?: string;
   validationApiUrl?: string;
   cExplorerBaseUrl?: string;
@@ -66,6 +71,29 @@ export type PillarProviderProps = {
   generateMetadata: () => void;
   createJsonLD: (data: unknown) => string;
   createHash: (json: unknown) => string;
+  routePath?: string;
+  useLocation: () => {
+    pathname: string;
+    search: string;
+    hash: string;
+    state: any;
+    key: any;
+    readonly href: string;
+  };
+  useParams: (routePattern: any) => any;
+  generatePath: (
+    path: string,
+    params?: Record<string, string | number>
+  ) => string;
+  useRouter: () => {
+    push: (href: any) => void;
+    replace: (href: any) => void;
+    prefetch: (href: any) => void;
+    back: () => void;
+    forward: () => void;
+    refresh: () => void;
+  };
+  getAddressFromBech32: (address: string) => any;
 };
 
 export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
@@ -83,12 +111,20 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
   generateMetadata,
   createJsonLD,
   createHash,
+  routePath,
+  enable,
+  isEnableLoading,
+  useLocation,
+  useParams,
+  generatePath,
+  useRouter,
+  getAddressFromBech32,
 }) => {
   const contextValue = useMemo(
     (): PillarContextType => ({
-      apiUrl: apiUrl ?? process.env.API_URL ?? '',
+      apiUrl: apiUrl ?? import.meta.env.API_URL ?? '',
       validationApiUrl:
-        validationApiUrl ?? process.env.VALIDATION_API_URL ?? '',
+        validationApiUrl ?? import.meta.env.VALIDATION_API_URL ?? '',
       epochParams,
       connectWallet,
       openFeedbackWindow,
@@ -98,6 +134,12 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       generateMetadata,
       createJsonLD,
       createHash,
+      enable,
+      isEnableLoading,
+      useLocation,
+      useParams,
+      generatePath,
+      useRouter,
       ...(walletApi || {
         dRepID: '',
         pendingTransaction: {
@@ -111,14 +153,16 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
         isEnabled: false,
         stakeKey: '',
         buildSignSubmitConwayCertTx: async () => '',
-        buildDRepRegCert: async () => ({}) as Certificate,
-        buildVoteDelegationCert: async () => ({}) as CertificatesBuilder,
-        buildDRepUpdateCert: async () => ({}) as Certificate,
-        buildDRepRetirementCert: async () => ({}) as Certificate,
+        buildDRepRegCert: async () => ({}) as any,
+        buildVoteDelegationCert: async () => ({}) as any,
+        buildDRepUpdateCert: async () => ({}) as any,
+        buildDRepRetirementCert: async () => ({}) as any,
         isPendingTransaction: () => false,
       }),
       cExplorerBaseUrl:
-        cExplorerBaseUrl ?? process.env.C_EXPLORER_BASE_URL ?? '',
+        cExplorerBaseUrl ?? import.meta.env.C_EXPLORER_BASE_URL ?? '',
+      routePath: routePath ?? '',
+      getAddressFromBech32,
     }),
     [
       apiUrl,
@@ -134,12 +178,20 @@ export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({
       generateMetadata,
       createJsonLD,
       createHash,
+      enable,
+      isEnableLoading,
+      useLocation,
+      useParams,
+      generatePath,
+      useRouter,
     ]
   );
 
   return (
     <PillarContext.Provider value={contextValue}>
-      {children}
+      <QueryClientProvider client={new QueryClient()}>
+        <DataActionsBarProvider>{children}</DataActionsBarProvider>
+      </QueryClientProvider>
     </PillarContext.Provider>
   );
 };

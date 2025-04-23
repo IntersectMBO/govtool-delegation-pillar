@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 import { PATHS } from '@/consts';
@@ -12,12 +11,13 @@ import {
 import { TransactionBox, WrongRouteInfo, RegisterAsdRep } from '@/features';
 
 export const RegisterAsdRepPage = () => {
-  const { dRepID } = usePillarContext();
-  const navigate = useNavigate();
+  const { dRepID, useRouter } = usePillarContext();
   const { t } = useTranslation();
   const { voter } = useGetVoterInfo();
   const { dRep } = useGetDRepDetailsQuery(dRepID);
   const openAbandonWarningModal = useAbandonWarningModal();
+
+  const router = useRouter();
 
   if (!voter)
     return (
@@ -33,10 +33,13 @@ export const RegisterAsdRepPage = () => {
           title={t(`registration.alreadyRegistered.title`)}
           description={t(`registration.alreadyRegistered.description`)}
           primaryButtonText={t('registration.alreadyRegistered.viewDetails')}
-          onPrimaryButton={() =>
-            dRep &&
-            navigate(`../${PATHS.dRepDetails}`.replace(':dRepId', dRep.view))
-          }
+          onPrimaryButton={() => {
+            if (!dRep) return;
+
+            router.push(
+              `../${PATHS.dRepDetails}`.replace(':dRepId', dRep.view)
+            );
+          }}
         />
       </TransactionBox>
     );

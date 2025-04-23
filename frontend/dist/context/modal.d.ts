@@ -8,7 +8,7 @@ interface ContextModal {
     preventDismiss?: boolean;
     onClose?: () => void;
 }
-export type ModalType = 'none' | 'loadingModal' | 'statusModal' | 'externalLink';
+export type ModalType = 'none' | 'loadingModal' | 'statusModal' | 'externalLink' | 'chooseWallet';
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 export interface ModalState<T> {
     type: ModalType;

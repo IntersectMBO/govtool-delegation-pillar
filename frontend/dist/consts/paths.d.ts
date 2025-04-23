@@ -6,6 +6,9 @@ export declare const PATHS: {
     registerAsDirectVoter: string;
     retireAsDrep: string;
     retireAsDirectVoter: string;
+    dashboardDRepDirectoryDRep: string;
+    dRepDirectoryDRep: string;
+    stakeKeys: string;
     dashboard: string;
 };
 export declare const DOCS: {

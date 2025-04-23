@@ -8,8 +8,7 @@ import {
 import { Box } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import { Rules } from '@/consts';
-import { useTranslation } from '@/hooks';
+import { useRules, useTranslation } from '@/hooks';
 import { DRepDataFormValues } from '@/types';
 import { FieldDescription } from './FieldDescription';
 import { Button, ControlledField } from '../../../../components';
@@ -63,6 +62,7 @@ export const ReferencesSection = ({
 
   const removeLink = useCallback((index: number) => remove(index), [remove]);
 
+  const Rules = useRules();
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <FieldDescription

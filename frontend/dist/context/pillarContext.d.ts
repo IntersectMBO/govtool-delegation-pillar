@@ -1,4 +1,3 @@
-import { Certificate, CertificatesBuilder } from '@emurgo/cardano-serialization-lib-asmjs';
 import { FC, PropsWithChildren } from 'react';
 import { PendingTransaction, TransactionStateWithResource, TransactionStateWithoutResource, VoterInfo } from '../types';
 type BuildSignSubmitConwayCertTxArgs = {
@@ -11,10 +10,10 @@ export type WalletApi = {
     isEnabled: boolean;
     stakeKey: string;
     buildSignSubmitConwayCertTx: ({ certBuilder, resourceId, type, voter, }: BuildSignSubmitConwayCertTxArgs) => Promise<string>;
-    buildDRepRegCert: (url?: string, hash?: string) => Promise<Certificate>;
-    buildVoteDelegationCert: (vote: string) => Promise<CertificatesBuilder>;
-    buildDRepUpdateCert: (url?: string, hash?: string) => Promise<Certificate>;
-    buildDRepRetirementCert: (voterDeposit: string) => Promise<Certificate>;
+    buildDRepRegCert: (url?: string, hash?: string) => Promise<any>;
+    buildVoteDelegationCert: (vote: string) => Promise<any>;
+    buildDRepUpdateCert: (url?: string, hash?: string) => Promise<any>;
+    buildDRepRetirementCert: (voterDeposit: string) => Promise<any>;
     isPendingTransaction: () => boolean;
 };
 type EpochParams = {
@@ -23,6 +22,12 @@ type EpochParams = {
 type PillarContextType = Required<Omit<PillarProviderProps, 'walletApi'>> & WalletApi;
 export type PillarProviderProps = {
     walletApi: WalletApi | null;
+    enable: (name: string) => Promise<{
+        status: string;
+        stakeKey?: boolean;
+        error?: string;
+    }>;
+    isEnableLoading: string | null;
     apiUrl?: string;
     validationApiUrl?: string;
     cExplorerBaseUrl?: string;
@@ -35,6 +40,26 @@ export type PillarProviderProps = {
     generateMetadata: () => void;
     createJsonLD: (data: unknown) => string;
     createHash: (json: unknown) => string;
+    routePath?: string;
+    useLocation: () => {
+        pathname: string;
+        search: string;
+        hash: string;
+        state: any;
+        key: any;
+        readonly href: string;
+    };
+    useParams: (routePattern: any) => any;
+    generatePath: (path: string, params?: Record<string, string | number>) => string;
+    useRouter: () => {
+        push: (href: any) => void;
+        replace: (href: any) => void;
+        prefetch: (href: any) => void;
+        back: () => void;
+        forward: () => void;
+        refresh: () => void;
+    };
+    getAddressFromBech32: (address: string) => any;
 };
 export declare const PillarProvider: FC<PillarProviderProps & PropsWithChildren>;
 export declare const usePillarContext: () => PillarContextType;

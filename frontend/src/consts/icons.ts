@@ -2,6 +2,7 @@ export const ICONS = {
   arrowDownIcon: '/icons/ArrowDown.svg',
   closeIcon: '/icons/Close.svg',
   copyBlueIcon: '/icons/CopyBlue.svg',
+  defaultDRepIcon: '/icons/DefaultDRep.svg',
   download: '/icons/Download.svg',
   editIcon: '/icons/Edit.svg',
   externalLinkIcon: '/icons/ExternalLink.svg',

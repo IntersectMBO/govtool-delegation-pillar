@@ -1,5 +1,5 @@
-import { isReceivingAddress, isValidURLLength } from '../../utils';
-export declare const Rules: {
+import { isValidURLLength } from '../../utils';
+export declare const useRules: () => {
     GIVEN_NAME: {
         required: {
             value: boolean;
@@ -50,7 +50,7 @@ export declare const Rules: {
         };
     };
     PAYMENT_ADDRESS: {
-        validate: typeof isReceivingAddress;
+        validate: (address?: string | undefined) => Promise<string | true>;
     };
     QUALIFICATIONS: {
         maxLength: {

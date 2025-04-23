@@ -1,20 +1,21 @@
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
+import { CssBaseline } from '@mui/material';
 import { voltaireTheme } from '@/theme';
 import {
   DataActionsBarProvider,
+  ModalProvider,
   PillarProvider,
   PillarProviderProps,
 } from '@/context';
-import { CssBaseline } from '@mui/material';
 import { DelegationPillarRoutes } from './DelegationPillarRoutes';
 
 const DelegationPillar = ({
   walletApi,
   apiUrl,
   validationApiUrl,
+  routePath,
   ...props
 }: PillarProviderProps) => {
   return (
@@ -26,12 +27,14 @@ const DelegationPillar = ({
     >
       <QueryClientProvider client={new QueryClient()}>
         <ThemeProvider theme={voltaireTheme}>
-          <DataActionsBarProvider>
-            <CssBaseline />
-            <BrowserRouter>
-              <DelegationPillarRoutes />
-            </BrowserRouter>
-          </DataActionsBarProvider>
+          <ModalProvider>
+            <DataActionsBarProvider>
+              <CssBaseline />
+              <BrowserRouter basename={routePath}>
+                <DelegationPillarRoutes />
+              </BrowserRouter>
+            </DataActionsBarProvider>
+          </ModalProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </PillarProvider>

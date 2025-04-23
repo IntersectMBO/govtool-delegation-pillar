@@ -4,7 +4,7 @@ export declare const useDRepDataForm: ({ type, onCancel, }: {
     type: 'register' | 'edit';
     onCancel?: (() => void) | undefined;
 }) => {
-    control: import('react-hook-form').Control<DRepDataFormValues, any>;
+    control: import('react-hook-form').Control<DRepDataFormValues, any, DRepDataFormValues>;
     errors: import('react-hook-form').FieldErrors<DRepDataFormValues>;
     generateMetadata: () => void;
     getValues: import('react-hook-form').UseFormGetValues<DRepDataFormValues>;

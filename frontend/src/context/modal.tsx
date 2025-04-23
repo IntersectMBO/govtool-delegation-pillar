@@ -7,6 +7,7 @@ import {
   LoadingModal,
 } from '@/components';
 import { basicReducer, callAll, BasicReducer } from '@/utils';
+import { ChooseWalletModal } from '@/components/modal/ChooseWalletModal';
 
 interface ProviderProps {
   children: React.ReactNode;
@@ -23,7 +24,8 @@ export type ModalType =
   | 'none'
   | 'loadingModal'
   | 'statusModal'
-  | 'externalLink';
+  | 'externalLink'
+  | 'chooseWallet';
 
 const modals: Record<ModalType, ContextModal> = {
   none: {
@@ -37,6 +39,9 @@ const modals: Record<ModalType, ContextModal> = {
   },
   externalLink: {
     component: <ExternalLinkModal />,
+  },
+  chooseWallet: {
+    component: <ChooseWalletModal />,
   },
 };
 

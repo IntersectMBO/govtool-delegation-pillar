@@ -1,17 +1,17 @@
-import { Link } from 'react-router-dom';
-import { Box, ButtonBase, Divider } from '@mui/material';
-
+import { Box, ButtonBase, Divider, Avatar } from '@mui/material';
+import { StatusPill } from '../common/StatusPill';
 import { Button, Card, Typography } from '@/components';
-import { ICONS } from '@/consts';
-import { usePillarContext } from '@/context';
 import { useTranslation } from '@/hooks';
 import { DRepData, DRepStatus } from '@/types';
+import { useModal, usePillarContext } from '@/context';
+import { ICONS, PATHS } from '@/consts';
+import { encodeCIP129Identifier } from '@/utils/cip129identifier';
+import { getBase64ImageDetails } from '@/utils/getBase64ImageDetails';
 import {
   correctDRepDirectoryFormat,
   ellipsizeText,
   getMetadataDataMissingStatusTranslation,
 } from '@/utils';
-import { StatusPill } from '../common/StatusPill';
 
 type DRepCardProps = {
   dRep: DRepData;
@@ -24,7 +24,17 @@ type DRepCardProps = {
 };
 
 export const DRepCard = ({
-  dRep: { status, type, view, votingPower, givenName, metadataStatus },
+  dRep: {
+    status,
+    type,
+    view,
+    votingPower,
+    givenName,
+    metadataStatus,
+    image,
+    drepId,
+    isScriptBased,
+  },
   isConnected,
   isDelegationLoading,
   isInProgress,
@@ -33,7 +43,32 @@ export const DRepCard = ({
   onDelegate,
 }: DRepCardProps) => {
   const { t } = useTranslation();
-  const { addSuccessAlert, connectWallet } = usePillarContext();
+  const { addSuccessAlert, useRouter } = usePillarContext();
+  const router = useRouter();
+
+  const { openModal } = useModal();
+
+  const openChooseWalletModal = () => {
+    console.log('openChooseWalletModal');
+
+    // TODO: fix routing?
+    openModal({
+      type: 'chooseWallet',
+      state: {
+        pathToNavigate: PATHS.dashboardDRepDirectoryDRep.replace(
+          ':dRepId',
+          view
+        ),
+      },
+    });
+  };
+
+  const cip129Identifier = encodeCIP129Identifier({
+    txID: `${isScriptBased ? '23' : '22'}${drepId}`,
+    bech32Prefix: 'drep',
+  });
+
+  const base64Image = getBase64ImageDetails(image ?? '');
 
   return (
     <Card
@@ -68,7 +103,7 @@ export const DRepCard = ({
         rowGap={4}
         columnGap={6}
         sx={{
-          '../../container root (min-width: 480px)': {
+          '@container root (min-width: 480px)': {
             flexDirection: 'row',
           },
         }}
@@ -80,47 +115,127 @@ export const DRepCard = ({
             rowGap={3}
             columnGap={10}
             sx={{
-              '../../container (min-width: 480px)': {
+              '@container (min-width: 480px)': {
                 flexDirection: 'row',
                 alignItems: 'center',
               },
               containerType: 'inline-size',
             }}
           >
-            <Box minWidth={0} display="flex" flexDirection="column">
-              <Typography
-                sx={{ ellipsisStyles, color: metadataStatus && 'errorRed' }}
-              >
-                {metadataStatus
-                  ? getMetadataDataMissingStatusTranslation(metadataStatus)
-                  : ellipsizeText(givenName ?? '', 25)}
-              </Typography>
-              <ButtonBase
-                data-testid={`${view}-copy-id-button`}
-                onClick={(e) => {
-                  navigator.clipboard.writeText(view);
-                  addSuccessAlert(t('alerts.copiedToClipboard'));
-                  e.stopPropagation();
-                }}
+            <Box flexDirection="row" minWidth={0} display="flex">
+              <Avatar
+                alt="drep-image"
+                src={
+                  (base64Image.isValidBase64Image
+                    ? `${base64Image.base64Prefix}${image}`
+                    : image) || ICONS.defaultDRepIcon
+                }
+                data-testid="drep-image"
+              />
+              <Box
                 sx={{
-                  gap: 1,
-                  width: '250px',
-                  maxWidth: '100%',
-                  '&:hover': {
-                    opacity: 0.6,
-                    transition: 'opacity 0.3s',
+                  marginLeft: {
+                    xxs: 1,
+                    xs: 2,
+                    sm: 3,
                   },
                 }}
               >
-                <Typography color="primary" variant="body2" sx={ellipsisStyles}>
-                  {view}
+                <Typography
+                  sx={{ ellipsisStyles, color: metadataStatus && 'errorRed' }}
+                >
+                  {metadataStatus
+                    ? getMetadataDataMissingStatusTranslation(metadataStatus)
+                    : ellipsizeText(givenName ?? '', 25)}
                 </Typography>
-                <img alt="" src={ICONS.copyBlueIcon} />
-              </ButtonBase>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <ButtonBase
+                    data-testid={`${cip129Identifier}-copy-id-button`}
+                    onClick={(e) => {
+                      navigator.clipboard.writeText(cip129Identifier);
+                      addSuccessAlert(t('alerts.copiedToClipboard'));
+                      e.stopPropagation();
+                    }}
+                    sx={{
+                      gap: 1,
+                      width: '250px',
+                      maxWidth: {
+                        xxs: '200px',
+                        xs: '100%',
+                      },
+                      '&:hover': {
+                        opacity: 0.6,
+                        transition: 'opacity 0.3s',
+                      },
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Typography
+                      color="primary"
+                      variant="body2"
+                      sx={ellipsisStyles}
+                    >
+                      {cip129Identifier}
+                    </Typography>
+                    <img alt="" src={ICONS.copyBlueIcon} />
+                  </ButtonBase>
+                  <ButtonBase
+                    data-testid={`${view}-copy-id-button`}
+                    onClick={(e) => {
+                      navigator.clipboard.writeText(view);
+                      addSuccessAlert(t('alerts.copiedToClipboard'));
+                      e.stopPropagation();
+                    }}
+                    sx={{
+                      gap: 1,
+                      width: '250px',
+                      maxWidth: {
+                        xxs: '200px',
+                        xs: '100%',
+                      },
+                      '&:hover': {
+                        opacity: 0.6,
+                        transition: 'opacity 0.3s',
+                      },
+                    }}
+                  >
+                    <Typography variant="body2" sx={ellipsisStyles}>
+                      (CIP-105){' '}
+                      <Typography
+                        color="primary"
+                        variant="body2"
+                        component="span"
+                      >
+                        {view}
+                      </Typography>
+                    </Typography>
+                    <img alt="" src={ICONS.copyBlueIcon} />
+                  </ButtonBase>
+                </Box>
+              </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', flex: { xl: 1 }, gap: 3 }}>
-              <Box sx={{ width: { lg: '128px' } }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flex: { xl: 1 },
+                gap: 3,
+              }}
+            >
+              <Box
+                sx={{
+                  width: { lg: '128px' },
+                  display: 'flex',
+                  alignItems: 'flex-end',
+                  flexDirection: 'column',
+                }}
+              >
                 <Typography
                   data-testid={`${view}-voting-power-label`}
                   variant="caption"
@@ -171,25 +286,34 @@ export const DRepCard = ({
         <Box
           display="flex"
           gap={2.5}
-          minWidth={isConnected ? 233 : 310}
           sx={{
-            '../../container root (min-width: 480px)': {
+            '@container root (min-width: 480px)': {
               justifyContent: 'flex-end',
               alignItems: 'center',
+            },
+            minWidth: {
+              xxs: '233px',
+              xs: isConnected ? '233px' : '310px',
             },
           }}
         >
           {type === 'DRep' && (
-            <Link to={view}>
-              <Button
-                data-testid={`${view}-view-details-button`}
-                variant="outlined"
-              >
-                {t('viewDetails')}
-              </Button>
-            </Link>
+            <Button
+              data-testid={`${view}-view-details-button`}
+              variant="outlined"
+              onClick={() =>
+                router.push(
+                  (isConnected
+                    ? PATHS.dashboardDRepDirectoryDRep
+                    : PATHS.dRepDirectoryDRep
+                  ).replace(':dRepId', view)
+                )
+              }
+            >
+              {t('viewDetails')}
+            </Button>
           )}
-          {status === 'Active' &&
+          {['Active', 'Inactive'].includes(status) &&
             isConnected &&
             onDelegate &&
             !isMyDrep &&
@@ -202,10 +326,10 @@ export const DRepCard = ({
                 {t('delegate')}
               </Button>
             )}
-          {status === 'Active' && !isConnected && (
+          {['Active', 'Inactive'].includes(status) && !isConnected && (
             <Button
               data-testid={`${view}-connect-to-delegate-button`}
-              onClick={connectWallet}
+              onClick={openChooseWalletModal}
             >
               {t('connectToDelegate')}
             </Button>
@@ -220,4 +344,5 @@ const ellipsisStyles = {
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  maxWidth: { xxs: '200px', xs: '100%' },
 } as const;

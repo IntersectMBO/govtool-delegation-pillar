@@ -47,18 +47,22 @@ export class DrepService {
       search = '',
     } = query;
 
+    const statusArray = Array.isArray(status) ? status : [status];
+
     const countQuery = `SELECT COUNT(*) FROM (${sql}) AS filtered_dreps`;
 
     const totalResult = await this.dataSource.query<{ count: string }[]>(
       countQuery,
-      [search, sort, status.length ? status : null],
+      [search, sort, statusArray.length ? statusArray : null],
     );
 
     const total = parseInt(totalResult[0].count, 10);
 
+    const offset = (page - 1) * pageSize;
+
     const result = await this.dataSource.query<RawQueryDRepListItemType[]>(
       `${sql} LIMIT $5 OFFSET $4`,
-      [search, sort, status.length ? status : null, page * pageSize, pageSize],
+      [search, sort, statusArray.length ? statusArray : null, offset, pageSize],
     );
 
     const elements = result.map(this.mapDRepListItem);
@@ -136,19 +140,16 @@ export class DrepService {
 
   private mapDRepListItem(dRep: RawQueryDRepListItemType): DRepListItemType {
     return {
-      dRepHash: dRep.drep_id,
-      dRepView: dRep.view,
-      isScriptBased: dRep.has_script,
-      url: dRep.url,
-      dataHash: dRep.data_hash,
+      drepId: dRep.drep_id,
+      view: dRep.view,
+      url: dRep.metadata_url,
+      metadataHash: dRep.metadata_hash,
       deposit: +dRep.deposit,
-      votingPower: dRep.voting_power ? +dRep.voting_power : null,
-      isActive: dRep.active,
-      txHash: dRep.tx_hash,
-      date: dRep.last_register_time,
-      latestNonDeregisterVotingAnchorWasNotNull:
-        dRep.has_non_deregister_voting_anchor,
-      metadataError: dRep.fetch_error,
+      votingPower: +dRep.voting_power,
+      status: dRep.status,
+      latestTxHash: dRep.latest_tx_hash,
+      latestRegistrationDate: dRep.latest_registration_date,
+      metadataError: dRep.metadata_error,
       paymentAddress: dRep.payment_address,
       givenName: dRep.given_name,
       objectives: dRep.objectives,
@@ -157,8 +158,6 @@ export class DrepService {
       imageUrl: dRep.image_url,
       imageHash: dRep.image_hash,
       type: dRep.type,
-      status: dRep.status,
-      latestDeposit: +dRep.latest_deposit,
     };
   }
 }

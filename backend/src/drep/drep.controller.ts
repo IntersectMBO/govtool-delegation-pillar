@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import {
   ApiOperation,
   ApiParam,
@@ -21,7 +21,7 @@ export class DrepController {
     return this.drepService.getVotingPower(drepId);
   }
 
-  @Post('list')
+  @Get('list')
   @ApiOperation({ summary: 'Get a list of DReps' })
   @ApiQuery({
     name: 'sort',
@@ -63,7 +63,7 @@ export class DrepController {
       ],
     },
   })
-  async getDRepList(@Body() query: DRepListParamsDto) {
+  async getDRepList(@Query() query: DRepListParamsDto) {
     return this.drepService.listDReps(query);
   }
 

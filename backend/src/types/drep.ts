@@ -33,17 +33,15 @@ export type GetDRepListParams = {
 export type RawQueryDRepListItemType = {
   drep_id: string;
   view: string;
-  has_script: boolean;
-  url: string | null;
-  data_hash: string | null;
+  metadata_url: string | null;
+  metadata_hash: string | null;
   deposit: string;
-  voting_power?: string;
+  voting_power: string;
   status: DRepStatus;
-  active: boolean;
-  tx_hash: string;
-  last_register_time: string;
-  latest_deposit: string;
-  has_non_deregister_voting_anchor: boolean;
+  type: DRepType;
+  latest_tx_hash: string;
+  latest_registration_date: string;
+  metadata_error: string | null;
   fetch_error: string | null;
   payment_address: string | null;
   given_name: string | null;
@@ -52,22 +50,17 @@ export type RawQueryDRepListItemType = {
   qualifications: string | null;
   image_url: string | null;
   image_hash: string | null;
-  type: DRepType;
 };
 
 export type DRepListItemType = {
-  dRepHash: string;
-  dRepView: string;
-  isScriptBased: boolean;
+  drepId: string;
+  view: string;
   url: string | null;
-  dataHash: string | null;
+  metadataHash: string | null;
   deposit: number;
-  votingPower?: number;
-  isActive: boolean;
-  txHash: string;
-  date: string;
-  latestDeposit: number;
-  latestNonDeregisterVotingAnchorWasNotNull: boolean;
+  votingPower: number;
+  latestTxHash: string;
+  latestRegistrationDate: string;
   metadataError: string | null;
   paymentAddress: string | null;
   givenName: string | null;

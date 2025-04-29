@@ -1,5 +1,6 @@
-import { IsArray, IsEnum, IsOptional, IsString, IsInt } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsInt } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 
 export enum DRepType {
   DRep = 'DRep',
@@ -22,16 +23,20 @@ export enum DRepSort {
 export class DRepListParamsDto {
   @IsOptional()
   @IsInt()
+  @Type(() => Number)
   @ApiPropertyOptional({ type: Number })
   page?: number;
 
   @IsOptional()
   @IsInt()
+  @Type(() => Number)
   @ApiPropertyOptional({ type: Number })
   pageSize?: number;
 
   @IsOptional()
-  @IsArray()
+  @Transform(({ value }) => {
+    return Array.isArray(value) ? value : value ? [value] : [];
+  })
   @IsEnum(DRepStatus, { each: true })
   @ApiPropertyOptional({ isArray: true, enum: DRepStatus })
   status?: DRepStatus[];

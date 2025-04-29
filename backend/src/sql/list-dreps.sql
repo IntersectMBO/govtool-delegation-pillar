@@ -7,8 +7,8 @@ WITH DRepDistr AS (
 ),
 DRepActivity AS (
   SELECT
-    drep_activity AS drep_activity,
-    epoch_no AS epoch_no
+    drep_activity,
+    epoch_no
   FROM
     epoch_param
   WHERE
@@ -17,207 +17,182 @@ DRepActivity AS (
     epoch_no DESC
   LIMIT 1
 ),
-DRepStatus AS (
-  SELECT
-    dh.id AS drep_hash_id,
-    CASE
-      WHEN dr_deposit.deposit < 0 THEN 'Retired'
-      WHEN dr_deposit.deposit >= 0 AND (DRepActivity.epoch_no - MAX(COALESCE(block.epoch_no, block_first_register.epoch_no))) <= DRepActivity.drep_activity THEN 'Active'
-      ELSE 'Inactive'
-    END AS status
+LatestVotingProcedure AS (
+  SELECT DISTINCT ON (vp.drep_voter)
+    vp.*
   FROM
-    drep_hash dh
-    LEFT JOIN (
-      SELECT DISTINCT ON (dr.drep_hash_id)
-        dr.id,
-        dr.drep_hash_id,
-        dr.deposit
-      FROM
-        drep_registration dr
-      WHERE
-        dr.deposit IS NOT NULL
-      ORDER BY dr.drep_hash_id, dr.tx_id DESC
-    ) AS dr_deposit ON dr_deposit.drep_hash_id = dh.id
-    LEFT JOIN tx ON tx.id = dr_deposit.id
-    LEFT JOIN block ON block.id = tx.block_id
-    LEFT JOIN block AS block_first_register ON block_first_register.id = tx.block_id
-    CROSS JOIN DRepActivity
-  GROUP BY dh.id, dr_deposit.deposit, DRepActivity.epoch_no, DRepActivity.drep_activity
-),
-LatestDRepRegistrations AS (
-  SELECT DISTINCT ON (dr.drep_hash_id)
-    dr.id,
-    dr.drep_hash_id,
-    dr.deposit,
-    dr.voting_anchor_id,
-    dr.tx_id,
-    tx.hash AS tx_hash
-  FROM
-    drep_registration dr
-    JOIN tx ON tx.id = dr.tx_id
-  ORDER BY dr.drep_hash_id, dr.tx_id DESC
-),
-NonDeregisterVotingAnchor AS (
-  SELECT DISTINCT ON (dr.drep_hash_id)
-    dr.id,
-    dr.drep_hash_id,
-    dr.voting_anchor_id,
-    tx.hash AS tx_hash
-  FROM
-    drep_registration dr
-    JOIN tx ON tx.id = dr.tx_id
+    voting_procedure vp
   WHERE 
-    dr.deposit IS NOT NULL
-    AND COALESCE(dr.deposit, 0) >= 0
-  ORDER BY dr.drep_hash_id, dr.tx_id DESC
+    vp.drep_voter IS NOT NULL
+  ORDER BY vp.drep_voter, vp.tx_id DESC
 ),
-SecondNewestRegistration AS (
-  SELECT DISTINCT ON (dr.drep_hash_id)
-    dr.id,
-    dr.drep_hash_id,
-    dr.voting_anchor_id
+LatestVoteEpoch AS (
+  SELECT
+    block.epoch_no,
+    lvp.drep_voter as drep_id
   FROM
-    drep_registration dr
-  WHERE
-    dr.tx_id < (
-      SELECT MAX(tx_id) 
-      FROM drep_registration dr2 
-      WHERE dr2.drep_hash_id = dr.drep_hash_id
-    )
-  ORDER BY dr.drep_hash_id, dr.tx_id DESC
-),
-FirstRegister AS (
-  SELECT DISTINCT ON (dr.drep_hash_id)
-    dr.tx_id,
-    dr.drep_hash_id
-  FROM
-    drep_registration dr
-    JOIN tx ON tx.id = dr.tx_id
+    LatestVotingProcedure lvp
+    JOIN tx ON tx.id = lvp.tx_id
     JOIN block ON block.id = tx.block_id
-  ORDER BY dr.drep_hash_id, dr.tx_id ASC
+),
+LatestDRepRegistration AS (
+  SELECT DISTINCT ON (dr.drep_hash_id)
+      dr.id,
+      dr.drep_hash_id,
+      dr.deposit,
+      dr.voting_anchor_id,
+      encode(tx.hash, 'hex') AS tx_hash,
+      block.epoch_no,
+      block.time
+  FROM
+      drep_registration dr
+  JOIN tx ON tx.id = dr.tx_id
+  JOIN block ON block.id = tx.block_id
+  ORDER BY
+      dr.drep_hash_id, dr.tx_id DESC
+),
+LatestExistingVotingAnchor AS (
+  SELECT
+    subquery.drep_registration_id,
+    subquery.drep_hash_id,
+    subquery.voting_anchor_id,
+    subquery.url,
+    subquery.metadata_hash,
+    subquery.ocvd_id
+  FROM (
+    SELECT
+      dr.id AS drep_registration_id,
+      dr.drep_hash_id,
+      va.id AS voting_anchor_id,
+      va.url,
+      encode(va.data_hash, 'hex') AS metadata_hash,
+      ocvd.id AS ocvd_id,
+      ROW_NUMBER() OVER (PARTITION BY dr.drep_hash_id ORDER BY dr.tx_id DESC) AS rn
+    FROM
+      drep_registration dr
+    JOIN voting_anchor va ON dr.voting_anchor_id = va.id
+    JOIN off_chain_vote_data ocvd ON va.id = ocvd.voting_anchor_id
+    WHERE
+      ocvd.voting_anchor_id IS NOT NULL
+  ) subquery
+  WHERE
+    subquery.rn = 1
+),
+DRepActive AS (
+	SELECT
+		dh.id,
+		(DRepActivity.epoch_no - GREATEST(lve.epoch_no, ldr.epoch_no)) <= DRepActivity.drep_activity AS active
+	FROM
+		drep_hash dh
+	CROSS JOIN DRepActivity
+	LEFT JOIN LatestDRepRegistration ldr ON ldr.drep_hash_id = dh.id AND COALESCE(ldr.deposit, 0) >= 0
+	LEFT JOIN LatestVoteEpoch lve ON lve.drep_id = dh.id	
+),
+DRepStatus AS (
+	SELECT
+		dh.id,
+		CASE
+			WHEN ldr.deposit < 0 THEN 'Retired'
+			WHEN DRepActive.active THEN 'Active'
+			ELSE 'Inactive'
+		END AS status
+	FROM drep_hash dh
+	LEFT JOIN LatestDRepRegistration ldr ON ldr.drep_hash_id = dh.id
+	LEFT JOIN DRepActive ON DRepActive.id = dh.id
+),
+DRepType AS (
+	SELECT
+		dh.id,
+		CASE
+			WHEN leva.url IS NOT NULL THEN 'DRep'
+			ELSE 'DirectVoter'
+		END AS type
+	FROM
+		drep_hash dh
+	LEFT JOIN LatestExistingVotingAnchor leva ON leva.drep_hash_id = dh.id
+),
+FetchError AS (
+	SELECT DISTINCT ON (voting_anchor_id)
+		voting_anchor_id,
+		fetch_error
+	FROM off_chain_vote_fetch_error
+	ORDER BY voting_anchor_id, id DESC
 )
-SELECT
-  encode(dh.raw, 'hex') as drep_id,
-  dh.view,
-  dh.has_script,
-  va.url,
-  encode(va.data_hash, 'hex') as data_hash,
-  dr_deposit.deposit,
-  DRepDistr.amount as voting_power,
-  DRepStatus.status,
-  (DRepActivity.epoch_no - MAX(COALESCE(block.epoch_no, block_first_register.epoch_no))) <= DRepActivity.drep_activity AS active,
-  encode(dr_voting_anchor.tx_hash, 'hex') AS tx_hash,
-  block_first_register.time AS first_register_time,
-  COALESCE(latestDeposit.deposit, 0) as latest_deposit,
-  non_deregister_voting_anchor.url IS NOT NULL AS has_non_deregister_voting_anchor,
-  fetch_error.message as fetch_error,
-  off_chain_vote_drep_data.payment_address,
-  off_chain_vote_drep_data.given_name,
-  off_chain_vote_drep_data.objectives,
-  off_chain_vote_drep_data.motivations,
-  off_chain_vote_drep_data.qualifications,
-  off_chain_vote_drep_data.image_url,
-  off_chain_vote_drep_data.image_hash,
-  CASE
-    WHEN COALESCE(latestDeposit.deposit, 0) >= 0 THEN
-      CASE
-        WHEN va.url IS NOT NULL THEN 'DRep'
-        ELSE 'DirectVoter'
-      END
-    ELSE
-      CASE
-        WHEN non_deregister_voting_anchor.url IS NOT NULL THEN 'DRep'
-        ELSE 'DirectVoter'
-      END
-  END AS type
+SELECT 
+	ENCODE(dh.raw, 'hex') drep_id,
+	dh.view,
+	leva.url metadata_url,
+	leva.metadata_hash,
+	COALESCE(ldr.deposit, 0) deposit,
+	COALESCE(dd.amount, 0) voting_power,
+	ds.status,
+	dt.type,
+	ldr.tx_hash latest_tx_hash,
+	ldr.time latest_registration_date,
+	fe.fetch_error metadata_error,
+	ocvdd.payment_address,
+	ocvdd.given_name,
+	ocvdd.objectives,
+	ocvdd.motivations,
+	ocvdd.qualifications,
+	ocvdd.image_url,
+	ocvdd.image_hash
 FROM
-  drep_hash dh
-  JOIN DRepStatus ON DRepStatus.drep_hash_id = dh.id
-  JOIN LatestDRepRegistrations AS dr_deposit 
-    ON dr_deposit.drep_hash_id = dh.id AND dr_deposit.deposit IS NOT NULL
-  JOIN LatestDRepRegistrations AS latestDeposit 
-    ON latestDeposit.drep_hash_id = dh.id
-  LEFT JOIN LatestDRepRegistrations AS dr_voting_anchor 
-    ON dr_voting_anchor.drep_hash_id = dh.id
-  LEFT JOIN NonDeregisterVotingAnchor AS dr_non_deregister_voting_anchor 
-    ON dr_non_deregister_voting_anchor.drep_hash_id = dh.id
-  LEFT JOIN SecondNewestRegistration AS second_to_newest_drep_registration 
-    ON second_to_newest_drep_registration.drep_hash_id = dh.id
-  LEFT JOIN DRepDistr ON DRepDistr.hash_id = dh.id
-  LEFT JOIN voting_anchor va ON va.id = dr_voting_anchor.voting_anchor_id
-  LEFT JOIN voting_anchor non_deregister_voting_anchor ON non_deregister_voting_anchor.id = dr_non_deregister_voting_anchor.voting_anchor_id
-  LEFT JOIN (
-    SELECT fetch_error AS message, voting_anchor_id
-    FROM off_chain_vote_fetch_error
-    WHERE fetch_time = (
-      SELECT MAX(fetch_time)
-      FROM off_chain_vote_fetch_error
-    )
-    GROUP BY fetch_error, voting_anchor_id
-  ) AS fetch_error ON fetch_error.voting_anchor_id = va.id
-  LEFT JOIN off_chain_vote_data ON off_chain_vote_data.voting_anchor_id = va.id
-  LEFT JOIN off_chain_vote_drep_data ON off_chain_vote_drep_data.off_chain_vote_data_id = off_chain_vote_data.id 
-  CROSS JOIN DRepActivity
-  LEFT JOIN voting_procedure AS voting_procedure ON voting_procedure.drep_voter = dh.id
-  LEFT JOIN tx AS tx ON tx.id = voting_procedure.tx_id
-  LEFT JOIN block AS block ON block.id = tx.block_id
-  LEFT JOIN FirstRegister AS dr_first_register 
-    ON dr_first_register.drep_hash_id = dh.id
-  LEFT JOIN tx AS tx_first_register ON tx_first_register.id = dr_first_register.tx_id
-  LEFT JOIN block AS block_first_register ON block_first_register.id = tx_first_register.block_id
+	drep_hash dh
+	JOIN LatestDRepRegistration ldr ON ldr.drep_hash_id = dh.id
+	LEFT JOIN LatestExistingVotingAnchor leva ON leva.drep_hash_id = dh.id
+	LEFT JOIN DRepDistr dd ON dd.hash_id = dh.id
+	LEFT JOIN DRepStatus ds ON ds.id = dh.id
+	LEFT JOIN DRepType dt ON dt.id = dh.id
+	LEFT JOIN FetchError fe ON fe.voting_anchor_id = leva.voting_anchor_id
+	LEFT JOIN off_chain_vote_drep_data ocvdd ON ocvdd.off_chain_vote_data_id = leva.ocvd_id
 WHERE
-  (array_length($3::text[], 1) IS NULL OR DRepStatus.status = ANY($3::text[]))
+  (array_length($3::text[], 1) IS NULL OR ds.status = ANY($3::text[]))
   AND (
     (
       COALESCE($1, '') = '' 
-      OR dh.view ILIKE $1 
-      OR off_chain_vote_drep_data.given_name ILIKE $1
+      OR dh.view ILIKE '%' || $1 || '%'
+      OR ocvdd.given_name ILIKE '%' || $1 || '%'
+      OR ocvdd.payment_address ILIKE '%' || $1 || '%'
+      OR ocvdd.objectives ILIKE '%' || $1 || '%'
+      OR ocvdd.motivations ILIKE '%' || $1 || '%'
+      OR ocvdd.qualifications ILIKE '%' || $1 || '%'
     )
     AND (
       CASE 
-        WHEN 
-          (
-            COALESCE(latestDeposit.deposit, 0) >= 0 AND va.url IS NULL 
-            OR COALESCE(latestDeposit.deposit, 0) < 0 AND non_deregister_voting_anchor.url IS NULL
-          ) 
-        THEN dh.view ILIKE $1
+        WHEN dt.type = 'DirectVoter' 
+        THEN dh.view ILIKE '%' || $1 || '%'
         ELSE TRUE
       END
     )
-  )
+)
 GROUP BY
-  dh.raw,
-  second_to_newest_drep_registration.voting_anchor_id,
-  dh.view,
-  dh.has_script,
-  va.url,
-  va.data_hash,
-  dr_deposit.deposit,
-  DRepDistr.amount,
-  DRepStatus.status,
-  DRepActivity.epoch_no,
-  DRepActivity.drep_activity,
-  dr_voting_anchor.tx_hash,
-  block_first_register.time,
-  latestDeposit.deposit,
-  non_deregister_voting_anchor.url,
-  fetch_error.message,
-  off_chain_vote_drep_data.payment_address,
-  off_chain_vote_drep_data.given_name,
-  off_chain_vote_drep_data.objectives,
-  off_chain_vote_drep_data.motivations,
-  off_chain_vote_drep_data.qualifications,
-  off_chain_vote_drep_data.image_url,
-  off_chain_vote_drep_data.image_hash
+	dh.raw,
+	dh.view,
+	leva.url,
+	leva.metadata_hash,
+	ldr.deposit,
+	dd.amount,
+	ds.status,
+	dt.type,
+	ldr.tx_hash,
+	ldr.time,
+	fe.fetch_error,
+	ocvdd.payment_address,
+	ocvdd.given_name,
+	ocvdd.objectives,
+	ocvdd.motivations,
+	ocvdd.qualifications,
+	ocvdd.image_url,
+	ocvdd.image_hash
 ORDER BY
-  CASE
-    WHEN $2 = 'VotingPower' THEN DRepDistr.amount::numeric
-    WHEN $2 = 'RegistrationDate' THEN EXTRACT(EPOCH FROM block_first_register.time)::numeric
-    WHEN $2 = 'Status' THEN
-      CASE
-        WHEN DRepStatus.status = 'Retired' THEN 1
-        WHEN DRepStatus.status = 'Active' THEN 2
-        ELSE 3
-      END::numeric
-    ELSE RANDOM()
-  END
+	CASE WHEN $2 = 'VotingPower' THEN COALESCE(dd.amount, 0) END DESC NULLS LAST,
+	CASE WHEN $2 = 'RegistrationDate' THEN ldr.time END DESC NULLS LAST,
+	CASE WHEN $2 = 'Status' THEN
+		CASE
+			WHEN ds.status = 'Active' THEN 1
+			WHEN ds.status = 'Retired' THEN 2
+			ELSE 3
+		END
+	END ASC NULLS LAST,
+	CASE WHEN $2 NOT IN ('VotingPower', 'RegistrationDate', 'Status') OR $2 IS NULL THEN RANDOM() END

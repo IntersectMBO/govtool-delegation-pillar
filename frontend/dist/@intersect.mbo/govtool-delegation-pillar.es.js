@@ -7247,16 +7247,13 @@ const nd = /^(?:(?:https?:\/\/)?(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|(?:[a-zA-Z
 function Gv(e) {
   return e.length > 128 ? Ue.t("forms.errors.tooLongUrl") : new TextEncoder().encode(e).length <= 128 ? !0 : Ue.t("forms.errors.tooLongUrl");
 }
-const Kv = (
-  // TODO: change any to Address type from '@emurgo/cardano-serialization-lib-asmjs'
-  (e) => async (t) => {
-    try {
-      return t ? e(t) ? !0 : Ue.t("forms.errors.mustBeReceivingAddress") : !0;
-    } catch {
-      return Ue.t("forms.errors.mustBeReceivingAddress");
-    }
+const Kv = (e) => async (t) => {
+  try {
+    return t ? e(t) ? !0 : Ue.t("forms.errors.mustBeReceivingAddress") : !0;
+  } catch {
+    return Ue.t("forms.errors.mustBeReceivingAddress");
   }
-), Yv = (e, t) => {
+}, Yv = (e, t) => {
   const n = new Blob([JSON.stringify(e, null, 2)], {
     type: "application/json"
   }), r = URL.createObjectURL(n), o = document.createElement("a");
@@ -29308,9 +29305,7 @@ const OO = me("div")`
     r
   );
 }, MO = rn((e, t) => {
-  const { t: n } = Oe(), { state: r } = dn();
-  console.log("state", r);
-  const o = Vo(() => {
+  const { t: n } = Oe(), { state: r } = dn(), o = Vo(() => {
     if (!window.cardano) return [];
     const i = Object.keys(window.cardano), s = [];
     return i.forEach((a) => {
@@ -31285,7 +31280,7 @@ const tA = ({
   if (!f)
     return /* @__PURE__ */ v(au, {});
   const C = i === e || i === "", T = f == null ? void 0 : f.filter(
-    (I) => !I.doNotList && !Pn(I, e)
+    (I) => !Pn(I, e)
   ), O = m && C ? [m, ...T] : T;
   return /* @__PURE__ */ q(Ct, { children: [
     /* @__PURE__ */ v(pe, { fontSize: 18, fontWeight: 500, sx: { mb: 3 }, children: o("dRepDirectory.listTitle") }),

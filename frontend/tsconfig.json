@@ -18,7 +18,6 @@
     /* Output configuration for the library */
     "declaration": true,
     "declarationDir": "./dist",
-    "emitDeclarationOnly": true /* Let Vite handle JS output */,
     "outDir": "./dist",
 
     /* Code quality */

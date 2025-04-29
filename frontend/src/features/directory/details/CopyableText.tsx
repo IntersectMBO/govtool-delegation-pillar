@@ -12,9 +12,14 @@ const ellipsisStyles = {
 type CopyableTextProps = {
   value: string;
   dataTestId: string;
+  isSemiTransparent?: boolean;
 };
 
-export const CopyableText = ({ value, dataTestId }: CopyableTextProps) => (
+export const CopyableText = ({
+  value,
+  dataTestId,
+  isSemiTransparent,
+}: CopyableTextProps) => (
   <ButtonBase
     onClick={(e) => {
       navigator.clipboard.writeText(value.toString());
@@ -30,7 +35,11 @@ export const CopyableText = ({ value, dataTestId }: CopyableTextProps) => (
       },
     }}
   >
-    <Typography color="primary" fontWeight={500} sx={ellipsisStyles}>
+    <Typography
+      color="primary"
+      fontWeight={500}
+      sx={{ ...ellipsisStyles, opacity: isSemiTransparent ? 0.75 : 1 }}
+    >
       {value}
     </Typography>
     <img alt="" src={ICONS.copyBlueIcon} />

@@ -22,7 +22,6 @@ type ChooseWalletModalState = {
 export const ChooseWalletModal = forwardRef<HTMLDivElement>((_, ref) => {
   const { t } = useTranslation();
   const { state } = useModal<ChooseWalletModalState>();
-  console.log('state', state);
 
   const walletOptions: WalletOption[] = useMemo(() => {
     if (!window.cardano) return [];

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -43,8 +44,10 @@ export const EditDRepForm = ({
   useEffect(() => {
     if (loadUserData) {
       const data: DRepData = state ?? yourselfDRep;
+      // @ts-expect-error
       const groupedReferences = data?.references?.reduce<
         Record<string, Reference[]>
+        // @ts-expect-error
       >((acc, reference) => {
         const type = reference['@type'];
         if (!acc[type]) {
@@ -53,6 +56,7 @@ export const EditDRepForm = ({
         acc[type].push(reference);
         return acc;
       }, {});
+      // @ts-expect-error
       reset({
         ...data,
         objectives: data?.objectives ?? '',

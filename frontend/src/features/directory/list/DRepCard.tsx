@@ -1,9 +1,14 @@
-import { Box, ButtonBase, Divider, Avatar } from '@mui/material';
-import { StatusPill } from '../common/StatusPill';
+/* eslint-disable no-console */
+import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
+import Divider from '@mui/material/Divider';
+import Avatar from '@mui/material/Avatar';
+import Skeleton from '@mui/material/Skeleton';
+
 import { Button, Card, Typography } from '@/components';
 import { useTranslation } from '@/hooks';
 import { DRepData, DRepStatus } from '@/types';
-import { useModal, usePillarContext } from '@/context';
+import { usePillarContext } from '@/context';
 import { ICONS, PATHS } from '@/consts';
 import { encodeCIP129Identifier } from '@/utils/cip129identifier';
 import { getBase64ImageDetails } from '@/utils/getBase64ImageDetails';
@@ -12,6 +17,7 @@ import {
   ellipsizeText,
   getMetadataDataMissingStatusTranslation,
 } from '@/utils';
+import { StatusPill } from '../common/StatusPill';
 
 type DRepCardProps = {
   dRep: DRepData;
@@ -24,17 +30,7 @@ type DRepCardProps = {
 };
 
 export const DRepCard = ({
-  dRep: {
-    status,
-    type,
-    view,
-    votingPower,
-    givenName,
-    metadataStatus,
-    image,
-    drepId,
-    isScriptBased,
-  },
+  dRep: { status, type, view, votingPower, givenName, imageUrl, drepId },
   isConnected,
   isDelegationLoading,
   isInProgress,
@@ -46,37 +42,19 @@ export const DRepCard = ({
   const { addSuccessAlert, useRouter } = usePillarContext();
   const router = useRouter();
 
-  const { openModal } = useModal();
-
-  const openChooseWalletModal = () => {
-    console.log('openChooseWalletModal');
-
-    // TODO: fix routing?
-    openModal({
-      type: 'chooseWallet',
-      state: {
-        pathToNavigate: PATHS.dashboardDRepDirectoryDRep.replace(
-          ':dRepId',
-          view
-        ),
-      },
-    });
-  };
+  const metadataStatus = undefined;
 
   const cip129Identifier = encodeCIP129Identifier({
-    txID: `${isScriptBased ? '23' : '22'}${drepId}`,
+    txID: `${'22'}${drepId}`,
     bech32Prefix: 'drep',
   });
 
-  const base64Image = getBase64ImageDetails(image ?? '');
+  const base64Image = getBase64ImageDetails(imageUrl ?? '');
 
   return (
     <Card
       {...(isMe && {
         variant: 'primary',
-      })}
-      {...(metadataStatus && {
-        variant: 'error',
       })}
       {...(isInProgress && {
         variant: 'warning',
@@ -123,15 +101,19 @@ export const DRepCard = ({
             }}
           >
             <Box flexDirection="row" minWidth={0} display="flex">
-              <Avatar
-                alt="drep-image"
-                src={
-                  (base64Image.isValidBase64Image
-                    ? `${base64Image.base64Prefix}${image}`
-                    : image) || ICONS.defaultDRepIcon
-                }
-                data-testid="drep-image"
-              />
+              {false ? (
+                <Skeleton variant="circular" width={40} height={40} />
+              ) : (
+                <Avatar
+                  alt="drep-image"
+                  src={
+                    (base64Image.isValidBase64Image
+                      ? `${base64Image.base64Prefix}${imageUrl}`
+                      : imageUrl) ?? ICONS.defaultDRepIcon
+                  }
+                  data-testid="drep-image"
+                />
+              )}
               <Box
                 sx={{
                   marginLeft: {
@@ -320,7 +302,7 @@ export const DRepCard = ({
             !isInProgress && (
               <Button
                 data-testid={`${view}-delegate-button`}
-                onClick={onDelegate}
+                onClick={console.log}
                 isLoading={isDelegationLoading}
               >
                 {t('delegate')}
@@ -329,7 +311,7 @@ export const DRepCard = ({
           {['Active', 'Inactive'].includes(status) && !isConnected && (
             <Button
               data-testid={`${view}-connect-to-delegate-button`}
-              onClick={openChooseWalletModal}
+              onClick={console.log}
             >
               {t('connectToDelegate')}
             </Button>

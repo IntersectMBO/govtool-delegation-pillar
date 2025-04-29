@@ -101,6 +101,7 @@ export const DRepCard = ({
             }}
           >
             <Box flexDirection="row" minWidth={0} display="flex">
+              {/* eslint-disable-next-line no-constant-condition */}
               {false ? (
                 <Skeleton variant="circular" width={40} height={40} />
               ) : (

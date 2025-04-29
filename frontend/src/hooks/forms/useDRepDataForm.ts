@@ -97,6 +97,7 @@ export const useDRepDataForm = ({
 
         if (type === 'register') await registerVoter({ hash, uri });
         else await updateVoter({ hash, uri });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         openMetadataStorageErrorModal({
           error,

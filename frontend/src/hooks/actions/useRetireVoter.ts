@@ -39,7 +39,7 @@ export const useRetireVoter = () => {
         });
         if (result)
           openActionSuccessModal({ action: 'retirement', link: result });
-      } catch (error: any) {
+      } catch (error) {
         openWalletErrorModal({
           error,
           dataTestId: 'retirement-transaction-error-modal',

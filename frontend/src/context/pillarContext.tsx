@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createContext,
   FC,
@@ -34,7 +35,6 @@ export type WalletApi = {
     type,
     voter,
   }: BuildSignSubmitConwayCertTxArgs) => Promise<string>;
-  // TODO: define types from '@emurgo/cardano-serialization-lib-asmjs'
   buildDRepRegCert: (url?: string, hash?: string) => Promise<any>;
   buildVoteDelegationCert: (vote: string) => Promise<any>;
   buildDRepUpdateCert: (url?: string, hash?: string) => Promise<any>;
@@ -93,7 +93,7 @@ export type PillarProviderProps = {
     forward: () => void;
     refresh: () => void;
   };
-  getAddressFromBech32: (address: string) => any;
+  getAddressFromBech32: (address: string) => never;
 };
 
 export const PillarProvider: FC<PillarProviderProps & PropsWithChildren> = ({

@@ -11,19 +11,23 @@ import {
   useTranslation,
 } from '@/hooks';
 import { correctDRepDirectoryFormat } from '@/utils';
-import { DRepData } from '@/types';
+import { DRepData, MetadataValidationStatus } from '@/types';
 import { DataMissingHeader } from './DataMissingHeader';
 
 type DRepDetailsProps = {
   dRepData: DRepData;
   isMe?: boolean;
   isMyDrep?: boolean;
+  isValidating?: boolean;
+  metadataStatus?: MetadataValidationStatus;
 };
 
 export const DRepDetailsCardHeader = ({
   dRepData,
   isMe,
   isMyDrep,
+  isValidating,
+  metadataStatus,
 }: DRepDetailsProps) => {
   const { stakeKey } = usePillarContext();
   const { t } = useTranslation();
@@ -31,7 +35,7 @@ export const DRepDetailsCardHeader = ({
   const { votingPower: myVotingPower } =
     useGetAdaHolderVotingPowerQuery(stakeKey);
 
-  const { givenName, metadataStatus } = dRepData;
+  const { givenName, imageUrl } = dRepData;
 
   return (
     <div>
@@ -115,12 +119,12 @@ export const DRepDetailsCardHeader = ({
         </Box>
       )}
       <DataMissingHeader
+        isDRep
         title={givenName ?? undefined}
+        image={imageUrl}
         isDataMissing={metadataStatus}
-        shareLink={
-          !isMe || screenWidth < 1020 ? window.location.href : undefined
-        }
         titleStyle={{ wordBreak: 'break-word', whiteSpace: 'wrap' }}
+        isValidating={isValidating}
       />
     </div>
   );

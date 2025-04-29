@@ -1,5 +1,9 @@
 import { Reference } from './other';
-import { MetadataValidationStatus } from './metadataValidation';
+
+export enum DRepType {
+  DRep = 'DRep',
+  DirectVoter = 'DirectVoter',
+}
 
 export enum DRepStatus {
   Active = 'Active',
@@ -15,31 +19,25 @@ export enum DRepListSort {
   Status = 'Status',
 }
 
-export type DrepDataDTO = {
-  deposit: number;
+export type DRepData = {
   drepId: string;
-  isScriptBased: boolean;
-  latestRegistrationDate: string;
-  latestTxHash?: string;
-  metadataHash?: string;
-  status: DRepStatus;
-  type: 'DRep' | 'SoleVoter';
-  url?: string;
   view: string;
-  votingPower?: number;
-};
-
-export type DRepData = DrepDataDTO & {
+  url: string | null;
+  metadataHash: string | null;
+  deposit: number;
+  votingPower: number;
+  latestTxHash: string;
+  latestRegistrationDate: string;
+  metadataError: string | null;
   paymentAddress: string | null;
-  givenName: string;
+  givenName: string | null;
   objectives: string | null;
   motivations: string | null;
   qualifications: string | null;
-  references: Reference[];
-  doNotList: boolean;
-  metadataStatus: MetadataValidationStatus | null;
-  metadataValid: boolean;
-  image: string | null;
+  imageUrl: string | null;
+  imageHash: string | null;
+  type: DRepType;
+  status: DRepStatus;
 };
 
 export type DRepDataFormValues = {

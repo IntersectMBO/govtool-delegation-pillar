@@ -40,7 +40,7 @@ export class DrepService {
     const sqlFilePath = path.join(__dirname, '../sql', 'list-dreps.sql');
     const sql = fs.readFileSync(sqlFilePath, 'utf8');
     const {
-      page = 1,
+      page = 0,
       pageSize = 10,
       status = [],
       sort = DRepSort.Random,
@@ -58,7 +58,7 @@ export class DrepService {
 
     const total = parseInt(totalResult[0].count, 10);
 
-    const offset = (page - 1) * pageSize;
+    const offset = page * pageSize;
 
     const result = await this.dataSource.query<RawQueryDRepListItemType[]>(
       `${sql} LIMIT $5 OFFSET $4`,

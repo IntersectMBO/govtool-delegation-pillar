@@ -6,5 +6,6 @@ export * from './ellipsizeText';
 export * from './getMetadataDataMissingStatusTranslation';
 export * from './isValidFormat';
 export * from './jsonUtils';
-export * from './mapDtoToDrep';
 export * from './testIdFromLabel';
+export * from './encodeCIP129Identifier';
+export * from './getBase64ImageDetails';

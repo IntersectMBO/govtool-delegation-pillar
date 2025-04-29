@@ -5,11 +5,8 @@ import {
   type Infinite,
   type DRepStatus,
   type DRepListSort,
-  DRepData,
-  DrepDataDTO,
+  type DRepData,
 } from '@/types';
-
-import { mapDtoToDrep } from '@/utils';
 
 export type GetDRepListArguments = {
   filters?: string[];
@@ -22,7 +19,6 @@ export type GetDRepListArguments = {
 
 export const getDRepList = async ({
   apiUrl,
-  validationApiUrl,
   sorting,
   filters = [],
   page = 0,
@@ -43,26 +39,16 @@ export const getDRepList = async ({
     return rawSearchPhrase;
   })();
 
-  const response = await axios.post<Infinite<DrepDataDTO>>(
-    `${apiUrl}/drep/list`,
-    {
+  const response = await axios.get<Infinite<DRepData>>(`${apiUrl}/drep/list`, {
+    params: {
       page,
       pageSize,
       ...(searchPhrase && { search: searchPhrase }),
       ...(filters.length && { type: filters }),
       ...(sorting && { sort: sorting }),
       ...(status.length && { status }),
-    }
-  );
+    },
+  });
 
-  const validatedResponse = {
-    ...response.data,
-    elements: await Promise.all(
-      response.data.elements.map(async (drep) =>
-        mapDtoToDrep(validationApiUrl, drep)
-      )
-    ),
-  };
-
-  return validatedResponse;
+  return response.data;
 };

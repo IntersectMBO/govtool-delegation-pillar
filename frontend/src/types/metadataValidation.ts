@@ -17,6 +17,7 @@ export type ValidateMetadataResult<MetadataType> = {
 export type MetadataValidationDTO = {
   url: string;
   hash: string;
+  standard: 'CIP119';
 };
 
 export type DRepMetadata = {

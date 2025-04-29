@@ -67,7 +67,7 @@ export const DRepList: FC = () => {
   const showMeAsDRep =
     debouncedSearchText === myDRepId || debouncedSearchText === '';
   const listedDRepsWithoutYourself = dRepList?.filter(
-    (dRep) => !dRep.doNotList && !isSameDRep(dRep, myDRepId)
+    (dRep) => !isSameDRep(dRep, myDRepId)
   );
   const dRepListToDisplay =
     meAsDRep && showMeAsDRep

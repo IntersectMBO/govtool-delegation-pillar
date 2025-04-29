@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 
 import { usePillarContext } from '@/context';
@@ -11,11 +10,16 @@ import { CircularLoader } from '@/components';
 import { EmptyStateDrepDirectory, DRepDetailsCard } from '@/features';
 
 export const DRepDetailsPage = () => {
-  const { dRepID: myDRepId, pendingTransaction, stakeKey } = usePillarContext();
-  const { dRepId: dRepParam } = useParams();
+  const {
+    dRepID: myDRepId,
+    pendingTransaction,
+    stakeKey,
+    useParams,
+  } = usePillarContext();
+  const { id } = useParams('id');
   const { currentDelegation } = useGetAdaHolderCurrentDelegationQuery(stakeKey);
 
-  const { dRep, isLoading } = useGetDRepDetailsQuery(dRepParam);
+  const { dRep, isLoading } = useGetDRepDetailsQuery(id);
 
   if (isLoading) return <CircularLoader />;
 

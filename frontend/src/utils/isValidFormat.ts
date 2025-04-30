@@ -17,8 +17,7 @@ export function isValidURLLength(s: string) {
 }
 
 export const isReceivingAddress =
-  // TODO: change any to Address type from '@emurgo/cardano-serialization-lib-asmjs'
-  (getAddress: (address: string) => any) => async (address?: string) => {
+  (getAddress: (address: string) => never) => async (address?: string) => {
     try {
       if (!address) {
         return true;

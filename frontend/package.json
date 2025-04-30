@@ -1,7 +1,7 @@
 {
   "name": "@intersect.mbo/govtool-delegation-pillar",
   "description": "Delegation Pillar of the GovTool project",
-  "version": "0.0.2",
+  "version": "0.0.3-dev",
   "license": "MIT",
   "type": "module",
   "main": "./dist/@intersect.mbo/govtool-delegation-pillar.umd.js",
@@ -50,7 +50,7 @@
     "tsc": "npx tsc --noEmit --skipLibCheck",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:watch": "vite build --watch",
+    "build:watch": "NODE_OPTIONS=--max_old_space_size=8192 yarn build:watch",
     "clean": "rimraf dist",
     "prebuild": "yarn clean",
     "prepublishOnly": "yarn build",

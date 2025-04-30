@@ -57,9 +57,15 @@ By cloning the repository, you ensure that you have the latest version of the co
 
 To run the application locally, you need to have Node.js installed.
 
-1. **Install dependencies** by running `npm install`.
+1. **Install dependencies** by running `yarn install`.
 2. **Configure Environment Variables:** Create or edit a `.env` file in the frontend directory to include environment variables specific to application.
-3. **Start the React Application** with `npm run dev` for development mode. This command serves your frontend application and hot-reloads for any changes.
+3. **Start the React Application** with `yarn dev` for development mode. This command serves your frontend application and hot-reloads for any changes.
+
+## Running using wrapper
+
+1. **Install dependencies** by running `yarn install`.
+2. **Configure Environment Variables:** Create or edit a `.env` file in the frontend directory to include environment variables specific to application.
+3. **Make the build watch** by running `yarn build:watch`.
 
 ## Running using docker compose
 

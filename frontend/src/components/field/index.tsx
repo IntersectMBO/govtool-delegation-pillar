@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactElement } from 'react';
 
 import { Checkbox } from './Checkbox';
 import { Input } from './Input';
@@ -10,7 +10,7 @@ type FieldComposition = React.FC<PropsWithChildren> & {
   TextArea: typeof TextArea;
 };
 
-const Field: FieldComposition = ({ children }) => children as any;
+const Field: FieldComposition = ({ children }) => children as ReactElement;
 
 Field.Checkbox = Checkbox;
 Field.Input = Input;

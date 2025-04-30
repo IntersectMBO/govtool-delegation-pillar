@@ -47,7 +47,7 @@ export const useRegisterVoter = () => {
         });
         if (result)
           openActionSuccessModal({ action: 'registration', link: result });
-      } catch (error: any) {
+      } catch (error) {
         Sentry.setTag(
           'hook',
           `useRegisterAs${metadata ? 'DRep' : 'DirectVoter'}`

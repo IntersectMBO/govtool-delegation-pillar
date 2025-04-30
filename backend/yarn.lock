@@ -547,9 +547,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intersect.mbo/govtool-voting-pillar-backend@workspace:.":
+"@intersect.mbo/govtool-delegation-pillar-backend@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@intersect.mbo/govtool-voting-pillar-backend@workspace:."
+  resolution: "@intersect.mbo/govtool-delegation-pillar-backend@workspace:."
   dependencies:
     "@nestjs/cli": "npm:^10.0.0"
     "@nestjs/common": "npm:^10.0.0"

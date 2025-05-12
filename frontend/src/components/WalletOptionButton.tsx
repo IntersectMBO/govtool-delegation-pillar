@@ -41,7 +41,7 @@ export const WalletOptionButton: FC<WalletOption> = ({
           ? pathToNavigate
           : pathname === '/'
             ? '/dashboard'
-            : `connected${pathname}${hash ?? ''}`,
+            : `dashboard${pathname}${hash ?? ''}`,
         { state }
       );
       return;

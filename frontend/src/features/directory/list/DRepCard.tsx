@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Divider from '@mui/material/Divider';
@@ -39,7 +38,7 @@ export const DRepCard = ({
   onDelegate,
 }: DRepCardProps) => {
   const { t } = useTranslation();
-  const { addSuccessAlert, useRouter } = usePillarContext();
+  const { addSuccessAlert, useRouter, connectWallet } = usePillarContext();
   const router = useRouter();
 
   const metadataStatus = undefined;
@@ -303,7 +302,7 @@ export const DRepCard = ({
             !isInProgress && (
               <Button
                 data-testid={`${view}-delegate-button`}
-                onClick={console.log}
+                onClick={connectWallet}
                 isLoading={isDelegationLoading}
               >
                 {t('delegate')}
@@ -312,7 +311,7 @@ export const DRepCard = ({
           {['Active', 'Inactive'].includes(status) && !isConnected && (
             <Button
               data-testid={`${view}-connect-to-delegate-button`}
-              onClick={console.log}
+              onClick={connectWallet}
             >
               {t('connectToDelegate')}
             </Button>

@@ -10,9 +10,10 @@ import {
 } from 'react';
 
 import { useDebounce } from '../hooks';
+import { DRepStatus } from '@/types';
 
 interface DataActionsBarContextType {
-  chosenFilters: string[];
+  chosenFilters: DRepStatus[];
   chosenFiltersLength: number;
   chosenSorting: string;
   closeFilters: () => void;
@@ -20,7 +21,7 @@ interface DataActionsBarContextType {
   debouncedSearchText: string;
   filtersOpen: boolean;
   searchText: string;
-  setChosenFilters: Dispatch<SetStateAction<string[]>>;
+  setChosenFilters: Dispatch<SetStateAction<DRepStatus[]>>;
   setChosenSorting: Dispatch<SetStateAction<string>>;
   setFiltersOpen: Dispatch<SetStateAction<boolean>>;
   setSearchText: Dispatch<SetStateAction<string>>;
@@ -37,7 +38,9 @@ const DataActionsBarProvider = ({ children }: PropsWithChildren) => {
   const [searchText, setSearchText] = useState<string>('');
   const debouncedSearchText = useDebounce(searchText, 300);
   const [filtersOpen, setFiltersOpen] = useState<boolean>(false);
-  const [chosenFilters, setChosenFilters] = useState<string[]>([]);
+  const [chosenFilters, setChosenFilters] = useState<DRepStatus[]>([
+    DRepStatus.Active,
+  ]);
   const [sortOpen, setSortOpen] = useState<boolean>(false);
   const [chosenSorting, setChosenSorting] = useState<string>('');
 
@@ -94,7 +97,5 @@ function useDataActionsBar() {
   }
   return context;
 }
-// eslint-disable-next-line no-console
-console.log({ DataActionsBarProvider });
 
 export { DataActionsBarProvider, useDataActionsBar };

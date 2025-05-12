@@ -50,7 +50,7 @@
     "tsc": "npx tsc --noEmit --skipLibCheck",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:watch": "NODE_OPTIONS=--max_old_space_size=8192 yarn build:watch",
+    "build:watch": "NODE_OPTIONS=--max_old_space_size=8192 vite build --watch",
     "clean": "rimraf dist",
     "prebuild": "yarn clean",
     "prepublishOnly": "yarn build",

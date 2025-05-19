@@ -8,13 +8,14 @@ import {
 } from '@mui/material';
 
 import { useOnClickOutside, useScreenDimension } from '@/hooks';
+import { DRepStatus } from '@/types';
 
 interface Props {
-  chosenFilters: string[];
-  setChosenFilters: Dispatch<SetStateAction<string[]>>;
+  chosenFilters: DRepStatus[];
+  setChosenFilters: Dispatch<SetStateAction<DRepStatus[]>>;
   closeFilters: () => void;
   options: {
-    key: string;
+    key: DRepStatus;
     label: string;
   }[];
   title?: string;
@@ -29,12 +30,9 @@ export const DataActionsFilters = ({
 }: Props) => {
   const handleFilterChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      // TODO: Refine if it is needed to remove this eslint-disable
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions, no-unused-expressions, no-sequences
-      e.target.name, e.target.checked;
       let filters = [...chosenFilters];
       if (e.target.checked) {
-        filters.push(e.target.name);
+        filters.push(e.target.name as DRepStatus);
       } else {
         filters = filters.filter((str) => str !== e.target.name);
       }
